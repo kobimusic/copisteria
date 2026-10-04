@@ -6,6 +6,7 @@ skipped (resumable); a page that fails gets no file (it then scores as read enti
 run.json. The MusicXML is scored against the set's ground truth with musicdiff (see README, Benchmark).
 
     python -m copista_evidence.omrned <set dir> --name evidence [--model models/evidence-2m.pt] [--jobs 6]
+    python -m copista_evidence.omrned <set dir> --name evidence-small --detector small
 """
 from __future__ import annotations
 
@@ -18,7 +19,7 @@ import traceback
 from multiprocessing import Pool
 from pathlib import Path
 
-from .paths import EVIDENCE
+from .paths import DETECTORS, EVIDENCE
 
 _M: dict = {}
 
@@ -53,7 +54,10 @@ def main():
     ap.add_argument("--limit", type=int)
     ap.add_argument("--no-texts", action="store_true")
     ap.add_argument("--texts", default="texts", help="the folder (in the set dir) of the pages' OCR text boxes")
+    ap.add_argument("--detector", choices=sorted(DETECTORS), help="the symbol detector (default v7, or COPISTA_DETECTOR)")
     a = ap.parse_args()
+    if a.detector:
+        os.environ["COPISTA_DETECTOR"] = a.detector      # before the pool: its workers inherit it
     d = Path(a.set_dir)
     ids = json.loads((d / "index.json").read_text())["ids"][:a.limit]
     out = d / "preds" / a.name

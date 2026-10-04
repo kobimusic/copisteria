@@ -3,8 +3,9 @@
   python -m copista_evidence.pipeline page.png [more pages ...] --out out
   python -m copista_evidence.pipeline --pdf score.pdf --range 1-4 --out out
 
-A page's detections are taken from a cached file (``<stem>.dets_v7_<imgsz>.json`` beside the page) when one
-exists, else v7 runs here at the size the page's staff space asks for, and is cached the same way. Page texts
+A page's detections are taken from a cached file (``<stem>.dets_<tag>_<imgsz>.json`` beside the page, tag v7 for the
+default detector) when one exists, else the detector runs here at the size the page's staff space asks for, and is
+cached the same way. ``--detector small`` (or COPISTA_DETECTOR=small) reads with the 1.94M-parameter detector. Page texts
 (``<stem>.texts.json`` beside the page: OCR text boxes, see docs/ARCHITECTURE.md) are used when present: the
 title, the composer, words and multi-measure rest counts.
 """
@@ -17,12 +18,13 @@ from pathlib import Path
 
 from . import read, view, write
 
-from .paths import EVIDENCE, REPO as ROOT
+from .paths import DETECTORS, EVIDENCE, REPO as ROOT, detector
 
 
 def detections(png: Path, want_size: bool = False):
     """The page's v7 detections (``want_size``: and the input size they were read at)."""
-    cached = sorted(png.parent.glob(f"{png.stem}.dets_v7_*.json"))
+    tag = detector()[1]
+    cached = sorted(png.parent.glob(f"{png.stem}.dets_{tag}_*.json"))
     size = lambda path: int(path.stem.rsplit("_", 1)[1])                               # noqa: E731
     if len(cached) == 1:
         d = json.loads(cached[0].read_text())
@@ -61,7 +63,7 @@ def detections(png: Path, want_size: bool = False):
     imgsz = imgsz_for(sp, max(im.width, im.height))
     arr, s = det.prepare(im, imgsz)
     dets = det.run_array(arr, s)
-    png.with_name(f"{png.stem}.dets_v7_{imgsz}.json").write_text(json.dumps(dets))
+    png.with_name(f"{png.stem}.dets_{tag}_{imgsz}.json").write_text(json.dumps(dets))
     return (dets, imgsz) if want_size else dets
 
 
@@ -70,13 +72,13 @@ _DET: list = []
 
 def featcache(png: Path, det=None) -> Path:
     """v7 once more over the page at the size its detections were read at, keeping the sub-threshold candidates
-    and the image features (Detector.run_array with candidates): ``<stem>.feat_v7_<imgsz>.npz`` beside the page."""
+    and the image features (Detector.run_array with candidates): ``<stem>.feat_<tag>_<imgsz>.npz`` beside the page."""
     import numpy as np
     from PIL import Image
 
     from .detect import Detector
     _, imgsz = detections(png, want_size=True)
-    out = png.with_name(f"{png.stem}.feat_v7_{imgsz}.npz")
+    out = png.with_name(f"{png.stem}.feat_{detector()[1]}_{imgsz}.npz")
     if out.exists():
         return out
     if det is None:
@@ -136,7 +138,11 @@ def main(argv=None):
     ap.add_argument("--model", default=str(EVIDENCE))
     ap.add_argument("--out", default="out")
     ap.add_argument("--device", default="cpu")
+    ap.add_argument("--detector", choices=sorted(DETECTORS), help="the symbol detector (default v7, or COPISTA_DETECTOR)")
     a = ap.parse_args(argv)
+    if a.detector:
+        import os
+        os.environ["COPISTA_DETECTOR"] = a.detector
     pngs = [Path(p) for p in a.pages]
     if a.pdf:
         from .vision.page.scan import from_pdf

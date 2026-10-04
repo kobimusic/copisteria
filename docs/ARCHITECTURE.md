@@ -21,6 +21,10 @@ finds none, from a first pass's measure boxes, which are four staff spaces tall)
 position, stem direction, dots, grace, voice slot. Detections at confidence 0.05 and up are kept and cached beside
 the page.
 
+`--detector small` reads with the small v7 detector instead (architecture `obj-recall`, 1.94M parameters, the same
+classes and attributes): the whole reader is then about 4M parameters. The evidence model is the same one; it was
+trained on the large detector's readings, not the small one's.
+
 ## 2. Front end (`front.py`, `links.py`)
 
 Only geometry, and only what the writer cannot do without:

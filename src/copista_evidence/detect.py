@@ -11,9 +11,8 @@ from pathlib import Path
 
 import numpy as np
 
-from .paths import DETECTOR
+from .paths import detector
 
-WEIGHTS = DETECTOR
 TARGET_SP = 10.6
 IMGSZ_MIN, IMGSZ_MAX = 640, 4096
 
@@ -25,8 +24,10 @@ def imgsz_for(staff_space: float, long_side: int, target: float = TARGET_SP) -> 
 
 
 class Detector:
-    def __init__(self, weights: str | Path = WEIGHTS, device: str | None = None):
+    def __init__(self, weights: str | Path | None = None, device: str | None = None):
+        """``weights``: a detector checkpoint; by default the one COPISTA_DETECTOR names (paths.detector)."""
         import torch
+        weights = weights or detector()[0]
 
         from .detector.small import models as M
         from .detector.small.data import ATTR_OFFSETS, ATTR_SIZES

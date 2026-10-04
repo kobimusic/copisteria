@@ -3,7 +3,8 @@
     python docs/images/make_charts.py
 
 Every system against every other, per set, as the error rate OMR-NED (musicdiff, pooled over the set's pages; lower
-is better). copista-evidence's figures are this code's run. Legato and Legato 2 are published figures (Legato 2 is not released: its bars are hatched); homr 0.7,
+is better). copista-evidence's figures are this code's run, with the default detector (28.7M parameters) and with
+the small one (1.94M; about 4M parameters in all). Legato and Legato 2 are published figures (Legato 2 is not released: its bars are hatched); homr 0.7,
 Audiveris 5.11 and Transcoda were run by KobiMusic with the same scorer.
 """
 from pathlib import Path
@@ -26,20 +27,21 @@ SETS = [  # key, name, pages
 # system -> (kind, OMR-NED per set in SETS order; None = no figure)
 SYSTEMS = {
     "copista-evidence": ("evidence", [8.82, 6.00, 29.78, 17.22, 34.06]),
+    "copista-evidence small": ("small", [11.49, 9.11, 29.19, 18.08, 38.82]),
     "Legato 2 (unreleased)": ("unreleased", [31.6, 17.1, 43.6, 27.6, None]),
     "Legato": ("published", [58.2, 32.9, 44.9, 39.5, None]),
     "homr 0.7": ("run", [None, None, 49.1, 38.0, 48.3]),
     "Audiveris 5.11": ("run", [66.9, 33.2, 58.0, 28.8, 62.6]),
     "Transcoda": ("run", [None, None, 53.6, 42.0, 55.1]),
 }
-LEGEND = [("evidence", "copista-evidence"), ("published", "published figure"),
+LEGEND = [("evidence", "copista-evidence"), ("small", "copista-evidence, small detector (4M in all)"), ("published", "published figure"),
           ("unreleased", "published figure, system not released"), ("run", "run by KobiMusic, same scorer")]
 
 THEMES = {
-    "light": dict(text="#1f2328", muted="#59636e", grid="#d1d9e0", accent="#b73e6a", published="#8c959f",
-                  run="#c4cbd2"),
-    "dark": dict(text="#e6edf3", muted="#9198a1", grid="#3d444d", accent="#e2729b", published="#6e7681",
-                 run="#454c55"),
+    "light": dict(text="#1f2328", muted="#59636e", grid="#d1d9e0", accent="#b73e6a", small="#e0a3bb",
+                  published="#8c959f", run="#c4cbd2"),
+    "dark": dict(text="#e6edf3", muted="#9198a1", grid="#3d444d", accent="#e2729b", small="#8e4d66",
+                 published="#6e7681", run="#454c55"),
 }
 
 plt.rcParams.update({"font.family": ["Noto Sans", "DejaVu Sans"], "font.size": 10.5,  # DejaVu has the arrows
@@ -87,7 +89,7 @@ def panels(theme, keys, title, out):
     axes[-1].set_xlabel("← Error rate (OMR-NED), lower is better", color=t["muted"], fontsize=9.5, loc="left")
     handles = [plt.Rectangle((0, 0), 1, 1, **bar_style(t, kind)) for kind, _ in LEGEND]
     fig.legend(handles, [label for _, label in LEGEND], loc="upper left",
-               bbox_to_anchor=(0.012, 1 - 0.78 / fig.get_figheight()), ncol=4, frameon=False, fontsize=8.5,
+               bbox_to_anchor=(0.012, 1 - 0.78 / fig.get_figheight()), ncol=3, frameon=False, fontsize=8.5,
                labelcolor=t["text"], handlelength=1.6, columnspacing=1.2)
     top = 1 - 0.32 / fig.get_figheight()
     fig.text(0.015, top, title, ha="left", va="center", color=t["text"], fontweight="bold", fontsize=13)
