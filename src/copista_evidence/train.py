@@ -15,19 +15,10 @@ sampling weight of pages with tuplets):
   python -m copista_evidence.train --data data/tok --out runs/evidence --steps 25000 --batch 24 --lr 3e-4 \
       --warmup 200 --init runs/base/last.pt
 
-The refinement model (evidence-refine-3m.pt) is the released model with a 2-layer second pass that reads the first
-pass's conclusions (running duration sums per voice, collisions, cross-voice alignment, accidental glyphs at each
-note's height, the bar's meter), fine-tuned in three stages with pages holding two voices weighted 3x
-(COPISTA_MULTIVOICE_WEIGHT), the feedback growing from 29 features to 39 (zero-initialised: each stage starts out
-reading as the one before), the last with 35 % of windows showing no tuplet mark at all (COPISTA_TUP_DROPALL):
-
-  export COPISTA_MULTIVOICE_WEIGHT=3
-  python -m copista_evidence.train --data data/tok --out runs/refine1 --steps 20000 --batch 8 --accum 4 --lr 3e-4 \
-      --warmup 200 --init runs/evidence/last.pt --refine 2 --fb 29
-  python -m copista_evidence.train --data data/tok --out runs/refine2 --steps 16000 --batch 8 --accum 4 --lr 2e-4 \
-      --warmup 200 --init runs/refine1/last.pt --refine 2 --fb 39
-  COPISTA_TUP_DROPALL=0.35 python -m copista_evidence.train --data data/tok --out runs/refine --steps 12000 \
-      --batch 8 --accum 4 --lr 1.5e-4 --warmup 200 --init runs/refine2/last.pt --refine 2 --fb 39
+Optional, not used by the released model: a refinement pass (--refine 2) that reads the window a second time with
+the first reading's sums fed back (model.EvidenceNet.feedback; --fb picks how many of its features), fine-tuned from
+a trained model (--init: the new layers start as an identity), with COPISTA_MULTIVOICE_WEIGHT (sampling weight of
+pages with two voices) and COPISTA_TUP_DROPALL (the share of windows that show no tuplet mark at all).
 """
 from __future__ import annotations
 

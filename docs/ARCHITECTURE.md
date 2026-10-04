@@ -7,10 +7,10 @@ up to three beats under 4/4 has a misread duration"; the model sees the whole sy
 contexts make which readings likely, and how far to trust the detector against them.
 
 ```
-page image ──► detector (v7) ──► front end ──► tokens ──► evidence models ──► readings ──► writer ──► MusicXML
-                 270 classes      geometry       per        2.03M + 2.68M      per symbol    rhythm and
-                 + attributes     only           symbol     transformers,      + evidence    alteration
-                                                            one ensemble                     decoding
+page image ──► detector (v7) ──► front end ──► tokens ──► evidence model ──► readings ──► writer ──► MusicXML
+                 270 classes      geometry       per        2.03M params      per symbol    rhythm and
+                 + attributes     only           symbol     transformer       + evidence    alteration
+                                                                                            decoding
 ```
 
 ## 1. Detector
@@ -24,8 +24,8 @@ the page.
 
 The two sizes are named after their detector: copista-28m reads with that one (28.7M parameters), copista-2m
 (`--detector 2m`) with the small v7 detector (architecture `obj-recall`, 1.94M parameters, the same classes and
-attributes), so the whole reader is about 6.7M parameters. The evidence models are the same in both; they were
-trained on copista-28m's detector, not the small one.
+attributes), so the whole reader is about 4M parameters. The evidence model is the same in both; it was trained on
+copista-28m's detector, not the small one.
 
 ## 2. Front end (`front.py`, `links.py`)
 
@@ -94,19 +94,15 @@ staff row or not, by bar distance (0, 1, 2, 3, 4-8), farther than 8 bars, the ot
 system.
 Locality is a prior the model can override, not a wall.
 
-**Refinement pass.** `EvidenceNet(refine=2)` reads the window a second time with the first reading's conclusions
-fed back in, per token: its onset and how sure it was, the running sum of the durations read before it in its voice
-and bar and how far that sum is from its onset, collisions with the other notes of its voice, the voice's total in
-the bar, the nearest note of another voice and how its onset lines up, the nearest accidental glyph at the note's
-height (a flat at its bowl, which sits half a staff space below the glyph's centre), the alteration read for the
-last note on the same line, and the bar's length under the meter in view. Two more transformer layers turn that
-into the final reading, so the model can see and fix readings that do not add up. The feedback layer and the two
-layers' outputs start at zero: a refinement model starts out reading exactly as the model it was fine-tuned from.
-`evidence-refine-3m.pt` is such a model (2,677,470 parameters).
-
-**Ensemble** (`read.Ensemble`). The reader averages the logits of every head of `evidence-2m.pt` and
-`evidence-refine-3m.pt` (the detector priors are the first model's). The refinement model reads the string
-quartets better (more voices, more tuplets), the base model the Lieder scans; together they read both.
+**Refinement pass** (optional; the released model has none). `EvidenceNet(refine=2)` reads the window a second
+time with the first reading's conclusions fed back in, per token: its onset and how sure it was, the running sum of
+the durations read before it in its voice and bar and how far that sum is from its onset, collisions with the other
+notes of its voice, the voice's total in the bar, the nearest note of another voice and how its onset lines up, the
+nearest accidental glyph at the note's height (a flat at its bowl), the alteration read for the last note on the
+same line, and the bar's length under the meter in view. Two more transformer layers turn that into the final
+reading. The feedback layer and the two layers' outputs start at zero, so a refinement model starts out reading
+exactly as the model it is fine-tuned from. Fine-tuned from the released model it read the string quartets better
+and the Lieder scans worse, and no better overall: it is not released.
 
 **Reading** (`read.py`). Each system is read in a window with its neighbours (the previous and the next system, up
 to 1024 tokens), and only its own tokens are taken from that window. A symbol's reading keeps, per head, the
@@ -114,7 +110,7 @@ detector's choice, the final choice, its probability, and the evidence for the f
 
 **Optional inputs.** The model and the training loop also take the detector's image features at every token and
 its sub-threshold candidates (detections at confidence 0.01-0.05 as extra tokens, flagged, for the real head to
-accept or reject); the tokenizer writes both. The released models do not use them.
+accept or reject); the tokenizer writes both. The released model does not use them.
 
 ## 5. Writer (`write.py`)
 
@@ -186,18 +182,16 @@ on this page), `COPISTA_MULTIVOICE_WEIGHT` draws pages with two voices more ofte
 
 ### Recipe
 
-`train.py`'s docstring has the recipes. `evidence-2m.pt`: 70,000 steps from scratch (batch 24, learning rate 1e-3)
-and a 25,000-step fine-tune with the tuplet emphasis (learning rate 3e-4). `evidence-refine-3m.pt`: from
-`evidence-2m.pt`, three fine-tunes of the refinement pass (batch 32, pages with two voices weighted 3x): 20,000 steps
-with 29 feedback features, 16,000 with 39, and 12,000 with every tuplet mark left out of 35 % of the windows. With
-a refinement pass the first pass is trained too, at half weight. Validation reports each head's accuracy against
-the detector's own argmax, with and without the corruption.
+`train.py`'s docstring has the released model's two stages: 70,000 steps from scratch (batch 24, learning rate
+1e-3) and a 25,000-step fine-tune with the tuplet emphasis (learning rate 3e-4). With a refinement pass
+(`--refine`) the first pass is trained too, at half weight. Validation reports each head's accuracy against the
+detector's own argmax, with and without the corruption.
 
 ## 7. Known limits
 
 * Structure is the front end's hand-made rules. They were tuned on real scans; structure models learned from
   renders did not transfer to other engravings.
 * Triplets a page does not mark (marked once, often pages earlier) are still often read as plain notes: with every
-  tuplet mark removed from rendered pages, 68 % of tuplet notes are written as tuplets (96 % with the marks). The
+  tuplet mark removed from rendered pages, 65 % of tuplet notes are written as tuplets (96 % with the marks). The
   writer's rhythm decoding cannot recover the rest: it is bounded by what the model believes.
 * Lyrics are not written.

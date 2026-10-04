@@ -1,4 +1,4 @@
-"""The writer's alteration decode and chord handling, and the refinement model / ensemble reading a page."""
+"""The writer's alteration decode and chord handling; the optional refinement pass."""
 import xml.etree.ElementTree as ET
 
 import torch
@@ -84,22 +84,19 @@ def test_words_on_a_chord_member_do_not_break_the_chord():
     assert notes[1].find("chord") is not None and notes[2].find("chord") is None
 
 
-def test_refinement_model_and_ensemble_read_a_page(tmp_path):
+def test_a_refinement_pass_fresh_from_its_base_reads_as_the_base():
+    # the optional refinement pass (zero-initialised second pass) changes nothing until it is trained
     torch.manual_seed(0)
-    base, refine = EvidenceNet(), EvidenceNet(refine=2, fb=39)
-    for name, m in (("base", base), ("refine", refine)):
-        torch.save({"model": m.state_dict(), "cfg": m.cfg}, tmp_path / f"{name}.pt")
+    base = EvidenceNet().eval()
     dets = staff_row(100, [0, 150, 300]) + [det("note_quarter", (x, 115, x + 10, 125), staff_position=0)
                                            for x in (30, 80, 180, 230)]
-    m = read.load_model(f"{tmp_path / 'base.pt'}+{tmp_path / 'refine.pt'}")
-    assert isinstance(m, read.Ensemble) and m.models[1].refine == 2
-    rd = read.read(dets, 400, 300, m, attention=False)
-    notes = [r for i, r in rd.tok.items() if rd.layout.syms[i].fam == "note"]
-    assert len(notes) == 4 and all("onset_beat_p" in r for r in notes)
-    # a refinement model fresh from its base (zero-initialised second pass) reads exactly as the base does
     fresh = EvidenceNet(refine=2, fb=39).eval()
     fresh.load_state_dict(base.state_dict(), strict=False)
     fresh.init_refine_from_base()
-    a = read.read(dets, 400, 300, base.eval(), attention=False)
+    fresh.onset_trained = base.onset_trained = True
+    a = read.read(dets, 400, 300, base, attention=False)
     b = read.read(dets, 400, 300, fresh, attention=False)
+    notes = [i for i in a.tok if a.layout.syms[i].fam == "note"]
+    assert len(notes) == 4
     assert all(abs(a.tok[i]["real"]["p"] - b.tok[i]["real"]["p"]) < 1e-5 for i in a.tok)
+    assert all(a.tok[i]["onset"] == b.tok[i]["onset"] for i in notes)

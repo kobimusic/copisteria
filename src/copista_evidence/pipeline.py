@@ -137,8 +137,7 @@ def main(argv=None):
     ap.add_argument("pages", nargs="*")
     ap.add_argument("--pdf")
     ap.add_argument("--range", default="1")
-    ap.add_argument("--model", default="+".join(str(p) for p in EVIDENCE),
-                    help="evidence model checkpoint(s); several joined by + read as an ensemble")
+    ap.add_argument("--model", default=str(EVIDENCE))
     ap.add_argument("--out", default="out")
     ap.add_argument("--device", default="cpu")
     ap.add_argument("--detector", choices=sorted(DETECTORS), help="the symbol detector: 28m (default) or 2m (or COPISTA_DETECTOR)")

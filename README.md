@@ -11,18 +11,18 @@
 </p>
 
 KobiMusic's **copista-evidence** optical music recognition reader: a page of printed music in, MusicXML out. Instead
-of hand-written rules, two small transformers read every symbol in the context of the whole page: the naturals
+of hand-written rules, a 2M-parameter transformer reads every symbol in the context of the whole page: the naturals
 that say a key is wrong, the bars that add up to three beats under a 4/4 sign, the dot the repetitions have, the
-voice that works as the first. Nobody wrote that evidence down; the models learned it from rendered pages where the
+voice that works as the first. Nobody wrote that evidence down; the model learned it from rendered pages where the
 truth is known.
 
 It comes in two sizes, named after their symbol detector: **copista-28m** (a 28.7M-parameter detector, the default)
-and **copista-2m** (a 1.94M-parameter detector: about 6.6M parameters for the whole reader). Both read with the same
-two evidence models (2.03M and 2.68M parameters), averaged as one ensemble.
+and **copista-2m** (a 1.94M-parameter detector: about 4M parameters for the whole reader). Both read with the same
+evidence model.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/compare-scans-dark.png">
-  <img alt="Error rate on scanned pages, lower is better; Legato 2 is not released. String quartets: copista-28m 8.6 %, copista-2m 11.0 %, Legato 2 31.6 %, Legato 58.2 %, Audiveris 66.9 %. Lieder, 55 pages: copista-2m 17.2 %, copista-28m 17.6 %, homr 42.3 %, Transcoda 48.4 %, Audiveris 51.8 %. Polish piano scores: copista-28m 34.0 %, copista-2m 38.3 %, homr 48.3 %, Transcoda 55.1 %, Audiveris 62.6 %" src="docs/images/compare-scans-light.png" width="800">
+  <img alt="Error rate on scanned pages, lower is better; Legato 2 is not released. String quartets: copista-28m 8.6 %, copista-2m 11.3 %, Legato 2 31.6 %, Legato 58.2 %, Audiveris 66.9 %. Lieder, 55 pages: copista-28m 17.7 %, copista-2m 17.8 %, homr 42.3 %, Transcoda 48.4 %, Audiveris 51.8 %. Polish piano scores: copista-28m 34.3 %, copista-2m 38.8 %, homr 48.3 %, Transcoda 55.1 %, Audiveris 62.6 %" src="docs/images/compare-scans-light.png" width="800">
 </picture>
 
 ## How it reads a page
@@ -34,13 +34,10 @@ two evidence models (2.03M and 2.68M parameters), averaged as one ensemble.
    ink, systems from the ink that joins staves at their left, bars from the bar lines most staves of a system show,
    and every symbol goes to its staff and bar. No music is decided here. Once the page is read, a voice that holds
    two bars' worth of its meter where a bar-line stroke stands gets that bar line, and the page is read again.
-3. **Read in context.** The evidence models read each system together with its neighbours. Every reading the
-   detector has (real or not, class, dots, staff position, voice, grace) gets the models' *evidence* added to the
+3. **Read in context.** The evidence model reads each system together with its neighbours. Every reading the
+   detector has (real or not, class, dots, staff position, voice, grace) gets the model's *evidence* added to the
    detector's own log-probability, in nats: with no evidence, the detector stands. The rest is read from context:
-   each note's sounding alteration, chord, tie, tuplet and onset in its bar, and each bar's clef, key and meter. The
-   second model reads the system twice, the second time with its first reading's sums fed back (durations per
-   voice, collisions, accidentals at each note's height), so it can fix readings that do not add up; the two
-   models' readings are averaged.
+   each note's sounding alteration, chord, tie, tuplet and onset in its bar, and each bar's clef, key and meter.
 4. **Decode the rhythm and the accidentals.** Each voice's notes are placed at the onsets the model reads for them,
    and a voice's durations and tuplets are decoded jointly from the model's distributions, so one misread duration
    does not shift the rest of the bar. Each accidental glyph goes to its note and holds along its line to the bar's
@@ -54,7 +51,7 @@ two evidence models (2.03M and 2.68M parameters), averaged as one ensemble.
 
 | Folder | What it holds |
 |---|---|
-| `src/copista_evidence/` | The pipeline (`python -m copista_evidence.pipeline`), the front end, the evidence models and their reader, the writer, the viewer, the training loop, the benchmark runner |
+| `src/copista_evidence/` | The pipeline (`python -m copista_evidence.pipeline`), the front end, the evidence model and its reader, the writer, the viewer, the training loop, the benchmark runner |
 | `src/copista_evidence/training/` | Training data: rendered pages to the model's tokens and targets |
 | `src/copista_evidence/vision/` | Pages from images and PDFs, staff lines from the ink |
 | `src/copista_evidence/detector/` | The symbol detectors' architectures |
@@ -64,13 +61,12 @@ two evidence models (2.03M and 2.68M parameters), averaged as one ensemble.
 
 ## Weights
 
-The evidence models and the symbol detectors are in the Hugging Face repo
+The evidence model and the symbol detectors are in the Hugging Face repo
 [`kobimusic/copista-evidence`](https://huggingface.co/kobimusic/copista-evidence) (private for now), with the model
 card. Put them where the pipeline looks:
 
 ```
 models/evidence-2m.pt                     # the evidence model (2.03M parameters), both sizes
-models/evidence-refine-3m.pt              # the evidence model with its refinement pass (2.68M parameters), both sizes
 models/small/v7_obj-recall-30m_best.pt    # copista-28m's detector (28.7M parameters)
 models/small/v7_obj-recall_best.pt        # copista-2m's detector (1.94M parameters)
 ```
@@ -78,7 +74,7 @@ models/small/v7_obj-recall_best.pt        # copista-2m's detector (1.94M paramet
 With the Hugging Face CLI (`pip install huggingface_hub`, then `hf auth login` with an account that can see the repo):
 
 ```
-hf download kobimusic/copista-evidence evidence-2m.pt evidence-refine-3m.pt --local-dir models
+hf download kobimusic/copista-evidence evidence-2m.pt --local-dir models
 hf download kobimusic/copista-evidence v7_obj-recall-30m_best.pt --local-dir models/small    # copista-28m
 hf download kobimusic/copista-evidence v7_obj-recall_best.pt --local-dir models/small        # copista-2m
 ```
@@ -121,15 +117,14 @@ is read the same and the text is left out.
 
 ## Training
 
-The models learn from rendered pages whose labels say what every symbol means in the score (pitch, alteration,
+The model learns from rendered pages whose labels say what every symbol means in the score (pitch, alteration,
 voice, onset, tie, tuplet, and the clef, key and meter of every staff): docs/ARCHITECTURE.md describes the format.
-The released models saw 31,800 pages rendered from 28,000 [PDMX](https://zenodo.org/records/15571083) scores in
-random engraving styles with scan effects; the renderer is not part of this repository. The refinement model is
-the base model fine-tuned with its second pass (`--refine 2`).
+The released model saw 31,800 pages rendered from 28,000 [PDMX](https://zenodo.org/records/15571083) scores in
+random engraving styles with scan effects; the renderer is not part of this repository.
 
 ```
 python -m copista_evidence.training.tokenize data/pages data/tok       # the detector over every page, tokens and targets
-python -m copista_evidence.train --data data/tok --out runs/evidence   # see train.py for the released models' recipes
+python -m copista_evidence.train --data data/tok --out runs/evidence   # see train.py for the released model's recipe
 ```
 
 ## Tests
@@ -144,13 +139,13 @@ The OMR-NED benchmark: each page's MusicXML is compared with the dataset's own b
 over a set and divided by the symbols of both scores. The result is the **error rate**, the share of the score read
 wrong: a page read entirely wrong scores 100 %.
 
-> **Every figure in the table and the charts is an error rate: lower is better ↓.** copista-28m is lowest on four
-> of the five sets and copista-2m on the Lieder scans; both are ahead of every other system on every set.
+> **Every figure in the table and the charts is an error rate: lower is better ↓.** copista-28m is lowest on every
+> set; both sizes are ahead of every other system on every set.
 
 | System | Figures | Quartets, scans ↓ | Quartets, renders ↓ | Lieder, scans ↓ | Lieder, renders ↓ | Polish piano, scans ↓ |
 |---|---|---|---|---|---|---|
-| **copista-28m** | KobiMusic | **8.6 %** | **5.6 %** | 17.6 % | **14.5 %** | **34.0 %** |
-| **copista-2m** | KobiMusic | 11.0 % | 8.7 % | **17.2 %** | 16.5 % | 38.3 % |
+| **copista-28m** | KobiMusic | **8.6 %** | **5.9 %** | **17.7 %** | **14.8 %** | **34.3 %** |
+| **copista-2m** | KobiMusic | 11.3 % | 8.9 % | 17.8 % | 16.1 % | 38.8 % |
 | Legato 2 (unreleased) | published | 31.6 % | 17.1 % | n/a ⁴ | 27.6 % | n/a |
 | Legato | published | 58.2 % | 32.9 % | n/a ⁴ | 39.5 % | n/a ¹ |
 | homr 0.7 | run by KobiMusic | piano only | piano only | 42.3 % | 38.0 % | 48.3 % |
@@ -159,13 +154,13 @@ wrong: a page read entirely wrong scores 100 %.
 
 Pages per set: quartets 252 scans and 252 renders, Lieder 55 scans and 64 renders, Polish 112. The Lieder scans are
 the dataset's 64 less 9 broken pages (0032-0035 and 0048-0052): their ground truth lacks the vocal staff the page
-shows, so every system loses most of them. copista-28m is the 28.7M-parameter detector with the two evidence models
-(2.03M and 2.68M parameters; 33.4M in all), copista-2m the 1.94M-parameter detector with the same evidence models
-(6.6M in all); the evidence models were trained on copista-28m's detector. "Published" figures are the ones in the
-Legato papers ([Legato](https://arxiv.org/abs/2506.19065), [Legato 2](https://arxiv.org/abs/2607.05769)). **Legato 2
-is not released**: its figures are from the paper and nobody can run it (hatched bars in the charts). The systems
-marked "run by KobiMusic" were run on the same pages with the same scorer. A page a system gives no output for
-counts as read entirely wrong, as on the IMSLP piano leaderboard.
+shows, so every system loses most of them. copista-28m is the 28.7M-parameter detector with the 2.03M-parameter
+evidence model (30.7M in all), copista-2m the 1.94M-parameter detector with the same evidence model (4.0M in all);
+the evidence model was trained on copista-28m's detector. "Published" figures are the ones in the Legato papers
+([Legato](https://arxiv.org/abs/2506.19065), [Legato 2](https://arxiv.org/abs/2607.05769)). **Legato 2 is not
+released**: its figures are from the paper and nobody can run it (hatched bars in the charts). The systems marked
+"run by KobiMusic" were run on the same pages with the same scorer. A page a system gives no output for counts as
+read entirely wrong, as on the IMSLP piano leaderboard.
 
 1. Legato's Polish figure (86.7 %) comes from a different pipeline and carries an asterisk where it is published; it
    is left out.
@@ -178,22 +173,22 @@ counts as read entirely wrong, as on the IMSLP piano leaderboard.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/compare-renders-dark.png">
-  <img alt="Error rate on rendered pages, lower is better; Legato 2 is not released. String quartets: copista-28m 5.6 %, copista-2m 8.7 %, Legato 2 17.1 %, Legato 32.9 %, Audiveris 33.2 %. Lieder: copista-28m 14.5 %, copista-2m 16.5 %, Legato 2 27.6 %, Audiveris 28.8 %, homr 38.0 %, Legato 39.5 %, Transcoda 42.0 %" src="docs/images/compare-renders-light.png" width="800">
+  <img alt="Error rate on rendered pages, lower is better; Legato 2 is not released. String quartets: copista-28m 5.9 %, copista-2m 8.9 %, Legato 2 17.1 %, Legato 32.9 %, Audiveris 33.2 %. Lieder: copista-28m 14.8 %, copista-2m 16.1 %, Legato 2 27.6 %, Audiveris 28.8 %, homr 38.0 %, Legato 39.5 %, Transcoda 42.0 %" src="docs/images/compare-renders-light.png" width="800">
 </picture>
 
-**copista-evidence alone.** Over the 735 pages of the five sets copista-28m reads 88.5 % of the score right (error
-rate 11.5 %), copista-2m 85.8 % (14.2 %). A known weakness: triplets a page does not mark (marked once, often pages
+**copista-evidence alone.** Over the 735 pages of the five sets copista-28m reads 88.3 % of the score right (error
+rate 11.7 %), copista-2m 85.5 % (14.5 %). A known weakness: triplets a page does not mark (marked once, often pages
 earlier), which it can read as plain notes.
 
-The figures are this code's run with `evidence-2m.pt` and `evidence-refine-3m.pt` and the default settings
-(`--detector 2m` for copista-2m), with page text from KobiMusic's OCR (Tesseract) in `<page>.texts.json`;
-`python -m copista_evidence.omrned <set dir>` reads a set. `docs/images/make_charts.py` draws the charts.
+The figures are this code's run with `evidence-2m.pt` and the default settings (`--detector 2m` for copista-2m),
+with page text from KobiMusic's OCR (Tesseract) in `<page>.texts.json`; `python -m copista_evidence.omrned <set
+dir>` reads a set. `docs/images/make_charts.py` draws the charts.
 
 ## Links
 
 | | |
 |---|---|
-| 🤗 [kobimusic/copista-evidence](https://huggingface.co/kobimusic/copista-evidence) | The evidence models' and the detectors' weights, and the model card |
+| 🤗 [kobimusic/copista-evidence](https://huggingface.co/kobimusic/copista-evidence) | The evidence model's and the detectors' weights, and the model card |
 | 🤗 [kobimusic on Hugging Face](https://huggingface.co/kobimusic) | KobiMusic's models |
 | [kobi.music](https://kobi.music) | KobiMusic, with the hosted reader |
 | [efficient-musicdiff](https://github.com/guang-yng/efficient-musicdiff) | The OMR-NED scorer |

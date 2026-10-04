@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "copista-evidence"
-version = "1.1.0"
+version = "1.1.1"
 description = "copista-evidence: KobiMusic's optical music recognition reader with a learned evidence model, page images of printed music to MusicXML"
 readme = "README.md"
 requires-python = ">=3.12"

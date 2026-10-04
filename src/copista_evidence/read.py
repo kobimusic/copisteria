@@ -23,35 +23,7 @@ ROOT = Path(__file__).resolve().parent
 OPTIONAL = ("heads.onset",)
 
 
-class Ensemble(torch.nn.Module):
-    """Several evidence models read as one: every head's logits averaged (the detector priors are the first
-    model's)."""
-
-    def __init__(self, models: list):
-        super().__init__()
-        self.models = torch.nn.ModuleList(models)
-        self.feat_dim = models[0].feat_dim
-        self.onset_trained = all(getattr(m, "onset_trained", True) for m in models)
-
-    def priors(self, b):
-        return self.models[0].priors(b)
-
-    def forward(self, b, need_attn=False):
-        outs = [m(b, need_attn=need_attn and i == 0) for i, m in enumerate(self.models)]
-        out = {k: sum(o[k].float() for o in outs) / len(outs) for k in outs[0] if not k.startswith("_")}
-        out["_evidence"] = {k: sum(o["_evidence"][k].float() for o in outs) / len(outs) for k in outs[0]["_evidence"]}
-        if need_attn:
-            out["_attn"] = outs[0]["_attn"]
-        return out
-
-
-def load_model(path, device="cpu"):
-    """An evidence model from its checkpoint; several (a list, or paths joined by "+") read as an Ensemble."""
-    if isinstance(path, (list, tuple)) or "+" in str(path):
-        paths = list(path) if isinstance(path, (list, tuple)) else str(path).split("+")
-        if len(paths) > 1:
-            return Ensemble([load_model(p, device) for p in paths]).eval()
-        path = paths[0]
+def load_model(path: str | Path, device="cpu") -> EvidenceNet:
     ck = torch.load(path, map_location=device, weights_only=False)
     m = EvidenceNet(**{k: v for k, v in ck["cfg"].items()}).to(device).eval()
     missing, unexpected = m.load_state_dict(ck["model"], strict=False)

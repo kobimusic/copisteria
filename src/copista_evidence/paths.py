@@ -5,9 +5,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 MODELS = REPO / "models"
-# the evidence models (kobimusic/copista-evidence), read as one ensemble: the base model and its refinement-pass
-# fine-tune (the base reads Lieder scans better, the refinement model quartets)
-EVIDENCE = [MODELS / "evidence-2m.pt", MODELS / "evidence-refine-3m.pt"]
+EVIDENCE = MODELS / "evidence-2m.pt"                          # the evidence model (kobimusic/copista-evidence)
 # the v7 symbol detectors (kobimusic/copista-evidence): size -> (weights, tag of the page caches they write)
 DETECTORS = {
     "28m": (MODELS / "small" / "v7_obj-recall-30m_best.pt", "v7"),         # copista-28m, the default
