@@ -3,8 +3,9 @@
     python docs/images/make_charts.py
 
 Every system against every other, per set, as the error rate OMR-NED (musicdiff, pooled over the set's pages; lower
-is better). copista-evidence's figures are this code's run, with the default detector (28.7M parameters) and with
-the small one (1.94M; about 4M parameters in all). Legato and Legato 2 are published figures (Legato 2 is not released: its bars are hatched); homr 0.7,
+is better). copista-28m and copista-2m are this code's run with its two detectors (28.7M and 1.94M parameters). The
+Lieder scans are 55 pages: the dataset's 64 less the 9 whose ground truth lacks the vocal staff (Legato and Legato 2
+publish 64-page figures only, so they are not in that panel). Legato and Legato 2 are published figures (Legato 2 is not released: its bars are hatched); homr 0.7,
 Audiveris 5.11 and Transcoda were run by KobiMusic with the same scorer.
 """
 from pathlib import Path
@@ -19,22 +20,22 @@ OUT = Path(__file__).resolve().parent
 SETS = [  # key, name, pages
     ("sq_scan", "String quartets, scans", 252),
     ("sq_render", "String quartets, renders", 252),
-    ("lieder_scan", "Lieder, scans", 64),
+    ("lieder_scan", "Lieder, scans", 55),
     ("lieder_render", "Lieder, renders", 64),
     ("polish", "Polish piano scores, scans", 112),
 ]
 
 # system -> (kind, OMR-NED per set in SETS order; None = no figure)
 SYSTEMS = {
-    "copista-evidence": ("evidence", [8.82, 6.00, 29.78, 17.22, 34.06]),
-    "copista-evidence small": ("small", [11.49, 9.11, 29.19, 18.08, 38.82]),
-    "Legato 2 (unreleased)": ("unreleased", [31.6, 17.1, 43.6, 27.6, None]),
-    "Legato": ("published", [58.2, 32.9, 44.9, 39.5, None]),
-    "homr 0.7": ("run", [None, None, 49.1, 38.0, 48.3]),
-    "Audiveris 5.11": ("run", [66.9, 33.2, 58.0, 28.8, 62.6]),
-    "Transcoda": ("run", [None, None, 53.6, 42.0, 55.1]),
+    "copista-28m": ("evidence", [8.82, 6.00, 19.37, 17.22, 34.06]),
+    "copista-2m": ("small", [11.49, 9.11, 19.08, 18.08, 38.82]),
+    "Legato 2 (unreleased)": ("unreleased", [31.6, 17.1, None, 27.6, None]),
+    "Legato": ("published", [58.2, 32.9, None, 39.5, None]),
+    "homr 0.7": ("run", [None, None, 42.3, 38.0, 48.3]),
+    "Audiveris 5.11": ("run", [66.9, 33.2, 51.8, 28.8, 62.6]),
+    "Transcoda": ("run", [None, None, 48.4, 42.0, 55.1]),
 }
-LEGEND = [("evidence", "copista-evidence"), ("small", "copista-evidence, small detector (4M in all)"), ("published", "published figure"),
+LEGEND = [("evidence", "copista-28m"), ("small", "copista-2m"), ("published", "published figure"),
           ("unreleased", "published figure, system not released"), ("run", "run by KobiMusic, same scorer")]
 
 THEMES = {
@@ -68,12 +69,12 @@ def panels(theme, keys, title, out):
         for y, (system, ned, kind) in enumerate(bars):
             ax.barh(y, ned, 0.72, **bar_style(t, kind))
             ax.text(ned + 0.8, y, f"{ned:.1f} %", va="center", fontsize=9.5, color=t["text"],
-                    fontweight="bold" if system == "copista-evidence" else "normal")
+                    fontweight="bold" if system.startswith("copista") else "normal")
         ax.set_ylim(len(bars) - 0.4, -0.6)  # lowest error on top
         ax.set_yticks(range(len(bars)))
         ax.set_yticklabels([b[0] for b in bars], color=t["text"])
         for label, b in zip(ax.get_yticklabels(), bars):
-            if b[0] == "copista-evidence":
+            if b[0].startswith("copista"):
                 label.set_fontweight("bold")
         ax.set_title(f"{name}  ·  {pages} pages", loc="left", color=t["text"], fontsize=11, fontweight="bold",
                      pad=4)
@@ -103,7 +104,7 @@ def panels(theme, keys, title, out):
 
 if __name__ == "__main__":
     for theme in THEMES:
-        panels(theme, ["sq_scan", "lieder_scan", "polish"], "Scanned pages: copista-evidence against other OMR systems",
+        panels(theme, ["sq_scan", "lieder_scan", "polish"], "Scanned pages: copista-28m and copista-2m against other OMR systems",
                "compare-scans")
-        panels(theme, ["sq_render", "lieder_render"], "Rendered pages: copista-evidence against other OMR systems",
+        panels(theme, ["sq_render", "lieder_render"], "Rendered pages: copista-28m and copista-2m against other OMR systems",
                "compare-renders")
