@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+out/
+models/*.pt
+models/small/*.pt
