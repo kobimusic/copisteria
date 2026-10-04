@@ -17,6 +17,7 @@ import sys
 from pathlib import Path
 
 from . import read, view, write
+from .revise import read_revised
 
 from .paths import DETECTORS, EVIDENCE, REPO as ROOT, detector
 
@@ -106,8 +107,9 @@ def transcribe(png: Path, model, texts: list | None = None, device="cpu") -> str
     from PIL import Image
     dets, cands, feats = inputs(png, model)
     im = Image.open(png).convert("L")
-    rd = read.read(dets, im.width, im.height, model, device=device, attention=False, image=im, cands=cands, feats=feats)
-    return write.write(rd, texts=texts)
+    rd = read_revised(dets, im.width, im.height, model, device=device, attention=False, image=im, cands=cands,
+                      feats=feats)
+    return write.write(rd, texts=texts, image=im)
 
 
 def run_page(png: Path, model, out: Path, device="cpu") -> dict:
@@ -117,8 +119,8 @@ def run_page(png: Path, model, out: Path, device="cpu") -> dict:
     w, h = im.size
     tp = png.with_name(f"{png.stem}.texts.json")
     texts = json.loads(tp.read_text()) if tp.exists() else None
-    rd = read.read(dets, w, h, model, device=device, image=im, cands=cands, feats=feats)
-    xml = write.write(rd, texts=texts)
+    rd = read_revised(dets, w, h, model, device=device, image=im, cands=cands, feats=feats)
+    xml = write.write(rd, texts=texts, image=im)
     out.mkdir(parents=True, exist_ok=True)
     (out / f"{png.stem}.musicxml").write_text(xml)
     (out / f"{png.stem}.html").write_text(view.page_html(rd, png, xml, png.stem))
@@ -135,7 +137,8 @@ def main(argv=None):
     ap.add_argument("pages", nargs="*")
     ap.add_argument("--pdf")
     ap.add_argument("--range", default="1")
-    ap.add_argument("--model", default=str(EVIDENCE))
+    ap.add_argument("--model", default="+".join(str(p) for p in EVIDENCE),
+                    help="evidence model checkpoint(s); several joined by + read as an ensemble")
     ap.add_argument("--out", default="out")
     ap.add_argument("--device", default="cpu")
     ap.add_argument("--detector", choices=sorted(DETECTORS), help="the symbol detector: 28m (default) or 2m (or COPISTA_DETECTOR)")

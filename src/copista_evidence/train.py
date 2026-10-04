@@ -14,6 +14,20 @@ sampling weight of pages with tuplets):
       --steps 70000 --batch 24
   python -m copista_evidence.train --data data/tok --out runs/evidence --steps 25000 --batch 24 --lr 3e-4 \
       --warmup 200 --init runs/base/last.pt
+
+The refinement model (evidence-refine-3m.pt) is the released model with a 2-layer second pass that reads the first
+pass's conclusions (running duration sums per voice, collisions, cross-voice alignment, accidental glyphs at each
+note's height, the bar's meter), fine-tuned in three stages with pages holding two voices weighted 3x
+(COPISTA_MULTIVOICE_WEIGHT), the feedback growing from 29 features to 39 (zero-initialised: each stage starts out
+reading as the one before), the last with 35 % of windows showing no tuplet mark at all (COPISTA_TUP_DROPALL):
+
+  export COPISTA_MULTIVOICE_WEIGHT=3
+  python -m copista_evidence.train --data data/tok --out runs/refine1 --steps 20000 --batch 8 --accum 4 --lr 3e-4 \
+      --warmup 200 --init runs/evidence/last.pt --refine 2 --fb 29
+  python -m copista_evidence.train --data data/tok --out runs/refine2 --steps 16000 --batch 8 --accum 4 --lr 2e-4 \
+      --warmup 200 --init runs/refine1/last.pt --refine 2 --fb 39
+  COPISTA_TUP_DROPALL=0.35 python -m copista_evidence.train --data data/tok --out runs/refine --steps 12000 \
+      --batch 8 --accum 4 --lr 1.5e-4 --warmup 200 --init runs/refine2/last.pt --refine 2 --fb 39
 """
 from __future__ import annotations
 
@@ -45,6 +59,10 @@ USE_FEATS = _env("COPISTA_FEATS", "1") == "1"          # the detector's image fe
 USE_CANDS = _env("COPISTA_CANDS", "1") == "1"          # the detector's sub-threshold candidates, likewise
 TUPLET_UNMARK = float(_env("COPISTA_TUP_UNMARK", "0.5"))   # windows whose tuplets are marked once only
 TUPLET_WEIGHT = float(_env("COPISTA_TUP_WEIGHT", "3.0"))   # sampling weight of pages with tuplets
+TUPLET_DROPALL = float(_env("COPISTA_TUP_DROPALL", "0"))    # windows with no tuplet mark at all
+# (engravers mark a run of tuplets once, often pages earlier: then the page shows none, and the bar's arithmetic,
+# the beaming and the spacing are what is left to read them by)
+MULTIVOICE_WEIGHT = float(_env("COPISTA_MULTIVOICE_WEIGHT", "1.0"))   # sampling weight of pages with two voices
 LOSS_W = {"real": 1.0, "cls": 1.0, "dots": 1.0, "pos": 0.5, "alter": 1.0, "voice": 0.5, "chord": 0.5, "tie": 0.5,
           "tup": 0.5, "grace": 0.3, "key": 1.0, "time": 1.0, "clef": 1.0, "onset_beat": 0.3, "onset_frac": 0.3}
 
@@ -106,7 +124,9 @@ def window(pg: dict, rng: random.Random, s0: int | None = None, w: int | None = 
     if len(sel) > MAX_TOK:
         a = rng.randrange(0, len(sel) - MAX_TOK + 1)
         sel = sel[a:a + MAX_TOK]
-    if rng.random() < TUPLET_UNMARK:
+    if TUPLET_DROPALL and rng.random() < TUPLET_DROPALL:
+        sel = sel[~np.isin(pg["fam"][sel], UNPRINTED)]
+    elif rng.random() < TUPLET_UNMARK:
         # engravers print a tuplet's number once and leave the rest of the run unmarked: keep the first tuplet
         # mark of each staff row in the window, drop the others (the targets keep the tuplets)
         fam = pg["fam"][sel]
@@ -263,7 +283,8 @@ class Batches(torch.utils.data.IterableDataset):
     def __init__(self, pages: list[dict], batch: int, seed: int):
         self.pages, self.batch, self.seed = [pg for pg in pages if pg["n_sys"] > 0], batch, seed
         # pages with tuplets are drawn three times as often (they are few, and their rhythm is the hard part)
-        self.weights = [TUPLET_WEIGHT if ((pg["t_tup"] > 0) & (pg["t_tup"] != IGNORE)).any() else 1.0
+        self.weights = [(TUPLET_WEIGHT if ((pg["t_tup"] > 0) & (pg["t_tup"] != IGNORE)).any() else 1.0) *
+                        (MULTIVOICE_WEIGHT if ((pg["t_voice"] > 0) & (pg["t_voice"] != IGNORE)).any() else 1.0)
                         for pg in self.pages]
 
     def __iter__(self):
@@ -285,6 +306,18 @@ def loader(pages, batch, seed, workers=4):
 
 # ------------------------------------------------------------------------------------------------ loss
 def losses(out: dict, b: dict) -> dict:
+    """Per head; with a refinement pass, the first pass's too (keys "p1_<head>", weighted half in the total)."""
+    L = _losses(out, b)
+    if "_pass1" in out:
+        L.update({"p1_" + k: v for k, v in _losses(out["_pass1"], b).items()})
+    return L
+
+
+def total_loss(Ls: dict):
+    return sum((0.5 if k.startswith("p1_") else 1.0) * LOSS_W[k.removeprefix("p1_")] * v for k, v in Ls.items())
+
+
+def _losses(out: dict, b: dict) -> dict:
     L = {}
     for k in ("real", "chord", "tie"):
         t = b["t_" + k].long()
@@ -369,6 +402,8 @@ def main():
     ap.add_argument("--layers", type=int, default=6)
     ap.add_argument("--heads", type=int, default=8)
     ap.add_argument("--accum", type=int, default=1, help="micro-batches per optimiser step (batch = batch x accum)")
+    ap.add_argument("--refine", type=int, default=0, help="layers of the refinement pass (0: none)")
+    ap.add_argument("--fb", type=int, default=17, help="feedback features the refinement pass reads (17, 29 or 39)")
     ap.add_argument("--warmup", type=int, default=1000)
     a = ap.parse_args()
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
@@ -376,16 +411,27 @@ def main():
     train, val = load_pages(a.data, a.limit)
     print(f"pages: train {len(train)} val {len(val)}", flush=True)
     feat_dim = next((pg["feat"].shape[1] for pg in train if "feat" in pg), 0)
-    model = EvidenceNet(d=a.d, layers=a.layers, heads=a.heads, ff=4 * a.d, feat_dim=feat_dim).to(device)
+    model = EvidenceNet(d=a.d, layers=a.layers, heads=a.heads, ff=4 * a.d, feat_dim=feat_dim, refine=a.refine,
+                        fb=a.fb).to(device)
     print("image features", feat_dim, "candidates", USE_CANDS, flush=True)
     print("params", n_params(model), flush=True)
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=0.01, betas=(0.9, 0.98))
     step0 = 0
     if a.init:
-        missing, unexpected = model.load_state_dict(torch.load(a.init, map_location=device, weights_only=False)["model"],
-                                                    strict=False)
-        if unexpected or [k for k in missing if not k.startswith(("feat_", "cand_"))]:
+        sd = torch.load(a.init, map_location=device, weights_only=False)["model"]
+        w = sd.get("fb.0.weight")
+        if w is not None and getattr(model, "refine", 0) and w.shape != model.fb[0].weight.shape:
+            # more feedback features than the model it starts from: theirs keep their weights, the new ones
+            # start at zero (the model starts out reading as the old one did)
+            nw = torch.zeros_like(model.fb[0].weight)
+            nw[:, :w.shape[1]] = w
+            sd["fb.0.weight"] = nw
+            print(f"feedback features {w.shape[1]} -> {nw.shape[1]} (new ones zero)", flush=True)
+        missing, unexpected = model.load_state_dict(sd, strict=False)
+        if unexpected or [k for k in missing if not k.startswith(("feat_", "cand_", "fb.", "rblocks.", "rnorm."))]:
             raise RuntimeError(f"--init does not fit: missing {missing}, unexpected {unexpected}")
+        if any(k.startswith("rnorm.") for k in missing):
+            model.init_refine_from_base()       # the second pass starts as an identity on the first one's output
         print("initialised from", a.init, "new:", missing, flush=True)
     if a.resume and (out / "last.pt").exists():
         ck = torch.load(out / "last.pt", map_location=device, weights_only=False)
@@ -412,7 +458,7 @@ def main():
             with torch.autocast("cuda", dtype=torch.bfloat16, enabled=device.type == "cuda"):
                 o = model(b)
             Ls = losses(o, b)
-            loss = sum(LOSS_W[k] * v for k, v in Ls.items())
+            loss = total_loss(Ls)
             (loss / a.accum).backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         opt.step()

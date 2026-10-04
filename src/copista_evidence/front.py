@@ -35,6 +35,7 @@ GRP_MIN_P = 0.3
 ALIGN_TOL_SP = 2.0            # bar lines this close (in staff spaces) may be partners
 ALIGN_FRAC = 0.7
 ASSIGN_MAX_SP = 10.0          # farther than this from every staff: not part of the score
+EMPTY_BAR_MAX_SP = 4.0        # an interior stretch narrower than this with no note or rest is a bar-line group
 
 
 Box = tuple[float, float, float, float]
@@ -115,6 +116,7 @@ class Layout:
     sp: float
     width: float
     height: float
+    ink: bool = False                # staves and bars from the page's ink (else from the measure boxes)
 
     def bar_box(self, staff: int, bar: int) -> Box:
         return self.syms[self.staves[staff].bars[bar]].box
@@ -345,6 +347,22 @@ def ink_mask(gray):
     return gray < paper - 0.35 * max(1.0, paper - ink)
 
 
+def clean_page(gray):
+    """The page as black ink on white for the staff-line finder: the paper's large-scale shading (a vignette, a
+    shadow, a tinted or textured sheet) divided out, then the page-relative ink threshold (ink_mask). The line
+    finder's own threshold takes anything short of pure white for ink, which on a scan's paper is everything."""
+    import numpy as np
+    from scipy import ndimage
+    g = gray.astype(np.float32)
+    k = max(15, int(min(g.shape) / 30)) | 1
+    small = g[::4, ::4]
+    bg = ndimage.grey_closing(small, size=(max(3, k // 4), max(3, k // 4)))      # the paper, ink filled in
+    bg = ndimage.uniform_filter(bg, size=max(3, k // 4))
+    bg = np.kron(bg, np.ones((4, 4), np.float32))[:g.shape[0], :g.shape[1]]
+    flat = np.clip(g / np.maximum(bg, 1.0) * 255.0, 0, 255)
+    return np.where(ink_mask(flat), 0, 255).astype(np.uint8)
+
+
 def _ink_run(mask, x: float, y0: float, y1: float, reach: int = 2) -> float:
     """Share of the rows between y0 and y1 that hold ink within ``reach`` px of column x."""
     H, W = mask.shape
@@ -541,13 +559,32 @@ def _reconcile(syms: list[Sym], staves: list[Staff], sy: System, ref: int) -> No
 
 # ------------------------------------------------------------------------------------------------- ink path
 def _ink_staves(gray, syms: list[Sym]) -> list[Staff] | None:
-    """Staves from the staff lines in the ink (vision.page.staves: five long thin runs at one spacing), each
+    """Staves from the staff lines in the ink: the page as it is, and the page cleaned (clean_page) -- a scan's
+    tinted, shaded or grainy paper reads as ink to the line finder -- whichever set the detector's confident
+    symbols confirm better (the raw page unless the cleaned one is clearly better)."""
+    staves = _ink_staves_from(gray, gray, syms)
+    other = _ink_staves_from(clean_page(gray), gray, syms)
+    if other is not None and (staves is None or _staves_score(other, syms) > 1.02 * _staves_score(staves, syms)):
+        staves = other
+    return staves
+
+
+def _staves_score(staves: list[Staff], syms: list[Sym]) -> float:
+    """How well the detector confirms a set of staves: the confident measure boxes and notes that sit on one of
+    them (a staff the other set lacks shows here as the symbols it holds)."""
+    held = [s for s in syms if (s.fam == "measure" or s.fam in ("note", "rest")) and s.p >= 0.5]
+    return sum(1 for b in held if any(st.y0 - 0.5 * st.sp <= b.cy <= st.y1 + 0.5 * st.sp and
+                                      st.x0 - st.sp <= b.cx <= st.x1 + st.sp for st in staves))
+
+
+def _ink_staves_from(page, gray, syms: list[Sym]) -> list[Staff] | None:
+    """Staves from the staff lines in ``page`` (vision.page.staves: five long thin runs at one spacing), each
     holding the detected measure boxes that sit on it. A row of measure boxes no ink staff explains (a staff the
     line finder missed) is a staff of its own, as on the box path."""
     from PIL import Image
 
     from .vision.page.staves import find_staves
-    m = find_staves(Image.fromarray(gray))
+    m = find_staves(Image.fromarray(page))
     if not m.staves or m.spacing <= 0:
         return None
     # the measure boxes' own staff space checks the line finder (a skewed or curved page gives it false staves)
@@ -575,6 +612,12 @@ def _ink_staves(gray, syms: list[Sym]) -> list[Staff] | None:
     for st in _rows(rest):
         if not any(abs(st.mid - o.mid) < 6 * o.sp for o in staves):
             staves.append(st)
+    # a "staff" with no measure box and no note on it is lines that are not one (a ruled line, a border, a scratch)
+    notes = [s for s in syms if s.fam in ("note", "rest") and s.p >= 0.5]
+    staves = [st for st in staves if st.bars or
+              sum(1 for n in notes if st.y0 - st.sp <= n.cy <= st.y1 + st.sp and st.x0 <= n.cx <= st.x1) >= 2]
+    if not staves:
+        return None
     for st in staves:
         st.bars.sort(key=lambda i: syms[i].cx)
     staves.sort(key=lambda st: st.mid)
@@ -627,7 +670,11 @@ def _segment(syms: list[Sym], staves: list[Staff], sy: System, gray) -> None:
     for cl in clusters:
         lines = [c for c in cl if c[2] == "line"]
         x = sorted(c[0] for c in (lines or cl))[len(lines or cl) // 2]
-        ink = [_ink_run(gray, x, st.y0 + 1, st.y1 - 1, reach=2) >= 0.9 for st in S]
+        # the stroke anywhere across the candidates' own span: a double bar line's centre is the gap between its
+        # two strokes
+        span = [c[0] for c in (lines or cl)]
+        xr = range(int(min(span) - 0.5 * sp), int(max(span) + 0.5 * sp) + 1, 2)
+        ink = [max(_ink_run(gray, xx, st.y0 + 1, st.y1 - 1, reach=2) for xx in xr) >= 0.9 for st in S]
         with_line = {c[1] for c in lines}
         firm = max((c[3] for c in lines), default=0.0)
         if n >= 2:
@@ -640,6 +687,7 @@ def _segment(syms: list[Sym], staves: list[Staff], sy: System, gray) -> None:
             ok = (ink[0] and (firm >= 0.5 or len(edges) >= 2)) or firm >= 0.85
         if ok:
             cuts.append(x)
+    cuts = sorted(cuts + _FORCED.get(sy.staves[0], []))     # bar lines the readings showed were missed (revise.py)
     xs = [left, *cuts, right]
     # no bar is narrower than MEASURE_MIN_W staff spaces: a sliver (a double bar line's second stroke, the staff
     # lines running on past the last bar line) joins its neighbour
@@ -661,6 +709,15 @@ def _segment(syms: list[Sym], staves: list[Staff], sy: System, gray) -> None:
         del xs[-2]
     while len(xs) > 2 and empty(xs[0], xs[1]):
         del xs[1]
+    # inside the system, a narrow stretch with nothing in it is a bar-line group (a repeat sign, a thick double
+    # bar), not a bar: its two cuts become one, in its middle
+    k = 1
+    while k < len(xs) - 2:
+        a, b = xs[k], xs[k + 1]
+        if b - a < EMPTY_BAR_MAX_SP * sp and empty(a, b):
+            xs[k:k + 2] = [(a + b) / 2]
+        else:
+            k += 1
     for st in S:
         old = [syms[i] for i in st.bars]
         new = []
@@ -732,17 +789,26 @@ def _assign(syms: list[Sym], staves: list[Staff], only: list[Sym] | None = None)
 CAND_SKIP = ("measure", "barLine")         # structure is decided before candidates join
 
 
-def build(dets: list[dict], width: float, height: float, image=None, cands: list[dict] | None = None) -> Layout:
+_FORCED: dict = {}            # system (its top staff's index) -> x of bar lines to add (build's ``cuts``)
+
+
+def build(dets: list[dict], width: float, height: float, image=None, cands: list[dict] | None = None,
+          cuts: dict | None = None) -> Layout:
     """``image``: the page (PIL image or grey array); with it, the ink between staves decides the systems.
     ``cands``: the detector's sub-threshold candidates; once the structure stands, the ones no symbol of their
-    family already covers join as symbols flagged ``cand`` (the model decides whether they are real)."""
+    family already covers join as symbols flagged ``cand`` (the model decides whether they are real).
+    ``cuts``: bar lines to add, per system (its top staff's index) -- the ones a first reading showed were
+    missed (revise.py)."""
     import numpy as np
+    _FORCED.clear()
+    _FORCED.update(cuts or {})
     gray = None
     if image is not None:
         gray = np.asarray(image.convert("L") if hasattr(image, "convert") else image)
     syms = merge(dets)
     staves = _ink_staves(gray, syms) if gray is not None else None
     mask = ink_mask(gray) if gray is not None else None
+    ink_path = bool(staves)
     if staves:
         systems = _systems(syms, staves, mask, ink=True)
     else:
@@ -762,4 +828,4 @@ def build(dets: list[dict], width: float, height: float, image=None, cands: list
         _assign(syms, staves, only=new)
     sps = sorted(st.sp for st in staves)
     sp = sps[len(sps) // 2] if sps else 10.0
-    return Layout(syms=syms, staves=staves, systems=systems, sp=sp, width=width, height=height)
+    return Layout(syms=syms, staves=staves, systems=systems, sp=sp, width=width, height=height, ink=ink_path)

@@ -5,7 +5,7 @@ A set dir holds index.json ({"ids": [...]}), images/<id>.png and, optionally, th
 skipped (resumable); a page that fails gets no file (it then scores as read entirely wrong) and its error goes to
 run.json. The MusicXML is scored against the set's ground truth with musicdiff (see README, Benchmark).
 
-    python -m copista_evidence.omrned <set dir> --name evidence [--model models/evidence-2m.pt] [--jobs 6]
+    python -m copista_evidence.omrned <set dir> --name evidence [--model models/evidence-2m.pt+models/evidence-refine-3m.pt] [--jobs 6]
     python -m copista_evidence.omrned <set dir> --name copista-2m --detector 2m
 """
 from __future__ import annotations
@@ -48,7 +48,8 @@ def _one(job):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("set_dir")
-    ap.add_argument("--model", default=str(EVIDENCE))
+    ap.add_argument("--model", default="+".join(str(p) for p in EVIDENCE),
+                    help="evidence model checkpoint(s); several joined by + read as an ensemble")
     ap.add_argument("--name", required=True)
     ap.add_argument("--jobs", type=int, default=6)
     ap.add_argument("--limit", type=int)

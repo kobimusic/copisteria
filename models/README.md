@@ -9,7 +9,8 @@ The weights are not in the repository. Put them here:
 | File | Where it comes from |
 |---|---|
 | `evidence-2m.pt` | The evidence model (2.03M parameters), both sizes |
+| `evidence-refine-3m.pt` | The evidence model with its refinement pass (2.68M parameters), read together with `evidence-2m.pt` as one ensemble, both sizes |
 | `small/v7_obj-recall-30m_best.pt` | copista-28m's symbol detector (28.7M parameters), the default |
 | `small/v7_obj-recall_best.pt` | copista-2m's symbol detector (1.94M parameters, the same 270 classes), `--detector 2m` |
 
-Both are in the Hugging Face repo `kobimusic/copista-evidence`.
+All four are in the Hugging Face repo `kobimusic/copista-evidence`.

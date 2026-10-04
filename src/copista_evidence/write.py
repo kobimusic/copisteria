@@ -268,18 +268,7 @@ def _events(rd: Reading, staff: int, bar: int, clef: str, key: int, texts) -> tu
             marks["endings"].append((c[len("ending_"):], s.box))
         elif f == "clef" and s.cx > first_x:
             dirs.append((s.cx, "clef", _clef_of_cls(c), None))
-    # printed accidentals (display only; the pitch is the model's alteration): the glyph just left of a note head
-    for s in syms:
-        c = _cls(rd, s.i)
-        if _fam(c) != "accid" or c[len("accid_"):] not in ACCID_XML:
-            continue
-        cands = [(e, ls) for e in events for ls in [L.syms[e.si]] if e.kind == "note" and
-                 0 < ls.cx - s.cx < 3 * sp and abs(ls.cy - s.cy) < 0.75 * sp]
-        if cands:
-            e, _ = min(cands, key=lambda t: t[1].cx - s.cx)
-            # the glyph is shown only where it says what the alteration is (a flat on a raised note says nothing)
-            if ACCID_ALTER.get(c[len("accid_"):]) == e.alter:
-                e.accidental = ACCID_XML[c[len("accid_"):]]
+    _decode_alters(rd, syms, events, sp)
     # marks on notes: the nearest note in x (within 1.5 staff spaces)
     for x, kind, c, y in [d for d in dirs if d[1] == "mark"]:
         cands = [e for e in events if e.kind == "note" and abs(e.x - x) < 1.5 * sp]
@@ -288,6 +277,59 @@ def _events(rd: Reading, staff: int, bar: int, clef: str, key: int, texts) -> tu
             best.marks.append(c)
     dirs = [d for d in dirs if d[1] != "mark"]
     return events, dirs, marks
+
+
+ALTER_KEEP_P = 0.97              # a model this sure of another alteration keeps it against the notation's rule
+# where an accidental glyph's box sits against the head it belongs to (staff spaces, + is down): a flat's bowl, at
+# the head's height, is the low part of a glyph that reaches up; sharps and naturals are centred on it
+ACC_ANCHOR = {"flat": 0.46, "dflat": 0.46, "natflat": 0.46}
+
+
+def _decode_alters(rd: Reading, syms: list, events: list[Event], sp: float) -> None:
+    """The bar's sounding alterations as notation defines them: a printed accidental sets its head's alteration
+    and holds for the later heads on the same line (step and octave) to the bar's end; a head with neither takes
+    the model's reading (the key's, or what the model saw that the glyphs do not show), and a model that is sure
+    (ALTER_KEEP_P) of another alteration than the rule's keeps its own. Each glyph goes to one head, the nearest
+    at its anchor's height to its right (one-to-one, the closest pairs first); it is printed where it says what
+    the alteration is."""
+    L = rd.layout
+    heads = [e for e in events if e.kind == "note" and not e.unpitched]
+    pairs = []
+    for s in syms:
+        c = _cls(rd, s.i)
+        kind = c[len("accid_"):]
+        if _fam(c) != "accid" or kind not in ACCID_ALTER:
+            continue
+        ay = s.cy + ACC_ANCHOR.get(kind, 0.0) * sp
+        for e in heads:
+            h = L.syms[e.si]
+            gap = h.box[0] - s.box[2]
+            dy = abs(h.cy - ay)
+            if -0.5 * sp < gap < 5 * sp and dy < 0.4 * sp:
+                pairs.append((3 * dy / sp + max(0.0, gap) / sp, s.i, e.si, ACCID_ALTER[kind], kind))
+    pairs.sort()
+    glyph: dict[int, tuple[int, str]] = {}
+    used = set()
+    for _, gi, ei, alt, kind in pairs:
+        if gi in used or ei in glyph:
+            continue
+        used.add(gi)
+        glyph[ei] = (alt, kind)
+    held: dict[tuple, int] = {}
+    for e in sorted(heads, key=lambda e: L.syms[e.si].cx):
+        line = (e.step, e.octave)
+        kind = None
+        if e.si in glyph:
+            rule, kind = glyph[e.si]
+            held[line] = rule
+        elif line in held:
+            rule = held[line]
+        else:
+            continue
+        if rule != e.alter and rd.tok[e.si]["alter"].get("p", 0.0) < ALTER_KEEP_P:
+            e.alter = rule
+        if kind is not None and ACCID_ALTER[kind] == e.alter and kind in ACCID_XML:
+            e.accidental = ACCID_XML[kind]
 
 
 def _voices(events: list[Event], sp: float, single_staff_part: bool = True,
@@ -364,7 +406,10 @@ def _voices(events: list[Event], sp: float, single_staff_part: bool = True,
     return vs
 
 
-def _attach(rd: Reading, built: list, plans: list, texts: list) -> None:
+BEAM_REACH = 0.7                # how far past a beam box's ends a stem may stand (staff spaces)
+
+
+def _attach(rd: Reading, built: list, plans: list, texts: list, mask=None) -> None:
     """Page-wide marks attached to the notes they belong to, by position: beams (the notes under a beam box,
     levels from their types), slurs (the notes nearest a curve's two ends, unless the model read that curve's
     notes as tied; a curve running off the end of its system continues to the next one), arpeggios, octave
@@ -387,11 +432,30 @@ def _attach(rd: Reading, built: list, plans: list, texts: list) -> None:
 
     # beams: every beamed-note root under the box, in the box's voice; levels from the note types
     claimed: set = set()
+    part_of = {pos: pi for pi, pl in enumerate(plans) for pos in pl.staves}    # staff position -> its part
+
+    def under_beam(b):
+        sp = L.staves[b.staff].sp
+        # the beam's own staff, and a neighbour in its system whose notes' stems reach it (a beam between the two
+        # staves of a keyboard part joins notes of both)
+        st_b = L.staves[b.staff]
+        near_staves = [b.staff] + [k for k in (b.staff - 1, b.staff + 1) if 0 <= k < len(L.staves) and
+                                   L.staves[k].system == st_b.system and
+                                   part_of.get(L.staves[k].pos, -1) == part_of.get(st_b.pos, -2)]
+
+        def reach(e):
+            # a beam meets its notes at their stems: a head under the beam has its stem up, at its right side; a
+            # head over it has it down, at its left
+            h = sym[e.si].box
+            x = h[2] if b.cy < sym[e.si].cy else h[0]
+            return b.box[0] - BEAM_REACH * sp <= x <= b.box[2] + BEAM_REACH * sp
+        return [e for k in near_staves for e in notes_on.get(k, []) if not e.chord and e.grace == "none"
+                and id(e) not in claimed and reach(e)
+                and abs(sym[e.si].cy - b.cy) <= (8 if k == b.staff else 4.5) * sp and e.typ in BEAM_LEVEL]
+
     for b in sorted((s for s in spanners if _cls(rd, s.i) == "beam"), key=lambda s: s.box[0]):
         sp = L.staves[b.staff].sp
-        under = [e for e in notes_on.get(b.staff, []) if not e.chord and e.grace == "none" and id(e) not in claimed
-                 and b.box[0] - sp <= sym[e.si].cx <= b.box[2] + sp and abs(sym[e.si].cy - b.cy) <= 8 * sp
-                 and e.typ in BEAM_LEVEL]
+        under = under_beam(b)
         if len(under) < 2:
             continue
         voice = max({e.voice for e in under}, key=lambda v: sum(e.voice == v for e in under))
@@ -499,7 +563,50 @@ def _attach(rd: Reading, built: list, plans: list, texts: list) -> None:
         if best is not None:
             k = best[1]
             e = min(notes_on[k], key=lambda e: abs(sym[e.si].cx - x0))
-            e.pre.append(("words", str(t["text"]).strip(), cy > L.staves[k].mid))
+            below = cy > L.staves[k].mid
+            end = _dashes_after(mask, t["xyxy"], L.staves[k].sp) if mask is not None else None
+            if end is None:
+                e.pre.append(("words", str(t["text"]).strip(), below))
+                continue
+            # "cresc. - - - -": the word with its dashes, which stop at the last note they reach
+            e.pre.append(("words_dashes", str(t["text"]).strip(), below))
+            reached = [n for n in notes_on[k] if sym[n.si].cx <= end]
+            (max(reached, key=lambda n: sym[n.si].cx) if reached else e).post.append(("dashes_stop", None, below))
+
+
+def _dashes_after(mask, box, sp: float) -> float | None:
+    """x where a run of dashes after a word ends ("cresc. - - - -"), or None: at least two short, thin
+    horizontal strokes at the word's height, one after another (a stem or a bar line crossing them is passed
+    over), the first within 3 staff spaces of the word."""
+    x0, y0, x1, y1 = box
+    h = max(1.0, y1 - y0)
+    H, W = mask.shape
+    a, b = max(0, int(y0 + 0.2 * h)), min(H, int(y1 - 0.1 * h))
+    xa, xb = int(x1), min(W, int(x1 + 80 * sp))
+    if b - a < 2 or xb - xa < 4:
+        return None
+    band = mask[a:b, xa:xb]
+    on = band.any(axis=0)
+    segs, start = [], None
+    for i, v in enumerate(on):
+        if v and start is None:
+            start = i
+        if start is not None and (not v or i == len(on) - 1):
+            segs.append((start, i + 1 if v else i))
+            start = None
+    dashes, last = [], 0
+    for s0, s1 in segs:
+        w = s1 - s0
+        if w < 0.25 * sp:                       # a stem or a bar line through the run
+            continue
+        if s0 - last > 3 * sp:
+            break
+        if w <= 2.0 * sp and band[:, s0:s1].any(axis=1).sum() <= max(2, 0.4 * sp):
+            dashes.append((s0, s1))
+            last = s1
+        else:
+            break
+    return float(xa + dashes[-1][1]) if len(dashes) >= 2 else None
 
 
 def _next_system_first(L, notes_on, staff: int):
@@ -667,7 +774,8 @@ def _sub(parent, tag, text=None, **attrs):
     return el
 
 
-def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None) -> str:
+def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None, image=None) -> str:
+    """``image``: the page (PIL image or grey array), for what is read off the ink here (dashes after words)."""
     L = rd.layout
     plans = _plan_parts(rd)
     root = ET.Element("score-partwise", version="4.0")
@@ -777,7 +885,13 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                         partner.tie_stop = True
                         partner.alter = e.alter
 
-    _attach(rd, built, plans, texts)
+    mask = None
+    if image is not None:
+        import numpy as np
+
+        from .front import ink_mask
+        mask = ink_mask(np.asarray(image.convert("L") if hasattr(image, "convert") else image))
+    _attach(rd, built, plans, texts, mask)
 
     all_durs |= {_time_len(m["staves"][0]["state"]["time"]) for ms in built for m in ms
                  if m["staves"] and m["staves"][0]}
@@ -870,8 +984,30 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                         pos_q = Fraction(0)
                     voice_no = v + 4 * (staff_no - 1)
                     dirs = sorted(st["dirs"]) if v_i == 0 else []
+                    # a chord member's directions go with its chord's root: written between the root and a
+                    # <chord/> note they would break the chord (the member read as the next note, time shifted)
+                    # (pre-directions before the root, post-directions after the chord's last note)
+                    c_root, c_last, c_members = None, None, []
+                    for e in evs + [None]:
+                        if e is not None and e.kind == "note" and e.chord and c_root is not None:
+                            c_root.pre += e.pre
+                            e.pre = []
+                            c_members.append(e)
+                            c_last = e
+                            continue
+                        if c_last is not None:                # the chord just closed: its posts go after its last note
+                            posts = c_root.post + [d for m in c_members for d in m.post]
+                            c_root.post = []
+                            for m in c_members:
+                                m.post = []
+                            c_last.post = posts
+                        c_root, c_last, c_members = (e, None, []) if e is not None and e.kind in ("note", "rest") \
+                            else (None, None, [])
+                        if e is None:
+                            break
                     for e in evs:
-                        while dirs and dirs[0][0] <= e.x + 0.5 * L.staves[st["staff"]].sp:
+                        while dirs and not (e.kind == "note" and e.chord) and \
+                                dirs[0][0] <= e.x + 0.5 * L.staves[st["staff"]].sp:
                             _direction(meas, dirs.pop(0), staff_no if len(pl.staves) > 1 else None)
                         dur = bar_len if e.kind == "mrest" else e.dur
                         if e.kind == "gap":
@@ -948,6 +1084,11 @@ def _direction(meas, d, staff_no):
         _sub(dt, kind)
     elif kind == "words":
         _sub(dt, "words", payload)
+    elif kind == "words_dashes":
+        _sub(dt, "words", payload)
+        _sub(_sub(de, "direction-type"), "dashes", type="start", number=1)
+    elif kind == "dashes_stop":
+        _sub(dt, "dashes", type="stop", number=1)
     if staff_no:
         _sub(de, "staff", staff_no)
 
