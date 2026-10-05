@@ -5,7 +5,7 @@
 
 A page's detections are taken from a cached file (``<stem>.dets_<tag>_<imgsz>.json`` beside the page, tag v7 for the
 default detector) when one exists, else the detector runs here at the size the page's staff space asks for, and is
-cached the same way. ``--detector 2m`` (or COPISTERIA_DETECTOR=2m) reads as copisteria-2m, with the 1.94M-parameter detector. Page texts
+cached the same way. ``--detector 2m`` (or COPISTERIA_DETECTOR=2m) reads as copista-2m, with the 1.94M-parameter detector. Page texts
 (``<stem>.texts.json`` beside the page: OCR text boxes, see docs/ARCHITECTURE.md) are used when present: the
 title, the composer, words and multi-measure rest counts.
 """

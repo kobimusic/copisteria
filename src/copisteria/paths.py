@@ -8,8 +8,8 @@ MODELS = REPO / "models"
 EVIDENCE = MODELS / "evidence-2m.pt"                          # the evidence model (kobimusic/copisteria)
 # the v7 symbol detectors (kobimusic/copisteria): size -> (weights, tag of the page caches they write)
 DETECTORS = {
-    "28m": (MODELS / "small" / "v7_obj-recall-30m_best.pt", "v7"),         # copisteria-28m, the default
-    "2m": (MODELS / "small" / "v7_obj-recall_best.pt", "v7small"),         # copisteria-2m
+    "28m": (MODELS / "small" / "v7_obj-recall-30m_best.pt", "v7"),         # copista-28m, the default
+    "2m": (MODELS / "small" / "v7_obj-recall_best.pt", "v7small"),         # copista-2m
 }
 DETECTOR = DETECTORS["28m"][0]
 

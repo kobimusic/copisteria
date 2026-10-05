@@ -6,7 +6,7 @@ skipped (resumable); a page that fails gets no file (it then scores as read enti
 run.json. The MusicXML is scored against the set's ground truth with musicdiff (see README, Benchmark).
 
     python -m copisteria.omrned <set dir> --name evidence [--model models/evidence-2m.pt] [--jobs 6]
-    python -m copisteria.omrned <set dir> --name copisteria-2m --detector 2m
+    python -m copisteria.omrned <set dir> --name copista-2m --detector 2m
 """
 from __future__ import annotations
 
