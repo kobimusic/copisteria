@@ -100,3 +100,27 @@ def test_a_refinement_pass_fresh_from_its_base_reads_as_the_base():
     assert len(notes) == 4
     assert all(abs(a.tok[i]["real"]["p"] - b.tok[i]["real"]["p"]) < 1e-5 for i in a.tok)
     assert all(a.tok[i]["onset"] == b.tok[i]["onset"] for i in notes)
+
+
+def test_part_names_are_decoded_from_where_texts_sit_and_what_they_say(monkeypatch):
+    from copisteria import links
+    monkeypatch.setattr(links, "load", lambda: None)
+    # two unbraced staves whose bar lines line up: one system, two parts (staff space 10, staves start at x 100)
+    dets = staff_row(100, [100, 200, 300]) + staff_row(180, [100, 201, 300])
+    dets += [det("note_quarter", (x, 115, x + 10, 125), staff_position=0) for x in (130, 230)]
+    dets += [det("note_quarter", (x, 195, x + 10, 205), staff_position=0) for x in (130, 230)]
+    L = front.build(dets, 400, 400)
+    tok = {}
+    for s in L.syms:
+        tok[s.i] = _bar(L) if s.fam == "measure" else _note(0)
+    texts = [{"text": "SSS", "role": "label", "xyxy": [5, 20, 40, 30]},            # noise high on the page
+             {"text": "4", "role": "label", "xyxy": [100, 85, 106, 95]},           # a bar number over the staff
+             {"text": "Violin", "role": "label", "xyxy": [40, 114, 78, 126]},      # beside the first staff
+             {"text": "do", "role": "labelAbbr", "xyxy": [132, 222, 146, 232]},    # a lyric under the second staff
+             {"text": "Cello", "role": "label", "xyxy": [45, 194, 80, 206]}]       # beside the second
+    root, _ = _notes(write.write(Reading(layout=L, tok=tok), texts=texts))
+    assert [e.text for e in root.iter("part-name")] == ["Violin", "Cello"]
+    # a part with only noise beside it takes no name
+    texts2 = [{"text": "SSS", "role": "label", "xyxy": [40, 114, 78, 126]}, texts[4]]
+    root, _ = _notes(write.write(Reading(layout=L, tok=tok), texts=texts2))
+    assert [e.text for e in root.iter("part-name")] == ["Part 1", "Cello"]

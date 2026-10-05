@@ -824,6 +824,74 @@ def _page_meter(rd: Reading, build) -> str | None:
                key=lambda m: math.log(max(m[2] / z, 1e-9)) + fit[m[1]])[0]
 
 
+# part names, decoded: which OCR'd text names which part. A label ends left of its part's first symbols (the clef),
+# centred on its staves: measured on the benchmark's quartet pages (aggregate), the gap from a label's right edge
+# to the clef is 2.2-3.0 staff spaces on renders and 2.9-7.6 on scans (p10-p90), its centre at 0.40-0.58 of the
+# part's height; texts in the music (directions, fingerings, lyrics) sit 15-150 staff spaces past the clef
+LABEL_GAP = (3.5, 2.5)           # the staff's first symbol - the label's right edge, staff spaces: centre, spread
+LABEL_INTO = 0.5                 # spread where the text reaches into the staves (a negative gap: it is in the music)
+LABEL_HEIGHT = (0.5, 0.3)        # the label's centre down its part's staves (0 the top line, 1 the bottom): centre, spread
+LABEL_ROLE_LOGP = {"label": 0.0, "labelAbbr": math.log(0.7)}     # the OCR's own role for the text; any other role:
+OTHER_ROLE_LOGP = math.log(0.05)                                 # (a name the OCR filed as a direction, say)
+NAME_LOGP = {"exact": 0.0, "alias": 0.0, "context": 0.0, "subset": math.log(0.9), "fuzzy": math.log(0.7)}
+UNKNOWN_NAME_LOGP = math.log(0.01)   # the text names no instrument the table knows (a lyric, a bar number, noise)
+NO_NAME_LOGP = math.log(0.02)        # a part the page names nowhere
+NOT_NAMES = ("pgHead_title", "pgHead_composer", "pgHead_subtitle", "pgFoot")
+
+
+def _part_names(rd: Reading, plans: list, texts: list) -> list[str | None]:
+    """Each part's name, decoded jointly: every OCR'd text could name any part, scored by where it sits against
+    that part's staves (on any system), what it says (an instrument the table knows, instruments.match) and the
+    role the OCR gave it; the parts and texts are paired one-to-one for the best total, a part taking no name where
+    no text beats NO_NAME_LOGP. A bar number over a staff, a lyric under it, a stray read of noise lose on where
+    they sit and on what they say; one stray text no longer shifts the others' names."""
+    import numpy as np
+    from scipy.optimize import linear_sum_assignment
+
+    from .instruments import clean_label, match
+    L = rd.layout
+    cands = [t for t in texts if str(t.get("text", "")).strip() and t.get("role") not in NOT_NAMES and "xyxy" in t]
+    if not plans or not cands:
+        return [None] * len(plans)
+    context = [t["text"] for t in texts if t.get("role") in ("label", "labelAbbr")]
+    said = []
+    for t in cands:
+        m = match(t["text"], context)
+        said.append((NAME_LOGP.get(m.how, math.log(0.7)) if m else UNKNOWN_NAME_LOGP) +
+                    LABEL_ROLE_LOGP.get(t.get("role"), OTHER_ROLE_LOGP))
+    first: dict[int, float] = {}         # staff -> x of its first symbol (its clef, mostly)
+    for sym in L.syms:
+        if sym.staff >= 0 and sym.fam in ("clef", "keySig", "meterSig", "note", "rest") and sym.p >= 0.5:
+            first[sym.staff] = min(first.get(sym.staff, math.inf), sym.box[0])
+    S = np.full((len(plans), len(cands)), -1e9)
+    for n, pl in enumerate(plans):
+        for sy in L.systems:
+            ks = [sy.staves[pos] for pos in pl.staves if pos < len(sy.staves)]
+            st = [L.staves[k] for k in ks]
+            if not st:
+                continue
+            top, bot = min(s.y0 for s in st), max(s.y1 for s in st)
+            sp = max(1.0, sorted(s.sp for s in st)[len(st) // 2])
+            x0 = min(first.get(k, L.staves[k].x0) for k in ks)
+            for j, t in enumerate(cands):
+                tx0, ty0, tx1, ty1 = t["xyxy"]
+                gap = (x0 - tx1) / sp
+                into = (ty0 + ty1) / 2 - top
+                h = into / max(1.0, bot - top)
+                where = -0.5 * ((gap - LABEL_GAP[0]) / (LABEL_GAP[1] if gap >= 0 else LABEL_INTO)) ** 2 \
+                    - 0.5 * ((h - LABEL_HEIGHT[0]) / LABEL_HEIGHT[1]) ** 2
+                S[n, j] = max(S[n, j], where + said[j])
+    P, T = S.shape
+    cost = np.full((P, T + P), 1e9)
+    cost[:, :T] = -S
+    cost[np.arange(P), T + np.arange(P)] = -NO_NAME_LOGP
+    names: list[str | None] = [None] * P
+    for i, j in zip(*linear_sum_assignment(cost)):
+        if j < T:
+            names[i] = clean_label(str(cands[j]["text"]).strip())
+    return names
+
+
 def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None, image=None) -> str:
     """``image``: the page (PIL image or grey array), for what is read off the ink here (dashes after words)."""
     L = rd.layout
@@ -840,9 +908,7 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
     enc = _sub(ident, "encoding")
     _sub(enc, "software", "copisteria")
     plist = _sub(root, "part-list")
-    # OCR part labels, top to bottom, name the parts in order (a part book's page has one)
-    labels = [t["text"] for t in sorted((t for t in texts if t.get("role") in ("label", "labelAbbr")),
-                                        key=lambda t: t["xyxy"][1])]
+    names = _part_names(rd, plans, texts)
     groups = _part_groups(rd, plans)
     for n, pl in enumerate(plans):
         for g, (a, b, sym) in enumerate(groups):
@@ -850,7 +916,7 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                 pg = _sub(plist, "part-group", type="start", number=g + 1)
                 _sub(pg, "group-symbol", sym)
         sp_ = _sub(plist, "score-part", id=f"P{n + 1}")
-        _sub(sp_, "part-name", labels[n] if n < len(labels) else f"Part {n + 1}")
+        _sub(sp_, "part-name", names[n] or f"Part {n + 1}")
         for g, (a, b, sym) in enumerate(groups):
             if b == n:
                 _sub(plist, "part-group", type="stop", number=g + 1)

@@ -1,0 +1,8136 @@
+[
+{
+"id": "Winds",
+"name": "Winds",
+"short": "Wi.",
+"track": "",
+"musicxml_id": "wind.group",
+"program": 73,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "piccolo",
+"name": "Piccolo",
+"short": "Picc.",
+"track": "",
+"musicxml_id": "wind.flutes.flute.piccolo",
+"program": 72,
+"clef": "G",
+"perc": false,
+"diatonic": 7,
+"chromatic": 12,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "db-piccolo",
+"name": "D♭ Piccolo",
+"short": "D♭ Picc.",
+"track": "",
+"musicxml_id": "wind.flutes.flute.piccolo",
+"program": 72,
+"clef": "G",
+"perc": false,
+"diatonic": 8,
+"chromatic": 13,
+"genres": []
+},
+{
+"id": "flute",
+"name": "Flute",
+"short": "Fl.",
+"track": "",
+"musicxml_id": "wind.flutes.flute",
+"program": 73,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"popular",
+"concertband",
+"marching"
+]
+},
+{
+"id": "treble-flute",
+"name": "Treble Flute",
+"short": "Tr. Fl.",
+"track": "",
+"musicxml_id": "wind.flutes.flute",
+"program": 72,
+"clef": "G",
+"perc": false,
+"diatonic": 4,
+"chromatic": 7,
+"genres": []
+},
+{
+"id": "soprano-flute",
+"name": "Soprano Flute",
+"short": "Sop. Fl.",
+"track": "",
+"musicxml_id": "wind.flutes.flute",
+"program": 73,
+"clef": "G",
+"perc": false,
+"diatonic": 2,
+"chromatic": 3,
+"genres": []
+},
+{
+"id": "subcontra-alto-flute",
+"name": "Sub Contra-alto Flute",
+"short": "Sc-a. Fl.",
+"track": "",
+"musicxml_id": "wind.flutes.flute.subcontrabass",
+"program": 73,
+"clef": "G",
+"perc": false,
+"diatonic": -17,
+"chromatic": -29,
+"genres": []
+},
+{
+"id": "alto-flute",
+"name": "Alto Flute",
+"short": "A. Fl.",
+"track": "",
+"musicxml_id": "wind.flutes.flute.alto",
+"program": 73,
+"clef": "G",
+"perc": false,
+"diatonic": -3,
+"chromatic": -5,
+"genres": [
+"jazz",
+"orchestra",
+"concertband"
+]
+},
+{
+"id": "bass-flute",
+"name": "Bass Flute",
+"short": "B. Fl.",
+"track": "",
+"musicxml_id": "wind.flutes.flute.bass",
+"program": 73,
+"clef": "G",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": []
+},
+{
+"id": "contra-alto-flute",
+"name": "Contra-alto Flute",
+"short": "C-a. Fl.",
+"track": "",
+"musicxml_id": "wind.flutes.flute.contra-alto",
+"program": 73,
+"clef": "G",
+"perc": false,
+"diatonic": -10,
+"chromatic": -17,
+"genres": []
+},
+{
+"id": "contrabass-flute",
+"name": "Contrabass Flute",
+"short": "Cb. Fl.",
+"track": "",
+"musicxml_id": "wind.flutes.flute.contrabass",
+"program": 73,
+"clef": "G",
+"perc": false,
+"diatonic": -14,
+"chromatic": -24,
+"genres": []
+},
+{
+"id": "double-contrabass-flute",
+"name": "Double Contrabass Flute",
+"short": "D. Cb. Fl.",
+"track": "",
+"musicxml_id": "wind.flutes.flute.double-contrabass",
+"program": 73,
+"clef": "G",
+"perc": false,
+"diatonic": -21,
+"chromatic": -36,
+"genres": []
+},
+{
+"id": "hyperbass-flute",
+"name": "Hyperbass Flute",
+"short": "Hb. Fl.",
+"track": "",
+"musicxml_id": "wind.flutes.flute.double-contrabass",
+"program": 73,
+"clef": "G",
+"perc": false,
+"diatonic": -28,
+"chromatic": -48,
+"genres": []
+},
+{
+"id": "traverso",
+"name": "Traverso",
+"short": "Trv.",
+"track": "",
+"musicxml_id": "wind.flutes.flute",
+"program": 73,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "danso",
+"name": "Danso",
+"short": "Da.",
+"track": "",
+"musicxml_id": "wind.flutes.danso",
+"program": 76,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "d-dizi",
+"name": "Dizi",
+"short": "Di.",
+"track": "",
+"musicxml_id": "wind.flutes.di-zi",
+"program": 72,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "c-dizi",
+"name": "C Dizi",
+"short": "C Di.",
+"track": "",
+"musicxml_id": "wind.flutes.di-zi",
+"program": 72,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "a-dizi",
+"name": "A Dizi",
+"short": "A Di.",
+"track": "",
+"musicxml_id": "wind.flutes.di-zi",
+"program": 72,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "g-dizi",
+"name": "G Dizi",
+"short": "G Di.",
+"track": "",
+"musicxml_id": "wind.flutes.di-zi",
+"program": 72,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "f-dizi",
+"name": "F Dizi",
+"short": "F Di.",
+"track": "",
+"musicxml_id": "wind.flutes.di-zi",
+"program": 72,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "e-dizi",
+"name": "E Dizi",
+"short": "E Di.",
+"track": "",
+"musicxml_id": "wind.flutes.di-zi",
+"program": 72,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "fife",
+"name": "B♭ Fife",
+"short": "B♭ Fife",
+"track": "",
+"musicxml_id": "wind.flutes.fife",
+"program": 72,
+"clef": "G8va",
+"perc": false,
+"diatonic": 5,
+"chromatic": 8,
+"genres": []
+},
+{
+"id": "flageolet",
+"name": "Flageolet",
+"short": "Fla.",
+"track": "",
+"musicxml_id": "wind.flutes.flageolet",
+"program": 78,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "french-flageolet",
+"name": "French Flageolet",
+"short": "Fr. Fla.",
+"track": "",
+"musicxml_id": "wind.flutes.flageolet",
+"program": 78,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "english-flageolet",
+"name": "English Flageolet",
+"short": "Eng. Fla.",
+"track": "",
+"musicxml_id": "wind.flutes.flageolet",
+"program": 78,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "irish-flute",
+"name": "Irish Flute",
+"short": "Ir. Fl.",
+"track": "",
+"musicxml_id": "wind.flutes.flute.irish",
+"program": 73,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "gemshorn",
+"name": "Gemshorn",
+"short": "Gh.",
+"track": "",
+"musicxml_id": "wind.flutes.gemshorn",
+"program": 79,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "soprano-gemshorn",
+"name": "Soprano Gemshorn",
+"short": "S. Gh.",
+"track": "",
+"musicxml_id": "wind.flutes.gemshorn",
+"program": 79,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "alto-gemshorn",
+"name": "Alto Gemshorn",
+"short": "A. Gh.",
+"track": "",
+"musicxml_id": "wind.flutes.gemshorn",
+"program": 79,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "tenor-gemshorn",
+"name": "Tenor Gemshorn",
+"short": "T. Gh.",
+"track": "",
+"musicxml_id": "wind.flutes.gemshorn",
+"program": 79,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "bass-gemshorn",
+"name": "Bass Gemshorn",
+"short": "B. Gh.",
+"track": "",
+"musicxml_id": "wind.flutes.gemshorn",
+"program": 79,
+"clef": "F8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "ocarina",
+"name": "Ocarina",
+"short": "Oc.",
+"track": "",
+"musicxml_id": "wind.flutes.ocarina",
+"program": 79,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "g-soprano-ocarina",
+"name": "G Soprano Ocarina",
+"short": "G S. Oc.",
+"track": "",
+"musicxml_id": "wind.flutes.ocarina",
+"program": 79,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "f-soprano-ocarina",
+"name": "F Soprano Ocarina",
+"short": "F S. Oc.",
+"track": "",
+"musicxml_id": "wind.flutes.ocarina",
+"program": 79,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "c-soprano-ocarina",
+"name": "C Soprano Ocarina",
+"short": "C S. Oc.",
+"track": "",
+"musicxml_id": "wind.flutes.ocarina",
+"program": 79,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "bb-soprano-ocarina",
+"name": "B♭ Soprano Ocarina",
+"short": "B♭ S. Oc.",
+"track": "",
+"musicxml_id": "wind.flutes.ocarina",
+"program": 79,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "g-alto-ocarina",
+"name": "G Alto Ocarina",
+"short": "G A. Oc.",
+"track": "",
+"musicxml_id": "wind.flutes.ocarina",
+"program": 79,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "f-alto-ocarina",
+"name": "F Alto Ocarina",
+"short": "F A. Oc.",
+"track": "",
+"musicxml_id": "wind.flutes.ocarina",
+"program": 79,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "c-alto-ocarina",
+"name": "C Alto Ocarina",
+"short": "C A. Oc.",
+"track": "",
+"musicxml_id": "wind.flutes.ocarina",
+"program": 79,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "bb-alto-ocarina",
+"name": "B♭ Alto Ocarina",
+"short": "B♭ A. Oc.",
+"track": "",
+"musicxml_id": "wind.flutes.ocarina",
+"program": 79,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "c-bass-ocarina",
+"name": "C Bass Ocarina",
+"short": "C B. Oc.",
+"track": "",
+"musicxml_id": "wind.flutes.ocarina",
+"program": 79,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "pan-flute",
+"name": "Pan Flute",
+"short": "Pn. Fl.",
+"track": "",
+"musicxml_id": "wind.flutes.panpipes",
+"program": 75,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "quena",
+"name": "Quena",
+"short": "Qn.",
+"track": "",
+"musicxml_id": "wind.flutes.quena",
+"program": 67,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "c-quena",
+"name": "C Quena",
+"short": "C Qn.",
+"track": "",
+"musicxml_id": "wind.flutes.quena",
+"program": 67,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "g-quena",
+"name": "G Quena",
+"short": "G Qn.",
+"track": "",
+"musicxml_id": "wind.flutes.quena",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "f-quena",
+"name": "F Quena",
+"short": "F Qn.",
+"track": "",
+"musicxml_id": "wind.flutes.quena",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "d-quena",
+"name": "Quena",
+"short": "Qn.",
+"track": "",
+"musicxml_id": "wind.flutes.quena",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "recorder",
+"name": "Recorder",
+"short": "Rec.",
+"track": "",
+"musicxml_id": "wind.flutes.recorder",
+"program": 74,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"classroom"
+]
+},
+{
+"id": "garklein-recorder",
+"name": "Garklein Recorder",
+"short": "Gk. Rec.",
+"track": "",
+"musicxml_id": "wind.flutes.recorder.garklein",
+"program": 74,
+"clef": "G15ma",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "sopranino-recorder",
+"name": "Sopranino Recorder",
+"short": "Si. Rec.",
+"track": "",
+"musicxml_id": "wind.flutes.recorder.sopranino",
+"program": 74,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "soprano-recorder",
+"name": "Soprano Recorder",
+"short": "S. Rec.",
+"track": "",
+"musicxml_id": "wind.flutes.recorder.soprano",
+"program": 74,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "alto-recorder",
+"name": "Alto Recorder",
+"short": "A. Rec.",
+"track": "",
+"musicxml_id": "wind.flutes.recorder.alto",
+"program": 74,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "tenor-recorder",
+"name": "Tenor Recorder",
+"short": "T. Rec.",
+"track": "",
+"musicxml_id": "wind.flutes.recorder.tenor",
+"program": 74,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "bass-recorder",
+"name": "Bass Recorder",
+"short": "B. Rec.",
+"track": "",
+"musicxml_id": "wind.flutes.recorder.bass",
+"program": 74,
+"clef": "F8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "greatbass-recorder",
+"name": "Greatbass Recorder",
+"short": "Gb. Rec.",
+"track": "",
+"musicxml_id": "wind.flutes.recorder.great-bass",
+"program": 74,
+"clef": "F8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "contrabass-recorder",
+"name": "Contrabass Recorder",
+"short": "Cb. Rec.",
+"track": "",
+"musicxml_id": "wind.flutes.recorder.contrabass",
+"program": 74,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "slide-whistle",
+"name": "Slide Whistle",
+"short": "Sl. Wh.",
+"track": "",
+"musicxml_id": "wind.flutes.slide",
+"program": 79,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "tin-whistle",
+"name": "Tin Whistle",
+"short": "Tin Wh.",
+"track": "",
+"musicxml_id": "wind.flutes.whistle.tin",
+"program": 78,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "bflat-tin-whistle",
+"name": "B♭ Tin Whistle",
+"short": "B♭ Tin Wh.",
+"track": "",
+"musicxml_id": "wind.flutes.whistle.tin.bflat",
+"program": 78,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "d-tin-whistle",
+"name": "D Tin Whistle",
+"short": "D Tin Wh.",
+"track": "",
+"musicxml_id": "wind.flutes.whistle.tin.d",
+"program": 78,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "piccolo-oboe",
+"name": "Piccolo Oboe",
+"short": "P. Ob.",
+"track": "",
+"musicxml_id": "wind.reed.oboe.piccolo",
+"program": 68,
+"clef": "G",
+"perc": false,
+"diatonic": 2,
+"chromatic": 3,
+"genres": []
+},
+{
+"id": "oboe",
+"name": "Oboe",
+"short": "Ob.",
+"track": "",
+"musicxml_id": "wind.reed.oboe",
+"program": 68,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra",
+"concertband"
+]
+},
+{
+"id": "baroque-oboe",
+"name": "Baroque Oboe",
+"short": "Bq. Ob.",
+"track": "",
+"musicxml_id": "wind.reed.oboe",
+"program": 69,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "oboe-d'amore",
+"name": "Oboe d'amore",
+"short": "Ob. d'a.",
+"track": "",
+"musicxml_id": "wind.reed.oboe-damore",
+"program": 68,
+"clef": "G",
+"perc": false,
+"diatonic": -2,
+"chromatic": -3,
+"genres": []
+},
+{
+"id": "oboe-da-caccia",
+"name": "Oboe da caccia",
+"short": "Ob. d. ca.",
+"track": "",
+"musicxml_id": "wind.reed.oboe-da-caccia",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": -4,
+"chromatic": -7,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "english-horn",
+"name": "English Horn",
+"short": "E. Hn.",
+"track": "",
+"musicxml_id": "wind.reed.english-horn",
+"program": 69,
+"clef": "G",
+"perc": false,
+"diatonic": -4,
+"chromatic": -7,
+"genres": [
+"orchestra",
+"concertband"
+]
+},
+{
+"id": "baritone-oboe",
+"name": "Baritone Oboe",
+"short": "Bar. Ob.",
+"track": "",
+"musicxml_id": "wind.reed.oboe.bass",
+"program": 68,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "piccolo-heckelphone",
+"name": "Piccolo Heckelphone",
+"short": "P. Hph.",
+"track": "",
+"musicxml_id": "wind.reed.heckelphone.piccolo",
+"program": 68,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "heckelphone",
+"name": "Heckelphone",
+"short": "Hph.",
+"track": "",
+"musicxml_id": "wind.reed.heckelphone",
+"program": 68,
+"clef": "G",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": []
+},
+{
+"id": "lupophone",
+"name": "Lupophone",
+"short": "Lph.",
+"track": "",
+"musicxml_id": "wind.reed.heckelphone",
+"program": 68,
+"clef": "G8vb",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": []
+},
+{
+"id": "heckelphone-clarinet",
+"name": "Heckelphone-clarinet",
+"short": "Hph.-cl.",
+"track": "",
+"musicxml_id": "wind.reed.heckelphone-clarinet",
+"program": 68,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "sopranino-shawm",
+"name": "Sopranino Shawm",
+"short": "Si. Sh.",
+"track": "",
+"musicxml_id": "wind.reed.shawm",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "soprano-shawm",
+"name": "Soprano Shawm",
+"short": "S. Sh.",
+"track": "",
+"musicxml_id": "wind.reed.shawm",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "alto-shawm",
+"name": "Alto Shawm",
+"short": "A. Sh.",
+"track": "",
+"musicxml_id": "wind.reed.shawm",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "tenor-shawm",
+"name": "Tenor Shawm",
+"short": "T. Sh.",
+"track": "",
+"musicxml_id": "wind.reed.shawm",
+"program": 67,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "bass-shawm",
+"name": "Bass Shawm",
+"short": "B. Sh.",
+"track": "",
+"musicxml_id": "wind.reed.shawm",
+"program": 67,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "great-bass-shawm",
+"name": "Great Bass Shawm",
+"short": "G.B. Sh.",
+"track": "",
+"musicxml_id": "wind.reed.shawm",
+"program": 67,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "cromorne",
+"name": "Cromorne",
+"short": "Cr.",
+"track": "",
+"musicxml_id": "wind.reed.cromorne",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "crumhorn",
+"name": "Crumhorn",
+"short": "Crh.",
+"track": "",
+"musicxml_id": "wind.reed.crumhorn",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "soprano-crumhorn",
+"name": "Soprano Crumhorn",
+"short": "S. Crh.",
+"track": "",
+"musicxml_id": "wind.reed.crumhorn.soprano",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "alto-crumhorn",
+"name": "Alto Crumhorn",
+"short": "A. Crh.",
+"track": "",
+"musicxml_id": "wind.reed.crumhorn.alto",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "tenor-crumhorn",
+"name": "Tenor Crumhorn",
+"short": "T. Crh.",
+"track": "",
+"musicxml_id": "wind.reed.crumhorn.tenor",
+"program": 67,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "bass-crumhorn",
+"name": "Bass Crumhorn",
+"short": "B. Crh.",
+"track": "",
+"musicxml_id": "wind.reed.crumhorn.bass",
+"program": 67,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "greatbass-crumhorn",
+"name": "Greatbass Crumhorn",
+"short": "Gb. Crh.",
+"track": "",
+"musicxml_id": "wind.reed.crumhorn.great-bass",
+"program": 67,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "cornamuse",
+"name": "Cornamuse",
+"short": "Cm.",
+"track": "",
+"musicxml_id": "wind.reed.cornamuse",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "soprano-cornamuse",
+"name": "Soprano Cornamuse",
+"short": "S. Cm.",
+"track": "",
+"musicxml_id": "wind.reed.cornamuse",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "alto-cornamuse",
+"name": "Alto Cornamuse",
+"short": "A. Cm.",
+"track": "",
+"musicxml_id": "wind.reed.cornamuse",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "tenor-cornamuse",
+"name": "Tenor Cornamuse",
+"short": "T. Cm.",
+"track": "",
+"musicxml_id": "wind.reed.cornamuse",
+"program": 67,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bass-cornamuse",
+"name": "Bass Cornamuse",
+"short": "B. Cm.",
+"track": "",
+"musicxml_id": "wind.reed.cornamuse",
+"program": 67,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "duduk",
+"name": "Duduk",
+"short": "Du.",
+"track": "",
+"musicxml_id": "wind.reed.duduk",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "f-duduk",
+"name": "F Duduk",
+"short": "F Du.",
+"track": "",
+"musicxml_id": "wind.reed.duduk",
+"program": 71,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "e-duduk",
+"name": "E Duduk",
+"short": "E Du.",
+"track": "",
+"musicxml_id": "wind.reed.duduk",
+"program": 71,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "d-duduk",
+"name": "Duduk",
+"short": "Du.",
+"track": "",
+"musicxml_id": "wind.reed.duduk",
+"program": 71,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "c-duduk",
+"name": "C Duduk",
+"short": "C Du.",
+"track": "",
+"musicxml_id": "wind.reed.duduk",
+"program": 71,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "b-duduk",
+"name": "B Duduk",
+"short": "B Du.",
+"track": "",
+"musicxml_id": "wind.reed.duduk",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "bb-duduk",
+"name": "B♭ Duduk",
+"short": "B♭ Du.",
+"track": "",
+"musicxml_id": "wind.reed.duduk",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "a-duduk",
+"name": "A Duduk",
+"short": "A Du.",
+"track": "",
+"musicxml_id": "wind.reed.duduk",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "g-duduk",
+"name": "G Duduk",
+"short": "G Du.",
+"track": "",
+"musicxml_id": "wind.reed.duduk",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "a-bass-duduk",
+"name": "A Bass Duduk",
+"short": "A B. Du.",
+"track": "",
+"musicxml_id": "wind.reed.duduk",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "soprano-kelhorn",
+"name": "Soprano Kelhorn",
+"short": "S. Kh.",
+"track": "",
+"musicxml_id": "",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "alto-kelhorn",
+"name": "Alto Kelhorn",
+"short": "A. Kh.",
+"track": "",
+"musicxml_id": "",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "tenor-kelhorn",
+"name": "Tenor Kelhorn",
+"short": "T. Kh.",
+"track": "",
+"musicxml_id": "",
+"program": 67,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "bass-kelhorn",
+"name": "Bass Kelhorn",
+"short": "B. Kh.",
+"track": "",
+"musicxml_id": "",
+"program": 67,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "greatbass-kelhorn",
+"name": "Greatbass Kelhorn",
+"short": "Gb. Kh.",
+"track": "",
+"musicxml_id": "",
+"program": 67,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "rauschpfeife",
+"name": "Rauschpfeife",
+"short": "Rpf.",
+"track": "",
+"musicxml_id": "wind.reed.rauschpfeife",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "sopranino-rauschpfeife",
+"name": "Sopranino Rauschpfeife",
+"short": "Si. Rpf.",
+"track": "",
+"musicxml_id": "wind.reed.rauschpfeife",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "soprano-rauschpfeife",
+"name": "Soprano Rauschpfeife",
+"short": "S. Rpf.",
+"track": "",
+"musicxml_id": "wind.reed.rauschpfeife",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "shenai",
+"name": "Shenai",
+"short": "She.",
+"track": "",
+"musicxml_id": "wind.reed.shenai",
+"program": 111,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "clarinet",
+"name": "Clarinet",
+"short": "Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "piccolo-clarinet",
+"name": "Piccolo Clarinet",
+"short": "P. Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet.piccolo.aflat",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": 5,
+"chromatic": 8,
+"genres": []
+},
+{
+"id": "soprano-clarinet",
+"name": "Soprano Clarinet",
+"short": "S. Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": 4,
+"chromatic": 7,
+"genres": [
+"concertband"
+]
+},
+{
+"id": "c-clarinet",
+"name": "C Clarinet",
+"short": "C Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "d-clarinet",
+"name": "D Clarinet",
+"short": "D Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": 1,
+"chromatic": 2,
+"genres": []
+},
+{
+"id": "eb-clarinet",
+"name": "E♭ Clarinet",
+"short": "E♭ Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet.eflat",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": 2,
+"chromatic": 3,
+"genres": [
+"jazz",
+"orchestra",
+"concertband"
+]
+},
+{
+"id": "g-clarinet",
+"name": "G Clarinet",
+"short": "G Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": -2,
+"chromatic": -5,
+"genres": []
+},
+{
+"id": "bb-clarinet",
+"name": "B♭ Clarinet",
+"short": "B♭ Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet.bflat",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": [
+"common",
+"orchestra",
+"concertband",
+"jazz",
+"marching"
+]
+},
+{
+"id": "a-clarinet",
+"name": "A Clarinet",
+"short": "A Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet.a",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": -2,
+"chromatic": -3,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "alto-clarinet",
+"name": "Alto Clarinet",
+"short": "A. Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet.alto",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": -5,
+"chromatic": -9,
+"genres": [
+"concertband"
+]
+},
+{
+"id": "basset-clarinet",
+"name": "Basset Clarinet",
+"short": "Ba. Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet.basset",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": -2,
+"chromatic": -3,
+"genres": []
+},
+{
+"id": "basset-horn",
+"name": "Basset Horn",
+"short": "Ba. Hn.",
+"track": "",
+"musicxml_id": "wind.reed.basset-horn",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": -4,
+"chromatic": -7,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "bass-clarinet",
+"name": "Bass Clarinet",
+"short": "B. Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet.bass",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": -8,
+"chromatic": -14,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "bb-bass-clarinet-bass-clef",
+"name": "B♭ Bass Clarinet (Bass Clef)",
+"short": "B♭ B. Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet.bass",
+"program": 71,
+"clef": "F",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "a-bass-clarinet",
+"name": "A Bass Clarinet",
+"short": "A B. Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet.bass",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": -9,
+"chromatic": -15,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "a-bass-clarinet-bass-clef)",
+"name": "A Bass Clarinet (Bass Clef)",
+"short": "A B. Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet.bass",
+"program": 71,
+"clef": "F",
+"perc": false,
+"diatonic": -2,
+"chromatic": -3,
+"genres": []
+},
+{
+"id": "contra-alto-clarinet",
+"name": "Contra-alto Clarinet",
+"short": "C-a. Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet.contra-alto",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": -12,
+"chromatic": -21,
+"genres": [
+"concertband"
+]
+},
+{
+"id": "contrabass-clarinet",
+"name": "Contrabass Clarinet",
+"short": "Cb. Cl.",
+"track": "",
+"musicxml_id": "wind.reed.clarinet.contrabass",
+"program": 71,
+"clef": "G",
+"perc": false,
+"diatonic": -15,
+"chromatic": -26,
+"genres": [
+"jazz",
+"orchestra",
+"concertband"
+]
+},
+{
+"id": "chalumeau",
+"name": "Chalumeau",
+"short": "Cha.",
+"track": "",
+"musicxml_id": "wind.reed.chalumeau",
+"program": 67,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "sopranino-chalumeau",
+"name": "Sopranino Chalumeau",
+"short": "Si. Cha.",
+"track": "",
+"musicxml_id": "wind.reed.chalumeau",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "soprano-chalumeau",
+"name": "Soprano Chalumeau",
+"short": "S. Cha.",
+"track": "",
+"musicxml_id": "wind.reed.chalumeau",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "alto-chalumeau",
+"name": "Alto Chalumeau",
+"short": "A. Cha.",
+"track": "",
+"musicxml_id": "wind.reed.chalumeau",
+"program": 67,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "tenor-chalumeau",
+"name": "Tenor Chalumeau",
+"short": "T. Cha.",
+"track": "",
+"musicxml_id": "wind.reed.chalumeau",
+"program": 67,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "bass-chalumeau",
+"name": "Bass Chalumeau",
+"short": "B. Cha.",
+"track": "",
+"musicxml_id": "wind.reed.chalumeau",
+"program": 67,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "tarogato",
+"name": "Tarogato",
+"short": "Tar.",
+"track": "",
+"musicxml_id": "wind.reed.taroagato",
+"program": 69,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "octavin",
+"name": "Octavin",
+"short": "Oct.",
+"track": "",
+"musicxml_id": "wind.reed.octavin",
+"program": 69,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bassoon",
+"name": "Bassoon",
+"short": "Bsn.",
+"track": "",
+"musicxml_id": "wind.reed.bassoon",
+"program": 70,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra",
+"concertband"
+]
+},
+{
+"id": "contrabassoon",
+"name": "Contrabassoon",
+"short": "Cbsn.",
+"track": "",
+"musicxml_id": "wind.reed.contrabassoon",
+"program": 70,
+"clef": "F",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"orchestra",
+"concertband"
+]
+},
+{
+"id": "reed-contrabass",
+"name": "Reed Contrabass",
+"short": "Rd. Cbs.",
+"track": "",
+"musicxml_id": "wind.reed.contrabass",
+"program": 70,
+"clef": "F",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": []
+},
+{
+"id": "dulcian",
+"name": "Dulcian",
+"short": "Du.",
+"track": "",
+"musicxml_id": "wind.reed.dulcian",
+"program": 67,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "rackett",
+"name": "Rackett",
+"short": "Ra.",
+"track": "",
+"musicxml_id": "wind.reed.rackett",
+"program": 67,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "sarrusophone",
+"name": "Sarrusophone",
+"short": "Sar.",
+"track": "",
+"musicxml_id": "wind.reed.sarrusaphone",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "sopranino-sarrusophone",
+"name": "Sopranino Sarrusophone",
+"short": "Si. Sar.",
+"track": "",
+"musicxml_id": "wind.reed.sarrusaphone",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": 2,
+"chromatic": 3,
+"genres": []
+},
+{
+"id": "soprano-sarrusophone",
+"name": "Soprano Sarrusophone",
+"short": "S. Sar.",
+"track": "",
+"musicxml_id": "wind.reed.sarrusaphone",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "alto-sarrusophone",
+"name": "Alto Sarrusophone",
+"short": "A. Sar.",
+"track": "",
+"musicxml_id": "wind.reed.sarrusaphone",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": -5,
+"chromatic": -9,
+"genres": []
+},
+{
+"id": "tenor-sarrusophone",
+"name": "Tenor Sarrusophone",
+"short": "T. Sar.",
+"track": "",
+"musicxml_id": "wind.reed.sarrusaphone",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": -8,
+"chromatic": -14,
+"genres": []
+},
+{
+"id": "baritone-sarrusophone",
+"name": "Baritone Sarrusophone",
+"short": "Bar. Sar.",
+"track": "",
+"musicxml_id": "wind.reed.sarrusaphone",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": -12,
+"chromatic": -21,
+"genres": []
+},
+{
+"id": "bass-sarrusophone",
+"name": "Bass Sarrusophone",
+"short": "B. Sar.",
+"track": "",
+"musicxml_id": "wind.reed.sarrusaphone",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": -15,
+"chromatic": -26,
+"genres": []
+},
+{
+"id": "contrabass-sarrusophone",
+"name": "Contrabass Sarrusophone",
+"short": "Cb. Sar.",
+"track": "",
+"musicxml_id": "wind.reed.sarrusaphone",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": -19,
+"chromatic": -33,
+"genres": []
+},
+{
+"id": "saxophone",
+"name": "Saxophone",
+"short": "Sax.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone",
+"program": 66,
+"clef": "G",
+"perc": false,
+"diatonic": -8,
+"chromatic": -14,
+"genres": []
+},
+{
+"id": "sopranissimo-saxophone",
+"name": "Sopranissimo Saxophone",
+"short": "Sio. Sax.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone.sopraninissimo",
+"program": 64,
+"clef": "G",
+"perc": false,
+"diatonic": 6,
+"chromatic": 10,
+"genres": []
+},
+{
+"id": "sopranino-saxophone",
+"name": "Sopranino Saxophone",
+"short": "Si. Sax.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone.sopranino",
+"program": 64,
+"clef": "G",
+"perc": false,
+"diatonic": 2,
+"chromatic": 3,
+"genres": [
+"jazz"
+]
+},
+{
+"id": "soprano-saxophone",
+"name": "Soprano Saxophone",
+"short": "S. Sax.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone.soprano",
+"program": 64,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "aulochrome",
+"name": "Aulochrome",
+"short": "Aul.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone.aulochrome",
+"program": 64,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "mezzo-soprano-saxophone",
+"name": "Mezzo-Soprano Saxophone",
+"short": "M.S. Sax.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone.mezzo-soprano",
+"program": 65,
+"clef": "G",
+"perc": false,
+"diatonic": -4,
+"chromatic": -7,
+"genres": []
+},
+{
+"id": "alto-saxophone",
+"name": "Alto Saxophone",
+"short": "A. Sax.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone.alto",
+"program": 65,
+"clef": "G",
+"perc": false,
+"diatonic": -5,
+"chromatic": -9,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"popular",
+"concertband",
+"marching"
+]
+},
+{
+"id": "melody-saxophone",
+"name": "Melody Saxophone",
+"short": "Mel. Sax.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone.melody",
+"program": 66,
+"clef": "G",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": []
+},
+{
+"id": "tenor-saxophone",
+"name": "Tenor Saxophone",
+"short": "T. Sax.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone.tenor",
+"program": 66,
+"clef": "G",
+"perc": false,
+"diatonic": -8,
+"chromatic": -14,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"popular",
+"concertband",
+"marching"
+]
+},
+{
+"id": "baritone-saxophone",
+"name": "Baritone Saxophone",
+"short": "Bar. Sax.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone.baritone",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": -12,
+"chromatic": -21,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "bass-saxophone",
+"name": "Bass Saxophone",
+"short": "B. Sax.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone.bass",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": -15,
+"chromatic": -26,
+"genres": [
+"jazz"
+]
+},
+{
+"id": "contrabass-saxophone",
+"name": "Contrabass Saxophone",
+"short": "Cb. Sax.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone.contrabass",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": -19,
+"chromatic": -33,
+"genres": []
+},
+{
+"id": "subcontrabass-saxophone",
+"name": "Subcontrabass Saxophone",
+"short": "Scb. Sax.",
+"track": "",
+"musicxml_id": "wind.reed.saxophone.subcontrabass",
+"program": 67,
+"clef": "G",
+"perc": false,
+"diatonic": -22,
+"chromatic": -38,
+"genres": []
+},
+{
+"id": "bagpipe",
+"name": "Bagpipe",
+"short": "Bagp.",
+"track": "",
+"musicxml_id": "wind.pipes.bagpipes",
+"program": 109,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": [
+"world"
+]
+},
+{
+"id": "harmonica",
+"name": "Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"popular"
+]
+},
+{
+"id": "harmonica-c12c",
+"name": "12 Hole C Chromatic Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "harmonica-c14c",
+"name": "14 Hole C Chromatic Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "harmonica-c12g",
+"name": "12 Hole G Chromatic Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "harmonica-c16c",
+"name": "16 Hole C Chromatic Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "harmonica-c12tenor-c",
+"name": "12 Hole Tenor C Chromatic Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "harmonica-d12high-g",
+"name": "10 Hole High G Diatonic Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "harmonica-d12f",
+"name": "10 Hole F Diatonic Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "harmonica-d12d",
+"name": "10 Hole D Diatonic Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "harmonica-d12c",
+"name": "10 Hole C Diatonic Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "harmonica-d12a",
+"name": "10 Hole A Diatonic Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "harmonica-d12-g",
+"name": "10 Hole G Diatonic Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "harmonica-d10low-d",
+"name": "10 Hole Low D Diatonic Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "harmonica-chordet",
+"name": "20 Hole Chordet Harmonica",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica",
+"program": 22,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bass-harmonica",
+"name": "Bass Harmonica",
+"short": "Bs. Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica.bass",
+"program": 22,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bass-harmonica-hohner",
+"name": "Bass Hohner Harmonica",
+"short": "Bs. Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica.bass",
+"program": 22,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bass-harmonica-huang",
+"name": "Bass Huang Harmonica",
+"short": "Bs. Harm.",
+"track": "",
+"musicxml_id": "wind.reed.harmonica.bass",
+"program": 22,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "accordion",
+"name": "Accordion",
+"short": "Acc.",
+"track": "",
+"musicxml_id": "keyboard.accordion",
+"program": 21,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz"
+]
+},
+{
+"id": "bandoneon",
+"name": "Bandoneon",
+"short": "Ban.",
+"track": "",
+"musicxml_id": "keyboard.bandoneon",
+"program": 23,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "concertina",
+"name": "Concertina",
+"short": "Conc.",
+"track": "",
+"musicxml_id": "keyboard.concertina",
+"program": 21,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "melodica",
+"name": "Melodica",
+"short": "Mel.",
+"track": "",
+"musicxml_id": "wind.reed.melodica",
+"program": 22,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "sheng",
+"name": "Sheng",
+"short": "She.",
+"track": "",
+"musicxml_id": "wind.reed.sheng",
+"program": 20,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "soprano-sheng",
+"name": "Soprano Sheng",
+"short": "S She.",
+"track": "",
+"musicxml_id": "wind.reed.sheng",
+"program": 20,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "alto-sheng",
+"name": "Alto Sheng",
+"short": "A She.",
+"track": "",
+"musicxml_id": "wind.reed.sheng",
+"program": 20,
+"clef": "C3",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "tenor-sheng",
+"name": "Tenor Sheng",
+"short": "T She.",
+"track": "",
+"musicxml_id": "wind.reed.sheng",
+"program": 20,
+"clef": "C4",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "bass-sheng",
+"name": "Bass Sheng",
+"short": "B She.",
+"track": "",
+"musicxml_id": "wind.reed.sheng",
+"program": 20,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "brass",
+"name": "Brass",
+"short": "Br.",
+"track": "",
+"musicxml_id": "brass.group",
+"program": 61,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "horn",
+"name": "Horn in F",
+"short": "F Hn.",
+"track": "",
+"musicxml_id": "brass.french-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -4,
+"chromatic": -7,
+"genres": [
+"common",
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "high-c-horn",
+"name": "High C Horn",
+"short": "H. C Hn.",
+"track": "",
+"musicxml_id": "brass.natural-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "high-bb-horn",
+"name": "Horn in B♭",
+"short": "B♭ Hn.",
+"track": "",
+"musicxml_id": "brass.french-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "a-horn",
+"name": "Horn in A",
+"short": "A Hn.",
+"track": "",
+"musicxml_id": "brass.natural-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -2,
+"chromatic": -3,
+"genres": []
+},
+{
+"id": "ab-horn",
+"name": "Horn in A♭",
+"short": "A♭ Hn.",
+"track": "",
+"musicxml_id": "brass.natural-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -2,
+"chromatic": -4,
+"genres": []
+},
+{
+"id": "g-horn",
+"name": "Horn in G",
+"short": "G Hn.",
+"track": "",
+"musicxml_id": "brass.natural-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -3,
+"chromatic": -5,
+"genres": []
+},
+{
+"id": "e-horn",
+"name": "E Horn",
+"short": "E Hn.",
+"track": "",
+"musicxml_id": "brass.natural-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -5,
+"chromatic": -8,
+"genres": []
+},
+{
+"id": "eb-horn",
+"name": "Horn in E♭",
+"short": "E♭ Hn.",
+"track": "",
+"musicxml_id": "brass.natural-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -5,
+"chromatic": -9,
+"genres": []
+},
+{
+"id": "d-horn",
+"name": "Horn in D",
+"short": "Hn.",
+"track": "",
+"musicxml_id": "brass.natural-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -6,
+"chromatic": -10,
+"genres": []
+},
+{
+"id": "low-c-horn",
+"name": "Horn in C",
+"short": "C Hn.",
+"track": "",
+"musicxml_id": "brass.natural-horn",
+"program": 60,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "vienna-horn",
+"name": "Vienna Horn",
+"short": "V. Hn.",
+"track": "",
+"musicxml_id": "brass.vienna-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -4,
+"chromatic": -7,
+"genres": []
+},
+{
+"id": "low-bb-horn",
+"name": "Horn in B♭ basso",
+"short": "B♭ ba Hn.",
+"track": "",
+"musicxml_id": "brass.natural-horn",
+"program": 60,
+"clef": "F",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "eb-cornet",
+"name": "E♭ Cornet",
+"short": "E♭ Cnt.",
+"track": "",
+"musicxml_id": "brass.cornet.soprano",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 2,
+"chromatic": 3,
+"genres": [
+"concertband"
+]
+},
+{
+"id": "c-cornet",
+"name": "C Cornet",
+"short": "C Cnt.",
+"track": "",
+"musicxml_id": "brass.cornet",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bb-cornet",
+"name": "B♭ Cornet",
+"short": "B♭ Cnt.",
+"track": "",
+"musicxml_id": "brass.cornet",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": [
+"common",
+"jazz",
+"concertband"
+]
+},
+{
+"id": "a-cornet",
+"name": "A Cornet",
+"short": "A Cnt.",
+"track": "",
+"musicxml_id": "brass.cornet",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -2,
+"chromatic": -3,
+"genres": []
+},
+{
+"id": "saxhorn",
+"name": "Saxhorn",
+"short": "Saxhorn",
+"track": "",
+"musicxml_id": "brass.saxhorn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -5,
+"chromatic": -9,
+"genres": []
+},
+{
+"id": "f-alto-horn",
+"name": "F Alto Horn",
+"short": "F A. Hn.",
+"track": "",
+"musicxml_id": "brass.alto-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -4,
+"chromatic": -7,
+"genres": []
+},
+{
+"id": "eb-alto-horn",
+"name": "E♭ Alto Horn",
+"short": "E♭ A. Hn.",
+"track": "",
+"musicxml_id": "brass.alto-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -5,
+"chromatic": -9,
+"genres": []
+},
+{
+"id": "baritone-horn",
+"name": "Baritone Horn",
+"short": "Bar. Hn.",
+"track": "",
+"musicxml_id": "brass.baritone-horn",
+"program": 60,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"concertband",
+"marching"
+]
+},
+{
+"id": "baritone-horn-treble",
+"name": "Baritone Horn",
+"short": "Bar. Hn.",
+"track": "Baritone Horn (Treble Clef)",
+"musicxml_id": "brass.baritone-horn",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -8,
+"chromatic": -14,
+"genres": [
+"concertband"
+]
+},
+{
+"id": "posthorn",
+"name": "Posthorn",
+"short": "Psthn.",
+"track": "",
+"musicxml_id": "brass.posthorn",
+"program": 60,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "alphorn",
+"name": "Alphorn",
+"short": "AlpHn.",
+"track": "",
+"musicxml_id": "brass.alphorn",
+"program": 60,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "trumpet",
+"name": "Trumpet",
+"short": "Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "piccolo-trumpet",
+"name": "Piccolo Trumpet",
+"short": "P. Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet.piccolo",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 6,
+"chromatic": 10,
+"genres": []
+},
+{
+"id": "bb-piccolo-trumpet",
+"name": "Piccolo Trumpet in B♭",
+"short": "P. Tpt. B♭",
+"track": "",
+"musicxml_id": "brass.trumpet.piccolo",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 6,
+"chromatic": 10,
+"genres": [
+"orchestra",
+"concertband"
+]
+},
+{
+"id": "a-piccolo-trumpet",
+"name": "Piccolo Trumpet in A",
+"short": "P. Tpt. A",
+"track": "",
+"musicxml_id": "brass.trumpet.piccolo",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 5,
+"chromatic": 9,
+"genres": []
+},
+{
+"id": "f-trumpet",
+"name": "F Trumpet",
+"short": "F Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 3,
+"chromatic": 5,
+"genres": []
+},
+{
+"id": "e-trumpet",
+"name": "E Trumpet",
+"short": "E Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 2,
+"chromatic": 4,
+"genres": []
+},
+{
+"id": "eb-trumpet",
+"name": "E♭ Trumpet",
+"short": "E♭ Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 2,
+"chromatic": 3,
+"genres": []
+},
+{
+"id": "d-trumpet",
+"name": "D Trumpet",
+"short": "D Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet.d",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 1,
+"chromatic": 2,
+"genres": []
+},
+{
+"id": "c-trumpet",
+"name": "C Trumpet",
+"short": "C Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet.c",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "bb-trumpet",
+"name": "B♭ Trumpet",
+"short": "B♭ Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet.bflat",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": [
+"common",
+"jazz",
+"popular",
+"concertband",
+"marching"
+]
+},
+{
+"id": "a-trumpet",
+"name": "A Trumpet",
+"short": "A Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -2,
+"chromatic": -3,
+"genres": []
+},
+{
+"id": "pocket-trumpet",
+"name": "Pocket Trumpet",
+"short": "Pkt. Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet.pocket",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "slide-trumpet",
+"name": "Slide Trumpet",
+"short": "Sl.Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet.slide",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 1,
+"chromatic": 2,
+"genres": []
+},
+{
+"id": "tenor-trumpet",
+"name": "Tenor Trumpet",
+"short": "T. Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet.tenor",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "bass-trumpet",
+"name": "Bass Trumpet",
+"short": "B. Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet.bass",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -8,
+"chromatic": -14,
+"genres": []
+},
+{
+"id": "eb-bass-trumpet",
+"name": "E♭ Bass Trumpet",
+"short": "E♭ B. Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet.bass",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -5,
+"chromatic": -9,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "c-bass-trumpet",
+"name": "Bass Trumpet in C",
+"short": "B. Tpt. C",
+"track": "",
+"musicxml_id": "brass.trumpet.bass",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": []
+},
+{
+"id": "bb-bass-trumpet",
+"name": "B♭ Bass Trumpet",
+"short": "B♭ B. Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet.bass",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -8,
+"chromatic": -14,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "baroque-trumpet",
+"name": "Baroque Trumpet",
+"short": "Bq. Tpt.",
+"track": "",
+"musicxml_id": "brass.trumpet.baroque",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "f-baroque-trumpet",
+"name": "Baroque Trumpet in F",
+"short": "Bq. Tpt. F",
+"track": "",
+"musicxml_id": "brass.trumpet.baroque",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 3,
+"chromatic": 5,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "eb-baroque-trumpet",
+"name": "Baroque Trumpet in E♭",
+"short": "Bq. Tpt. E♭",
+"track": "",
+"musicxml_id": "brass.trumpet.baroque",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 2,
+"chromatic": 3,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "d-baroque-trumpet",
+"name": "Baroque Trumpet in D",
+"short": "Bq. Tpt. D",
+"track": "",
+"musicxml_id": "brass.trumpet.baroque",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 1,
+"chromatic": 2,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "c-baroque-trumpet",
+"name": "Baroque Trumpet in C",
+"short": "Bq. Tpt. C",
+"track": "",
+"musicxml_id": "brass.trumpet.baroque",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "bb-baroque-trumpet",
+"name": "Baroque Trumpet in B♭",
+"short": "Bq. Tpt. B♭",
+"track": "",
+"musicxml_id": "brass.trumpet.baroque",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "rag-dung",
+"name": "Rag Dung",
+"short": "Rg. Dng.",
+"track": "",
+"musicxml_id": "brass.rag-dung",
+"program": 56,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "bugle",
+"name": "Bugle",
+"short": "Bu.",
+"track": "",
+"musicxml_id": "brass.bugle",
+"program": 58,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "soprano-bugle",
+"name": "Soprano Bugle",
+"short": "S. Bu.",
+"track": "",
+"musicxml_id": "brass.bugle.soprano",
+"program": 58,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"marching"
+]
+},
+{
+"id": "alto-bugle",
+"name": "Alto Bugle",
+"short": "A. Bu.",
+"track": "",
+"musicxml_id": "brass.bugle.alto",
+"program": 58,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"marching"
+]
+},
+{
+"id": "baritone-bugle",
+"name": "Baritone Bugle",
+"short": "Bar. Bu.",
+"track": "",
+"musicxml_id": "brass.bugle.baritone",
+"program": 58,
+"clef": "G",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"marching"
+]
+},
+{
+"id": "flugelhorn",
+"name": "Flugelhorn",
+"short": "Flghn.",
+"track": "",
+"musicxml_id": "brass.flugelhorn",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": [
+"jazz",
+"concertband",
+"marching"
+]
+},
+{
+"id": "fiscorn",
+"name": "Fiscorn",
+"short": "Fsc.",
+"track": "",
+"musicxml_id": "brass.fiscorn",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "kuhlohorn",
+"name": "Kuhlohorn",
+"short": "Klhn.",
+"track": "",
+"musicxml_id": "brass.kuhlohorn",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "euphonium-bugle",
+"name": "Euphonium Bugle",
+"short": "Euph. Bu.",
+"track": "",
+"musicxml_id": "brass.bugle.euphonium-bugle",
+"program": 58,
+"clef": "G",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"marching"
+]
+},
+{
+"id": "mellophon-bugle",
+"name": "Mellophone Bugle",
+"short": "Mello. Bu.",
+"track": "",
+"musicxml_id": "brass.bugle.mellophone-bugle",
+"program": 58,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"marching"
+]
+},
+{
+"id": "contrabass-bugle",
+"name": "Contrabass Bugle",
+"short": "Cb. Bu.",
+"track": "",
+"musicxml_id": "brass.bugle.contrabass",
+"program": 58,
+"clef": "G",
+"perc": false,
+"diatonic": -14,
+"chromatic": -24,
+"genres": [
+"marching"
+]
+},
+{
+"id": "mellophone",
+"name": "Mellophone",
+"short": "Mello.",
+"track": "",
+"musicxml_id": "brass.mellophone",
+"program": 60,
+"clef": "G",
+"perc": false,
+"diatonic": -4,
+"chromatic": -7,
+"genres": [
+"jazz",
+"marching"
+]
+},
+{
+"id": "ophicleide",
+"name": "Ophicleide",
+"short": "Oph.",
+"track": "",
+"musicxml_id": "brass.ophicleide",
+"program": 56,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "f-alto-ophicleide",
+"name": "F Alto Ophicleide",
+"short": "F A. Oph.",
+"track": "",
+"musicxml_id": "brass.ophicleide",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "eb-alto-ophicleide",
+"name": "E♭ Alto Ophicleide",
+"short": "E♭ A. Oph.",
+"track": "",
+"musicxml_id": "brass.ophicleide",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "c-bass-ophicleide",
+"name": "C Bass Ophicleide",
+"short": "C B. Oph.",
+"track": "",
+"musicxml_id": "brass.ophicleide",
+"program": 56,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bb-bass-ophicleide",
+"name": "B♭ Bass Ophicleide",
+"short": "B♭ B. Oph.",
+"track": "",
+"musicxml_id": "brass.ophicleide",
+"program": 56,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "eb-contrabass-ophicleide",
+"name": "E♭ Contrabass Ophicleide",
+"short": "E♭ Cb. Oph.",
+"track": "",
+"musicxml_id": "brass.ophicleide",
+"program": 56,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "cornettino",
+"name": "Cornettino",
+"short": "Co.",
+"track": "",
+"musicxml_id": "brass.cornettino",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "cornett",
+"name": "Cornett",
+"short": "Co.",
+"track": "",
+"musicxml_id": "brass.cornett",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "soprano-cornett",
+"name": "Soprano Cornett",
+"short": "S. Co.",
+"track": "",
+"musicxml_id": "brass.cornett",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "alto-cornett",
+"name": "Alto Cornett",
+"short": "A. Co.",
+"track": "",
+"musicxml_id": "brass.cornett",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "tenor-cornett",
+"name": "Tenor Cornett",
+"short": "T. Co.",
+"track": "",
+"musicxml_id": "brass.cornett.tenor",
+"program": 56,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "serpent",
+"name": "Serpent",
+"short": "Spt.",
+"track": "",
+"musicxml_id": "brass.serpent",
+"program": 56,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "alto-sackbut",
+"name": "Alto Sackbut",
+"short": "A. Sack.",
+"track": "",
+"musicxml_id": "brass.sackbutt.alto",
+"program": 57,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "tenor-sackbut",
+"name": "Tenor Sackbut",
+"short": "T. Sack.",
+"track": "",
+"musicxml_id": "brass.sackbutt.tenor",
+"program": 57,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "bass-sackbut",
+"name": "Bass Sackbut",
+"short": "B. Sack.",
+"track": "",
+"musicxml_id": "brass.sackbutt.bass",
+"program": 57,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "trombone",
+"name": "Trombone",
+"short": "Tbn.",
+"track": "",
+"musicxml_id": "brass.trombone",
+"program": 57,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"popular",
+"concertband",
+"marching"
+]
+},
+{
+"id": "trombone-treble",
+"name": "Trombone",
+"short": "Tbn.",
+"track": "Trombone (Treble Clef)",
+"musicxml_id": "brass.trombone",
+"program": 57,
+"clef": "G",
+"perc": false,
+"diatonic": -8,
+"chromatic": -14,
+"genres": []
+},
+{
+"id": "soprano-trombone",
+"name": "Soprano Trombone",
+"short": "S. Tbn.",
+"track": "",
+"musicxml_id": "brass.trombone",
+"program": 57,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "alto-trombone",
+"name": "Alto Trombone",
+"short": "A. Tbn.",
+"track": "",
+"musicxml_id": "brass.trombone.alto",
+"program": 57,
+"clef": "C3",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "tenor-trombone",
+"name": "Tenor Trombone",
+"short": "T. Tbn.",
+"track": "",
+"musicxml_id": "brass.trombone.tenor",
+"program": 57,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bass-trombone",
+"name": "Bass Trombone",
+"short": "B. Tbn.",
+"track": "",
+"musicxml_id": "brass.trombone.bass",
+"program": 57,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"jazz",
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "contrabass-trombone",
+"name": "Contrabass Trombone",
+"short": "Cb. Tbn.",
+"track": "",
+"musicxml_id": "brass.trombone.contrabass",
+"program": 57,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "cimbasso",
+"name": "Cimbasso",
+"short": "Cim.",
+"track": "",
+"musicxml_id": "brass.cimbasso",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "euphonium",
+"name": "Euphonium",
+"short": "Euph.",
+"track": "",
+"musicxml_id": "brass.euphonium",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"concertband",
+"marching"
+]
+},
+{
+"id": "euphonium-treble",
+"name": "Euphonium",
+"short": "Euph.",
+"track": "Euphonium (Treble Clef)",
+"musicxml_id": "brass.euphonium",
+"program": 58,
+"clef": "G",
+"perc": false,
+"diatonic": -8,
+"chromatic": -14,
+"genres": [
+"concertband",
+"marching"
+]
+},
+{
+"id": "tuba",
+"name": "Tuba",
+"short": "Tba.",
+"track": "",
+"musicxml_id": "brass.tuba",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "f-tuba",
+"name": "F Tuba",
+"short": "F Tb.",
+"track": "",
+"musicxml_id": "brass.tuba",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "eb-tuba",
+"name": "E♭ Tuba",
+"short": "E♭ Tb.",
+"track": "",
+"musicxml_id": "brass.tuba",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "eb-tuba-treble",
+"name": "E♭ Tuba",
+"short": "E♭ Tb.",
+"track": "E♭ Tuba (Treble Clef)",
+"musicxml_id": "brass.tuba",
+"program": 58,
+"clef": "G",
+"perc": false,
+"diatonic": -12,
+"chromatic": -21,
+"genres": []
+},
+{
+"id": "c-tuba",
+"name": "C Tuba",
+"short": "C Tb.",
+"track": "",
+"musicxml_id": "brass.tuba",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bb-tuba",
+"name": "B♭ Tuba",
+"short": "B♭ Tb.",
+"track": "",
+"musicxml_id": "brass.tuba",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "bb-tuba-treble",
+"name": "B♭ Tuba",
+"short": "B♭ Tb.",
+"track": "B♭ Tuba (Treble Clef)",
+"musicxml_id": "brass.tuba",
+"program": 58,
+"clef": "G",
+"perc": false,
+"diatonic": -15,
+"chromatic": -26,
+"genres": []
+},
+{
+"id": "bass-f-tuba",
+"name": "Bass Tuba in F",
+"short": "Ba. Tb. F",
+"track": "",
+"musicxml_id": "brass.tuba.bass",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bass-eb-tuba",
+"name": "Bass Tuba in E♭",
+"short": "Ba. Tb. E♭",
+"track": "",
+"musicxml_id": "brass.tuba.bass",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "subcontrabass-tuba",
+"name": "Sub-Contrabass Tuba",
+"short": "SCb. Tb.",
+"track": "",
+"musicxml_id": "brass.tuba.subcontrabass",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "helicon",
+"name": "Helicon",
+"short": "Helicon",
+"track": "",
+"musicxml_id": "brass.helicon",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "sousaphone",
+"name": "Sousaphone",
+"short": "Sphn.",
+"track": "",
+"musicxml_id": "brass.sousaphone",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"jazz",
+"marching"
+]
+},
+{
+"id": "bb-sousaphone",
+"name": "B♭ Sousaphone",
+"short": "B♭ Sphn.",
+"track": "",
+"musicxml_id": "brass.sousaphone",
+"program": 58,
+"clef": "F",
+"perc": false,
+"diatonic": -8,
+"chromatic": -14,
+"genres": [
+"jazz",
+"marching"
+]
+},
+{
+"id": "wagner-tuba",
+"name": "Wagner Tuba",
+"short": "Wag. Tb.",
+"track": "",
+"musicxml_id": "brass.wagner-tuba",
+"program": 56,
+"clef": "F",
+"perc": false,
+"diatonic": -4,
+"chromatic": -7,
+"genres": []
+},
+{
+"id": "bb-wagner-tuba",
+"name": "B♭ Wagner Tuba",
+"short": "B♭ Wag. Tb.",
+"track": "",
+"musicxml_id": "brass.wagner-tuba",
+"program": 60,
+"clef": "F",
+"perc": false,
+"diatonic": -1,
+"chromatic": -2,
+"genres": []
+},
+{
+"id": "f-wagner-tuba",
+"name": "F Wagner Tuba",
+"short": "F Wag. Tb.",
+"track": "",
+"musicxml_id": "brass.wagner-tuba",
+"program": 56,
+"clef": "F",
+"perc": false,
+"diatonic": -4,
+"chromatic": -7,
+"genres": []
+},
+{
+"id": "conch",
+"name": "Conch",
+"short": "Cnch.",
+"track": "",
+"musicxml_id": "brass.conch-shell",
+"program": 60,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "didgeridoo",
+"name": "Didgeridoo",
+"short": "Doo.",
+"track": "",
+"musicxml_id": "brass.didgeridoo",
+"program": 57,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "horagai",
+"name": "Horagai",
+"short": "Hor.",
+"track": "",
+"musicxml_id": "brass.horagai",
+"program": 60,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "shofar",
+"name": "Shofar",
+"short": "Sho.",
+"track": "",
+"musicxml_id": "brass.shofar",
+"program": 60,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "vuvuzela",
+"name": "Vuvuzela",
+"short": "Vuv.",
+"track": "",
+"musicxml_id": "brass.vuvuzela",
+"program": 56,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "timpani",
+"name": "Timpani",
+"short": "Timp.",
+"track": "",
+"musicxml_id": "drum.timpani",
+"program": 47,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "roto-toms",
+"name": "Roto-Toms",
+"short": "Roto",
+"track": "",
+"musicxml_id": "drum.rototom",
+"program": 117,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "glockenspiel",
+"name": "Glockenspiel",
+"short": "Glock.",
+"track": "",
+"musicxml_id": "pitched-percussion.glockenspiel",
+"program": 9,
+"clef": "G",
+"perc": false,
+"diatonic": 14,
+"chromatic": 24,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"concertband",
+"marching",
+"classroom"
+]
+},
+{
+"id": "orff-soprano-glockenspiel",
+"name": "Orff Soprano Glockenspiel",
+"short": "O. S. Glk.",
+"track": "",
+"musicxml_id": "pitched-percussion.glockenspiel.soprano",
+"program": 9,
+"clef": "G15ma",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "orff-alto-glockenspiel",
+"name": "Orff Alto Glockenspiel",
+"short": "O. A. Glk.",
+"track": "",
+"musicxml_id": "pitched-percussion.glockenspiel.alto",
+"program": 9,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "crotales",
+"name": "Crotales",
+"short": "Crot.",
+"track": "",
+"musicxml_id": "metal.crotales",
+"program": 10,
+"clef": "G",
+"perc": false,
+"diatonic": 14,
+"chromatic": 24,
+"genres": [
+"concertband",
+"orchestra",
+"marching"
+]
+},
+{
+"id": "tubaphone",
+"name": "Tubaphone",
+"short": "Tph.",
+"track": "",
+"musicxml_id": "",
+"program": 47,
+"clef": "G15ma",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "almglocken",
+"name": "Almglocken",
+"short": "Almg.",
+"track": "",
+"musicxml_id": "metal.bells.almglocken",
+"program": 108,
+"clef": "G15ma",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "vibraphone",
+"name": "Vibraphone",
+"short": "Vib.",
+"track": "",
+"musicxml_id": "pitched-percussion.vibraphone",
+"program": 11,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "metallophone",
+"name": "Metallophone",
+"short": "Met.",
+"track": "",
+"musicxml_id": "pitched-percussion.metallophone",
+"program": 11,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "orff-soprano-metallophone",
+"name": "Orff Soprano Metallophone",
+"short": "O. S. Met.",
+"track": "",
+"musicxml_id": "pitched-percussion.metallophone.soprano",
+"program": 11,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "orff-alto-metallophone",
+"name": "Orff Alto Metallophone",
+"short": "O. A. Met.",
+"track": "",
+"musicxml_id": "pitched-percussion.metallophone.alto",
+"program": 11,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "orff-bass-metallophone",
+"name": "Orff Bass Metallophone",
+"short": "O. B. Met.",
+"track": "",
+"musicxml_id": "pitched-percussion.metallophone.bass",
+"program": 11,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "tubular-bells",
+"name": "Chimes",
+"short": "Cme.",
+"track": "",
+"musicxml_id": "pitched-percussion.tubular-bells",
+"program": 14,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra",
+"concertband"
+]
+},
+{
+"id": "steel-drums",
+"name": "Steel Drums",
+"short": "St. Dr.",
+"track": "",
+"musicxml_id": "metal.steel-drums",
+"program": 114,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"jazz"
+]
+},
+{
+"id": "soprano-steel-drums",
+"name": "Soprano Steel Drums",
+"short": "S. St. Dr.",
+"track": "",
+"musicxml_id": "metal.steel-drums",
+"program": 114,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "alto-steel-drums",
+"name": "Alto Steel Drums",
+"short": "A. St. Dr.",
+"track": "",
+"musicxml_id": "metal.steel-drums",
+"program": 114,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "guitar-steel-drums",
+"name": "Guitar Steel Drums",
+"short": "Gtr. St. Dr.",
+"track": "",
+"musicxml_id": "metal.steel-drums",
+"program": 114,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "tenor-steel-drums",
+"name": "Tenor Steel Drums",
+"short": "T. St. Dr.",
+"track": "",
+"musicxml_id": "metal.steel-drums",
+"program": 114,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "cello-steel-drums",
+"name": "Cello Steel Drums",
+"short": "Ce. St. Dr.",
+"track": "",
+"musicxml_id": "metal.steel-drums",
+"program": 114,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bass-steel-drums",
+"name": "Bass Steel Drums",
+"short": "B. St. Dr.",
+"track": "",
+"musicxml_id": "metal.steel-drums",
+"program": 114,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "hand-bells",
+"name": "Hand Bells",
+"short": "Ha. Be.",
+"track": "",
+"musicxml_id": "pitched-percussion.handbells",
+"program": 112,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"choral"
+]
+},
+{
+"id": "tuned-gongs",
+"name": "Tuned Gongs",
+"short": "Td. Gon.",
+"track": "",
+"musicxml_id": "metal.gong",
+"program": 14,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "flexatone",
+"name": "Flexatone",
+"short": "Flt.",
+"track": "",
+"musicxml_id": "metal.flexatone",
+"program": 14,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "musical-saw",
+"name": "Musical Saw",
+"short": "Mu. Sw.",
+"track": "",
+"musicxml_id": "metal.musical-saw",
+"program": 92,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "musical-glasses",
+"name": "Musical Glasses",
+"short": "Mu. Gla.",
+"track": "",
+"musicxml_id": "pitched-percussion.crystal-glasses",
+"program": 93,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "glass-harmonica",
+"name": "Glass Harmonica",
+"short": "Gla. Har.",
+"track": "",
+"musicxml_id": "pitched-percussion.glass-harmonica",
+"program": 92,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "xylophone",
+"name": "Xylophone",
+"short": "Xyl.",
+"track": "",
+"musicxml_id": "pitched-percussion.xylophone",
+"program": 13,
+"clef": "G",
+"perc": false,
+"diatonic": 7,
+"chromatic": 12,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"concertband",
+"marching",
+"classroom"
+]
+},
+{
+"id": "orff-soprano-xylophone",
+"name": "Orff Soprano Xylophone",
+"short": "O. S. Xyl.",
+"track": "",
+"musicxml_id": "pitched-percussion.xylophone.soprano",
+"program": 12,
+"clef": "G8va",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "orff-alto-xylophone",
+"name": "Orff Alto Xylophone",
+"short": "O. A. Xyl.",
+"track": "",
+"musicxml_id": "pitched-percussion.xylophone.alto",
+"program": 12,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "orff-bass-xylophone",
+"name": "Orff Bass Xylophone",
+"short": "O. B. Xyl.",
+"track": "",
+"musicxml_id": "pitched-percussion.xylophone.soprano",
+"program": 12,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "xylomarimba",
+"name": "Xylomarimba",
+"short": "XMrm.",
+"track": "",
+"musicxml_id": "pitched-percussion.xylomarimba",
+"program": 12,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"jazz",
+"orchestra"
+]
+},
+{
+"id": "marimba",
+"name": "Marimba",
+"short": "Mrm.",
+"track": "Marimba (Grand Staff)",
+"musicxml_id": "pitched-percussion.marimba",
+"program": 12,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "marimba-single",
+"name": "Marimba",
+"short": "Mrm.",
+"track": "Marimba (Single Staff)",
+"musicxml_id": "pitched-percussion.marimba",
+"program": 12,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "bass-marimba",
+"name": "Bass Marimba",
+"short": "B. Mrm.",
+"track": "",
+"musicxml_id": "pitched-percussion.marimba.bass",
+"program": 12,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "contrabass-marimba",
+"name": "Contrabass Marimba",
+"short": "Cb. Mrm.",
+"track": "",
+"musicxml_id": "pitched-percussion.marimba.bass",
+"program": 12,
+"clef": "F8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "dulcimer",
+"name": "Dulcimer",
+"short": "Dlc.",
+"track": "",
+"musicxml_id": "pitched-percussion.hammer-dulcimer",
+"program": 15,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "tuned-klaxon-horns",
+"name": "Tuned Klaxon Horns",
+"short": "Tn. Klx. Hns.",
+"track": "",
+"musicxml_id": "",
+"program": 84,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "kalimba",
+"name": "Kalimba",
+"short": "Kal.",
+"track": "",
+"musicxml_id": "pitched-percussion.kalimba",
+"program": 108,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "treble-kalimba",
+"name": "Treble Kalimba",
+"short": "Tr. Kal.",
+"track": "",
+"musicxml_id": "pitched-percussion.kalimba",
+"program": 108,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "alto-kalimba",
+"name": "Alto Kalimba",
+"short": "A. Kal.",
+"track": "",
+"musicxml_id": "pitched-percussion.kalimba",
+"program": 108,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "drumset",
+"name": "Drumset",
+"short": "D. Set",
+"track": "",
+"musicxml_id": "drum.group.set",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"popular",
+"concertband",
+"marching"
+]
+},
+{
+"id": "snare-drum",
+"name": "Concert Snare Drum",
+"short": "Con. Sn.",
+"track": "",
+"musicxml_id": "drum.snare-drum",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra",
+"concertband",
+"marching",
+"choral"
+]
+},
+{
+"id": "bass-drum",
+"name": "Concert Bass Drum",
+"short": "Con. BD",
+"track": "",
+"musicxml_id": "drum.bass-drum",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "piccolo-snare-drum",
+"name": "Piccolo Snare",
+"short": "Picc. Sn.",
+"track": "",
+"musicxml_id": "drum.snare-drum",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "military-drum",
+"name": "Field Drum",
+"short": "Field Dr.",
+"track": "",
+"musicxml_id": "drum.snare-drum",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "tom-toms",
+"name": "Concert Toms",
+"short": "C. Toms",
+"track": "",
+"musicxml_id": "drum.tom-tom",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "chinese-tom-toms",
+"name": "Chinese Tom-Toms",
+"short": "Ch. Toms",
+"track": "",
+"musicxml_id": "drum.group.chinese",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "bongos",
+"name": "Bongos",
+"short": "Bon.",
+"track": "",
+"musicxml_id": "drum.bongo",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra",
+"jazz",
+"popular",
+"concertband",
+"marching",
+"classroom"
+]
+},
+{
+"id": "congas",
+"name": "Congas",
+"short": "Con.",
+"track": "",
+"musicxml_id": "drum.conga",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra",
+"jazz",
+"popular",
+"concertband",
+"marching"
+]
+},
+{
+"id": "timbales",
+"name": "Timbales",
+"short": "Timb.",
+"track": "",
+"musicxml_id": "drum.timbale",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"jazz",
+"concertband",
+"marching"
+]
+},
+{
+"id": "frame-drum",
+"name": "Frame Drum",
+"short": "Fr. Dr.",
+"track": "",
+"musicxml_id": "drum.frame-drum",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "tablas",
+"name": "Tablas",
+"short": "Tbs.",
+"track": "",
+"musicxml_id": "drum.tabla",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "cuica",
+"name": "Cuica",
+"short": "Cu.",
+"track": "",
+"musicxml_id": "drum.cuica",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "finger-cymbals",
+"name": "Finger Cymbals",
+"short": "Fi. Cym.",
+"track": "",
+"musicxml_id": "metal.cymbal.finger",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "hi-hat",
+"name": "Hi-hat",
+"short": "Hi-hat",
+"track": "",
+"musicxml_id": "metal.hi-hat",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "tam-tam",
+"name": "Tam-Tam",
+"short": "Tam",
+"track": "",
+"musicxml_id": "metal.tamtam",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "bells",
+"name": "Bells",
+"short": "Be.",
+"track": "",
+"musicxml_id": "",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "sleigh-bells",
+"name": "Sleigh Bells",
+"short": "Sle. Be.",
+"track": "",
+"musicxml_id": "metal.bells.sleigh-bells",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "bell-plate",
+"name": "Bell Plate",
+"short": "Be. Pla.",
+"track": "",
+"musicxml_id": "metal.bells.bell-plate",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bowl-gongs",
+"name": "Bowl Gongs",
+"short": "Bw. Gon.",
+"track": "",
+"musicxml_id": "metal.gong",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "tubo",
+"name": "Tubo",
+"short": "Tu.",
+"track": "",
+"musicxml_id": "",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "shaker",
+"name": "Shaker",
+"short": "Sh.",
+"track": "",
+"musicxml_id": "",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "metal-castanets",
+"name": "Metal Castanets",
+"short": "Met. Cst.",
+"track": "",
+"musicxml_id": "",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world",
+"orchestra"
+]
+},
+{
+"id": "automobile-brake-drums",
+"name": "Automobile Brake Drums",
+"short": "Aut. Brk. Dr.",
+"track": "",
+"musicxml_id": "metal.brake-drums",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"concertband",
+"marching"
+]
+},
+{
+"id": "iron-pipes",
+"name": "Iron Pipes",
+"short": "Ir. Pi.",
+"track": "",
+"musicxml_id": "",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "chains",
+"name": "Chains",
+"short": "Chn.",
+"track": "",
+"musicxml_id": "",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "anvil",
+"name": "Anvil",
+"short": "Anv.",
+"track": "",
+"musicxml_id": "metal.anvil",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "wood-blocks",
+"name": "Wood Blocks",
+"short": "Wd. Bl.",
+"track": "",
+"musicxml_id": "wood.wood-block",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra",
+"concertband",
+"marching",
+"classroom"
+]
+},
+{
+"id": "temple-blocks",
+"name": "Temple Blocks",
+"short": "Tmp. Bl.",
+"track": "",
+"musicxml_id": "wood.temple-block",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "triangle",
+"name": "Triangle",
+"short": "Trgl.",
+"track": "",
+"musicxml_id": "metal.triangle",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra",
+"concertband",
+"marching",
+"classroom"
+]
+},
+{
+"id": "cymbal",
+"name": "Cymbal",
+"short": "Cym.",
+"track": "",
+"musicxml_id": "metal.cymbal.crash",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra",
+"concertband",
+"marching",
+"classroom"
+]
+},
+{
+"id": "ride-cymbal",
+"name": "Ride Cymbal",
+"short": "R. Cym.",
+"track": "",
+"musicxml_id": "metal.cymbal.ride",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "chinese-cymbal",
+"name": "Chinese Cymbal",
+"short": "Ch. Cym.",
+"track": "",
+"musicxml_id": "metal.cymbal.chinese",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"concertband",
+"marching"
+]
+},
+{
+"id": "crash-cymbal",
+"name": "Crash Cymbal",
+"short": "Cr. Cym.",
+"track": "",
+"musicxml_id": "metal.cymbal.crash",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"concertband",
+"marching"
+]
+},
+{
+"id": "splash-cymbal",
+"name": "Splash Cymbal",
+"short": "Sp. Cym.",
+"track": "",
+"musicxml_id": "metal.cymbal.splash",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"concertband",
+"marching"
+]
+},
+{
+"id": "cowbell",
+"name": "Cowbell",
+"short": "Cwb.",
+"track": "",
+"musicxml_id": "metal.bells.cowbell",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "claves",
+"name": "Claves",
+"short": "Clv.",
+"track": "",
+"musicxml_id": "wood.claves",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"concertband",
+"marching",
+"classroom"
+]
+},
+{
+"id": "castanets",
+"name": "Castanets",
+"short": "Cst.",
+"track": "",
+"musicxml_id": "wood.castanets",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "guiro",
+"name": "Güiro",
+"short": "Gro.",
+"track": "",
+"musicxml_id": "wood.guiro",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world",
+"jazz",
+"classroom"
+]
+},
+{
+"id": "maracas",
+"name": "Maracas",
+"short": "Mrcs.",
+"track": "",
+"musicxml_id": "rattle.maraca",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world",
+"orchestra",
+"classroom"
+]
+},
+{
+"id": "cabasa",
+"name": "Cabasa",
+"short": "Cabs.",
+"track": "",
+"musicxml_id": "rattle.cabasa",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "quijada",
+"name": "Quijada",
+"short": "Qui.",
+"track": "",
+"musicxml_id": "rattle.jawbone",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "vibraslap",
+"name": "Vibraslap",
+"short": "Vibslp.",
+"track": "",
+"musicxml_id": "rattle.vibraslap",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"concertband",
+"classroom"
+]
+},
+{
+"id": "slit-drum",
+"name": "Slit Drum",
+"short": "Slt. Dr.",
+"track": "",
+"musicxml_id": "drum.slit-drum",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "whip",
+"name": "Whip",
+"short": "Wh.",
+"track": "",
+"musicxml_id": "effect.whip",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra",
+"concertband",
+"classroom"
+]
+},
+{
+"id": "ratchet",
+"name": "Ratchet",
+"short": "Rat.",
+"track": "",
+"musicxml_id": "rattle.ratchet",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "thundersheet",
+"name": "Thundersheet",
+"short": "Thu.",
+"track": "",
+"musicxml_id": "metal.thundersheet",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "sandpaper-blocks",
+"name": "Sandpaper Blocks",
+"short": "Sa. Bl.",
+"track": "",
+"musicxml_id": "wood.sand-block",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "wooden-wind-chimes",
+"name": "Wooden Wind Chimes",
+"short": "Wd. Wn. Ch.",
+"track": "",
+"musicxml_id": "metal.bells.wind-chimes",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bamboo-wind-chimes",
+"name": "Bamboo Wind Chimes",
+"short": "Bam. Wn. Ch.",
+"track": "",
+"musicxml_id": "metal.bells.wind-chimes",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "metal-wind-chimes",
+"name": "Metal Wind Chimes",
+"short": "Met. Wn Ch.",
+"track": "",
+"musicxml_id": "metal.bells.wind-chimes",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra",
+"concertband",
+"marching"
+]
+},
+{
+"id": "glass-wind-chimes",
+"name": "Glass Wind Chimes",
+"short": "Gl. Wn Ch.",
+"track": "",
+"musicxml_id": "metal.bells.wind-chimes",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "shell-wind-chimes",
+"name": "Shell Wind Chimes",
+"short": "Sh. Wn Ch.",
+"track": "",
+"musicxml_id": "metal.bells.wind-chimes",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "stones",
+"name": "Stones",
+"short": "Sto.",
+"track": "",
+"musicxml_id": "rattle.lava-stones",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "tambourine",
+"name": "Tambourine",
+"short": "Tamb.",
+"track": "",
+"musicxml_id": "drum.tambourine",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra",
+"popular",
+"concertband",
+"marching",
+"classroom"
+]
+},
+{
+"id": "percussion",
+"name": "Percussion",
+"short": "Perc.",
+"track": "",
+"musicxml_id": "drum.group.set",
+"program": 48,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra",
+"popular",
+"concertband",
+"marching",
+"choral"
+]
+},
+{
+"id": "marching-snare",
+"name": "Snare Drum",
+"short": "S.D.",
+"track": "",
+"musicxml_id": "drum.snare-drum",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"marching"
+]
+},
+{
+"id": "marching-tenor-drums",
+"name": "Tenor Drums",
+"short": "T.D.",
+"track": "",
+"musicxml_id": "drum.tenor-drum",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"marching"
+]
+},
+{
+"id": "marching-bass-drums",
+"name": "Bass Drums",
+"short": "B.D.",
+"track": "",
+"musicxml_id": "drum.bass-drum",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"marching"
+]
+},
+{
+"id": "marching-cymbals",
+"name": "Cymbals",
+"short": "Cym.",
+"track": "",
+"musicxml_id": "metal.cymbal.crash",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"marching"
+]
+},
+{
+"id": "finger-snap",
+"name": "Finger Snap",
+"short": "Fi. Sna.",
+"track": "",
+"musicxml_id": "effect.snap",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"popular",
+"choral",
+"classroom"
+]
+},
+{
+"id": "hand-clap",
+"name": "Hand Clap",
+"short": "Hd. Clp.",
+"track": "",
+"musicxml_id": "effect.hand-clap",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"popular",
+"choral",
+"classroom"
+]
+},
+{
+"id": "slap",
+"name": "Slap",
+"short": "Sla.",
+"track": "",
+"musicxml_id": "effect.slap",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"popular",
+"choral",
+"classroom"
+]
+},
+{
+"id": "stamp",
+"name": "Stamp",
+"short": "Sta.",
+"track": "",
+"musicxml_id": "effect.stamp",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"popular",
+"choral",
+"classroom"
+]
+},
+{
+"id": "voice",
+"name": "Voice",
+"short": "Vo.",
+"track": "",
+"musicxml_id": "voice.vocals",
+"program": 52,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"choral"
+]
+},
+{
+"id": "boy-soprano",
+"name": "Boy Soprano",
+"short": "B. S.",
+"track": "",
+"musicxml_id": "voice.child",
+"program": 52,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra",
+"choral"
+]
+},
+{
+"id": "soprano",
+"name": "Soprano",
+"short": "S.",
+"track": "",
+"musicxml_id": "voice.soprano",
+"program": 52,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"choral"
+]
+},
+{
+"id": "mezzo-soprano",
+"name": "Mezzo-soprano",
+"short": "Mzs.",
+"track": "",
+"musicxml_id": "voice.mezzo-soprano",
+"program": 52,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra",
+"choral"
+]
+},
+{
+"id": "alto",
+"name": "Alto",
+"short": "A.",
+"track": "",
+"musicxml_id": "voice.alto",
+"program": 52,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"choral"
+]
+},
+{
+"id": "contralto",
+"name": "Contralto",
+"short": "Contr.",
+"track": "",
+"musicxml_id": "voice.alto",
+"program": 52,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra",
+"choral"
+]
+},
+{
+"id": "countertenor",
+"name": "Countertenor",
+"short": "Ct.",
+"track": "",
+"musicxml_id": "voice.countertenor",
+"program": 52,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"choral"
+]
+},
+{
+"id": "tenor",
+"name": "Tenor",
+"short": "T.",
+"track": "",
+"musicxml_id": "voice.tenor",
+"program": 52,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"choral"
+]
+},
+{
+"id": "baritone",
+"name": "Baritone",
+"short": "Bar.",
+"track": "",
+"musicxml_id": "voice.baritone",
+"program": 52,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"choral"
+]
+},
+{
+"id": "bass",
+"name": "Bass",
+"short": "B.",
+"track": "",
+"musicxml_id": "voice.bass",
+"program": 52,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"choral"
+]
+},
+{
+"id": "women",
+"name": "Women",
+"short": "W.",
+"track": "",
+"musicxml_id": "voice.female",
+"program": 52,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"choral"
+]
+},
+{
+"id": "men",
+"name": "Men",
+"short": "M.",
+"track": "",
+"musicxml_id": "voice.male",
+"program": 52,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"choral"
+]
+},
+{
+"id": "soprano-c-clef",
+"name": "Soprano",
+"short": "S.",
+"track": "Soprano (C Clef)",
+"musicxml_id": "voice.soprano",
+"program": 52,
+"clef": "C1",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "mezzo-soprano-c-clef",
+"name": "Mezzo-soprano",
+"short": "Mzs.",
+"track": "Mezzo-soprano (C Clef)",
+"musicxml_id": "voice.mezzo-soprano",
+"program": 52,
+"clef": "C2",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "alto-c-clef",
+"name": "Alto",
+"short": "A.",
+"track": "Alto (C Clef)",
+"musicxml_id": "voice.alto",
+"program": 52,
+"clef": "C3",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "tenor-c-clef",
+"name": "Tenor",
+"short": "T.",
+"track": "Tenor (C Clef)",
+"musicxml_id": "voice.tenor",
+"program": 52,
+"clef": "C4",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "baritone-c-clef",
+"name": "Baritone",
+"short": "Bar.",
+"track": "Baritone (C Clef)",
+"musicxml_id": "voice.baritone",
+"program": 52,
+"clef": "C5",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "kazoo",
+"name": "Kazoo",
+"short": "Kaz.",
+"track": "",
+"musicxml_id": "voice.kazoo",
+"program": 85,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"choral"
+]
+},
+{
+"id": "piano",
+"name": "Piano",
+"short": "Pno.",
+"track": "",
+"musicxml_id": "keyboard.piano",
+"program": 0,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"popular",
+"classroom",
+"choral"
+]
+},
+{
+"id": "grand-piano",
+"name": "Grand Piano",
+"short": "Pno.",
+"track": "",
+"musicxml_id": "keyboard.piano.grand",
+"program": 0,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra",
+"concertband"
+]
+},
+{
+"id": "upright-piano",
+"name": "Upright Piano",
+"short": "Pno.",
+"track": "",
+"musicxml_id": "keyboard.piano.upright",
+"program": 0,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "honky-tonk-piano",
+"name": "Honky Tonk Piano",
+"short": "Hnk. Pno.",
+"track": "",
+"musicxml_id": "keyboard.piano.honky-tonk",
+"program": 3,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"jazz",
+"popular"
+]
+},
+{
+"id": "toy-piano",
+"name": "Toy Piano",
+"short": "Toy Pno.",
+"track": "",
+"musicxml_id": "keyboard.piano.toy",
+"program": 0,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"classroom"
+]
+},
+{
+"id": "clavichord",
+"name": "Clavichord",
+"short": "Cch.",
+"track": "",
+"musicxml_id": "keyboard.clavichord",
+"program": 7,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "harpsichord",
+"name": "Harpsichord",
+"short": "Hch.",
+"track": "",
+"musicxml_id": "keyboard.harpsichord",
+"program": 6,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra",
+"earlymusic"
+]
+},
+{
+"id": "virginal",
+"name": "Virginal",
+"short": "Vir.",
+"track": "",
+"musicxml_id": "keyboard.virginal",
+"program": 6,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "celesta",
+"name": "Celesta",
+"short": "Cel.",
+"track": "",
+"musicxml_id": "keyboard.celesta",
+"program": 8,
+"clef": "G",
+"perc": false,
+"diatonic": 7,
+"chromatic": 12,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "electric-piano",
+"name": "Electric Piano",
+"short": "El. Pno.",
+"track": "",
+"musicxml_id": "keyboard.piano.electric",
+"program": 4,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"jazz",
+"popular"
+]
+},
+{
+"id": "clavinet",
+"name": "Clavinet",
+"short": "Clav.",
+"track": "",
+"musicxml_id": "keyboard.clavichord.synth",
+"program": 7,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"jazz"
+]
+},
+{
+"id": "organ",
+"name": "Organ",
+"short": "Org.",
+"track": "",
+"musicxml_id": "keyboard.organ",
+"program": 19,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"popular"
+]
+},
+{
+"id": "percussive-organ",
+"name": "Percussive Organ",
+"short": "Perc. Org.",
+"track": "",
+"musicxml_id": "keyboard.organ.percussive",
+"program": 17,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "hammond-organ",
+"name": "Hammond Organ",
+"short": "Hm. Org.",
+"track": "",
+"musicxml_id": "keyboard.organ.drawbar",
+"program": 16,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"jazz",
+"popular"
+]
+},
+{
+"id": "rotary-organ",
+"name": "Rotary Organ",
+"short": "Rot. Org.",
+"track": "",
+"musicxml_id": "keyboard.organ.rotary",
+"program": 18,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "pipe-organ",
+"name": "Pipe Organ",
+"short": "Org.",
+"track": "Pipe Organ",
+"musicxml_id": "keyboard.organ.pipe",
+"program": 19,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra"
+]
+},
+{
+"id": "harmonium",
+"name": "Harmonium",
+"short": "Harm.",
+"track": "",
+"musicxml_id": "keyboard.harmonium",
+"program": 20,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "reed-organ",
+"name": "Reed Organ",
+"short": "Rd. Org.",
+"track": "",
+"musicxml_id": "keyboard.organ.reed",
+"program": 20,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "effect-synth",
+"name": "Effect Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.effects",
+"program": 96,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "atmosphere-synth",
+"name": "Atmosphere Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.effects.atmosphere",
+"program": 99,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "brightness-synth",
+"name": "Brightness Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.effects.brightness",
+"program": 100,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "crystal-synth",
+"name": "Crystal Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.effects.crystal",
+"program": 98,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "echoes-synth",
+"name": "Echoes Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.effects.echoes",
+"program": 102,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "goblins-synth",
+"name": "Goblins Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.effects.goblins",
+"program": 101,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "rain-synth",
+"name": "Rain Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.effects.rain",
+"program": 96,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "sci-fi-synth",
+"name": "Sci-fi Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.effects.sci-fi",
+"program": 103,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "soundtrack-synth",
+"name": "Soundtrack Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.effects.soundtrack",
+"program": 97,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "pad-synth",
+"name": "Pad Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.pad",
+"program": 88,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "new-age-synth",
+"name": "New Age Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.pad",
+"program": 88,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "warm-synth",
+"name": "Warm Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.pad.warm",
+"program": 89,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "poly-synth",
+"name": "Poly Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.pad.polysynth",
+"program": 90,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "choir-synth",
+"name": "Choir Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.pad.choir",
+"program": 91,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "bowed-synth",
+"name": "Bowed Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.pad.bowed",
+"program": 92,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "metallic-synth",
+"name": "Metallic Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.pad.metallic",
+"program": 93,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "halo-synth",
+"name": "Halo Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.pad.halo",
+"program": 94,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "sweep-synth",
+"name": "Sweep Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.pad.warm",
+"program": 95,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "saw-synth",
+"name": "Saw Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.tone.sawtooth",
+"program": 81,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "sine-synth",
+"name": "Sine Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.tone.sine",
+"program": 79,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "square-synth",
+"name": "Square Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "synth.tone.sine",
+"program": 80,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "ondes-martenot",
+"name": "Ondes Martenot",
+"short": "O.M.",
+"track": "",
+"musicxml_id": "keyboard.ondes-martenot",
+"program": 79,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "mallet-synthesizer",
+"name": "Mallet Synthesizer",
+"short": "Mal. Syn.",
+"track": "",
+"musicxml_id": "synth.group",
+"program": 80,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "bass-synthesizer",
+"name": "Bass Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "pluck.bass.synth",
+"program": 38,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "brass-synthesizer",
+"name": "Brass Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "brass.group.synth",
+"program": 62,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "string-synthesizer",
+"name": "String Synthesizer",
+"short": "Synth.",
+"track": "",
+"musicxml_id": "strings.group.synth",
+"program": 50,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "theremin",
+"name": "Theremin",
+"short": "Thmn.",
+"track": "",
+"musicxml_id": "synth.theremin",
+"program": 79,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "percussion-synthesizer",
+"name": "Percussion Synthesizer",
+"short": "Perc. Syn.",
+"track": "",
+"musicxml_id": "drum.tom-tom.synth",
+"program": 0,
+"clef": "PERC",
+"perc": true,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular",
+"marching",
+"electronic"
+]
+},
+{
+"id": "banjo",
+"name": "Banjo",
+"short": "Bj.",
+"track": "",
+"musicxml_id": "pluck.banjo",
+"program": 105,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"popular"
+]
+},
+{
+"id": "tenor-banjo",
+"name": "Tenor Banjo",
+"short": "T. Bj.",
+"track": "",
+"musicxml_id": "pluck.banjo.tenor",
+"program": 105,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "irish-tenor-banjo",
+"name": "Irish Tenor Banjo",
+"short": "ITB",
+"track": "",
+"musicxml_id": "pluck.banjo.tenor",
+"program": 105,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "balalaika",
+"name": "Balalaika",
+"short": "Bal.",
+"track": "Balalaika",
+"musicxml_id": "pluck.balalaika",
+"program": 107,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "balalaika-piccolo",
+"name": "Piccolo Balalaika",
+"short": "Pic. Bal.",
+"track": "Piccolo Balalaika",
+"musicxml_id": "pluck.balalaika.piccolo",
+"program": 107,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "balalaika-prima",
+"name": "Prima Balalaika",
+"short": "Pr. Bal.",
+"track": "Prima Balalaika",
+"musicxml_id": "pluck.balalaika.prima",
+"program": 107,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "balalaika-secunda",
+"name": "Secunda Balalaika",
+"short": "Sec. Bal.",
+"track": "Secunda Balalaika",
+"musicxml_id": "pluck.balalaika.secunda",
+"program": 107,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "balalaika-alto",
+"name": "Alto Balalaika",
+"short": "Al. Bal.",
+"track": "Alto Balalaika",
+"musicxml_id": "pluck.balalaika.alto",
+"program": 107,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "balalaika-bass",
+"name": "Bass Balalaika",
+"short": "B. Bal.",
+"track": "Bass Balalaika",
+"musicxml_id": "pluck.balalaika.bass",
+"program": 107,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "balalaika-contrabass",
+"name": "Contrabass Balalaika",
+"short": "Cb. Bal.",
+"track": "Contrabass Balalaika",
+"musicxml_id": "pluck.balalaika.contrabass",
+"program": 107,
+"clef": "F8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bouzouki-3-course",
+"name": "Bouzouki",
+"short": "Bou.",
+"track": "Bouzouki (3-course)",
+"musicxml_id": "pluck.bouzouki",
+"program": 24,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "bouzouki-4-course",
+"name": "Bouzouki",
+"short": "Bou.",
+"track": "Bouzouki (4-course)",
+"musicxml_id": "pluck.bouzouki",
+"program": 24,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "soprano-guitar",
+"name": "Soprano Guitar",
+"short": "S. Guit.",
+"track": "",
+"musicxml_id": "pluck.guitar",
+"program": 24,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "alto-guitar",
+"name": "Alto Guitar",
+"short": "A. Guit.",
+"track": "",
+"musicxml_id": "pluck.guitar",
+"program": 24,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "guitar-nylon",
+"name": "Classical Guitar",
+"short": "Guit.",
+"track": "",
+"musicxml_id": "pluck.guitar.nylon-string",
+"program": 24,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"popular"
+]
+},
+{
+"id": "guitar-nylon-treble-clef",
+"name": "Guitar",
+"short": "Guit.",
+"track": "Guitar (Treble Clef)",
+"musicxml_id": "pluck.guitar.nylon-string",
+"program": 24,
+"clef": "G",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": []
+},
+{
+"id": "7-string-guitar",
+"name": "7-string Guitar",
+"short": "Guit.",
+"track": "",
+"musicxml_id": "pluck.guitar.nylon-string",
+"program": 24,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "cavaquinho",
+"name": "Cavaquinho",
+"short": "Cava.",
+"track": "",
+"musicxml_id": "pluck.guitar",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "baritone-guitar",
+"name": "Baritone Guitar",
+"short": "Bar. Guit.",
+"track": "",
+"musicxml_id": "pluck.guitar",
+"program": 24,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "contra-guitar",
+"name": "Contra Guitar",
+"short": "C. Guit.",
+"track": "",
+"musicxml_id": "pluck.guitar",
+"program": 24,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "guitar-steel",
+"name": "Acoustic Guitar",
+"short": "Guit.",
+"track": "",
+"musicxml_id": "pluck.guitar.acoustic",
+"program": 25,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"popular",
+"classroom"
+]
+},
+{
+"id": "guitar-steel-treble-clef",
+"name": "Guitar",
+"short": "Guit.",
+"track": "Acoustic Guitar (Treble Clef)",
+"musicxml_id": "pluck.guitar.acoustic",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": []
+},
+{
+"id": "11-string-alto-guitar",
+"name": "11-string Alto Guitar",
+"short": "11-str. A. Guit.",
+"track": "",
+"musicxml_id": "pluck.guitar",
+"program": 24,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "12-string-guitar",
+"name": "12-string Guitar",
+"short": "12-str. Guit.",
+"track": "",
+"musicxml_id": "pluck.guitar",
+"program": 25,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular"
+]
+},
+{
+"id": "pedal-steel-guitar",
+"name": "Pedal Steel Guitar",
+"short": "Ped. St. Guit.",
+"track": "",
+"musicxml_id": "pluck.guitar.pedal-steel",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular"
+]
+},
+{
+"id": "electric-guitar",
+"name": "Electric Guitar",
+"short": "El. Guit.",
+"track": "",
+"musicxml_id": "pluck.guitar.electric",
+"program": 27,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"popular",
+"marching"
+]
+},
+{
+"id": "electric-guitar-treble-clef",
+"name": "Electric Guitar",
+"short": "El. Guit.",
+"track": "Electric Guitar (Treble Clef)",
+"musicxml_id": "pluck.guitar.electric",
+"program": 27,
+"clef": "G8vb",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": []
+},
+{
+"id": "harp",
+"name": "Harp",
+"short": "Hrp.",
+"track": "",
+"musicxml_id": "pluck.harp",
+"program": 46,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"orchestra"
+]
+},
+{
+"id": "koto",
+"name": "Koto",
+"short": "Ko.",
+"track": "",
+"musicxml_id": "pluck.koto",
+"program": 107,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "oud",
+"name": "Oud",
+"short": "O.",
+"track": "",
+"musicxml_id": "pluck.oud",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"earlymusic",
+"world"
+]
+},
+{
+"id": "lute",
+"name": "Lute",
+"short": "Lt.",
+"track": "",
+"musicxml_id": "pluck.lute",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "ren.-tenor-lute-5-course",
+"name": "Lute",
+"short": "Lt.",
+"track": "Lute 5-course",
+"musicxml_id": "pluck.lute",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "ren.-tenor-lute-6-course",
+"name": "Lute",
+"short": "Lt.",
+"track": "Lute 6-course",
+"musicxml_id": "pluck.lute",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "ren.-tenor-lute-7-course",
+"name": "Lute",
+"short": "Lt.",
+"track": "Lute 7-course",
+"musicxml_id": "pluck.lute",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "ren.-tenor-lute-8-course",
+"name": "Lute",
+"short": "Lt.",
+"track": "Lute 8-course",
+"musicxml_id": "pluck.lute",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "ren.-tenor-lute-9-course",
+"name": "Lute",
+"short": "Lt.",
+"track": "Lute 9-course",
+"musicxml_id": "pluck.lute",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "ren.-tenor-lute-10-course",
+"name": "Lute",
+"short": "Lt.",
+"track": "Lute 10-course",
+"musicxml_id": "pluck.lute",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "baroque-lute-13-course",
+"name": "Lute",
+"short": "Lt.",
+"track": "Lute 13-course",
+"musicxml_id": "pluck.lute",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "archlute-14-course",
+"name": "Archlute",
+"short": "A. Lt.",
+"track": "",
+"musicxml_id": "pluck.archlute",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "theorbo-14-course",
+"name": "Theorbo",
+"short": "Thb.",
+"track": "",
+"musicxml_id": "pluck.theorbo",
+"program": 25,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "mandolin",
+"name": "Mandolin",
+"short": "Mdn.",
+"track": "",
+"musicxml_id": "pluck.mandolin",
+"program": 24,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"popular"
+]
+},
+{
+"id": "mandola",
+"name": "Mandola",
+"short": "Mda.",
+"track": "",
+"musicxml_id": "pluck.mandola",
+"program": 24,
+"clef": "C3",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "alto-mandola",
+"name": "Alto Mandola",
+"short": "A. Mda.",
+"track": "",
+"musicxml_id": "pluck.mandola",
+"program": 24,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "tenor-mandola",
+"name": "Tenor Mandola",
+"short": "T. Mda.",
+"track": "",
+"musicxml_id": "pluck.mandola",
+"program": 24,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "mandocello",
+"name": "Mandocello",
+"short": "Mncl.",
+"track": "",
+"musicxml_id": "pluck.mandocello",
+"program": 24,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "octave-mandolin",
+"name": "Octave Mandolin",
+"short": "OM.",
+"track": "",
+"musicxml_id": "pluck.mandolin.octave",
+"program": 24,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "shamisen",
+"name": "Shamisen",
+"short": "Sh.",
+"track": "",
+"musicxml_id": "pluck.shamisen",
+"program": 106,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "sitar",
+"name": "Sitar",
+"short": "Si.",
+"track": "",
+"musicxml_id": "pluck.sitar",
+"program": 104,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "ukulele",
+"name": "Ukulele",
+"short": "Uk.",
+"track": "",
+"musicxml_id": "pluck.ukulele",
+"program": 24,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"popular",
+"classroom"
+]
+},
+{
+"id": "ukulele-low-g",
+"name": "Ukulele (Low G)",
+"short": "Uk.",
+"track": "",
+"musicxml_id": "pluck.ukulele",
+"program": 24,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "tenor-ukulele",
+"name": "Tenor Ukulele",
+"short": "Ten. Uk.",
+"track": "",
+"musicxml_id": "pluck.ukulele.tenor",
+"program": 24,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "baritone-ukulele",
+"name": "Baritone Ukulele",
+"short": "Bar. Uk.",
+"track": "",
+"musicxml_id": "pluck.ukulele.tenor",
+"program": 24,
+"clef": "G8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "bass-guitar",
+"name": "Bass Guitar",
+"short": "B. Guit.",
+"track": "",
+"musicxml_id": "pluck.bass",
+"program": 34,
+"clef": "F",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"common",
+"jazz",
+"popular",
+"marching"
+]
+},
+{
+"id": "acoustic-bass",
+"name": "Acoustic Bass",
+"short": "Bass",
+"track": "",
+"musicxml_id": "pluck.bass.acoustic",
+"program": 32,
+"clef": "F",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"common",
+"jazz"
+]
+},
+{
+"id": "electric-bass",
+"name": "Electric Bass",
+"short": "El. B.",
+"track": "",
+"musicxml_id": "pluck.bass.electric",
+"program": 33,
+"clef": "F",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"common",
+"jazz",
+"popular"
+]
+},
+{
+"id": "fretless-electric-bass",
+"name": "Fretless Electric Bass",
+"short": "Frtl. El. B.",
+"track": "",
+"musicxml_id": "pluck.bass.fretless",
+"program": 35,
+"clef": "F",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"popular",
+"jazz"
+]
+},
+{
+"id": "5-string-electric-bass",
+"name": "5-str. Electric Bass",
+"short": "El. B.",
+"track": "",
+"musicxml_id": "pluck.bass.electric",
+"program": 33,
+"clef": "F",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"common",
+"jazz",
+"popular"
+]
+},
+{
+"id": "5-string-electric-bass-high-c",
+"name": "5-str. Electric Bass",
+"short": "El. B.",
+"track": "5-str. Electric Bass (High C/Tenor)",
+"musicxml_id": "pluck.bass.electric",
+"program": 33,
+"clef": "F",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"jazz"
+]
+},
+{
+"id": "6-string-electric-bass",
+"name": "6-str. Electric Bass",
+"short": "El. B.",
+"track": "",
+"musicxml_id": "pluck.bass.electric",
+"program": 33,
+"clef": "F",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"jazz"
+]
+},
+{
+"id": "prim",
+"name": "Prim",
+"short": "Pr.",
+"track": "",
+"musicxml_id": "pluck.tambura",
+"program": 24,
+"clef": "G",
+"perc": false,
+"diatonic": 7,
+"chromatic": 12,
+"genres": [
+"world"
+]
+},
+{
+"id": "brac",
+"name": "Brač",
+"short": "Br.",
+"track": "",
+"musicxml_id": "pluck.tambura",
+"program": 24,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "celo",
+"name": "Čelo",
+"short": "Č.",
+"track": "",
+"musicxml_id": "pluck.tambura",
+"program": 24,
+"clef": "G",
+"perc": false,
+"diatonic": -14,
+"chromatic": -24,
+"genres": [
+"world"
+]
+},
+{
+"id": "bugarija",
+"name": "Bugarija",
+"short": "Bu.",
+"track": "",
+"musicxml_id": "pluck.tambura",
+"program": 24,
+"clef": "G",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"world"
+]
+},
+{
+"id": "berda",
+"name": "Berda",
+"short": "Be.",
+"track": "",
+"musicxml_id": "pluck.tambura",
+"program": 32,
+"clef": "F",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"world"
+]
+},
+{
+"id": "strings",
+"name": "Strings",
+"short": "St.",
+"track": "",
+"musicxml_id": "strings.group",
+"program": 48,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "erhu",
+"name": "Erhu",
+"short": "Eh.",
+"track": "",
+"musicxml_id": "strings.erhu",
+"program": 110,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "nyckelharpa",
+"name": "Nyckelharpa",
+"short": "Nyh.",
+"track": "",
+"musicxml_id": "strings.nyckelharpa",
+"program": 41,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"world"
+]
+},
+{
+"id": "violin",
+"name": "Violin",
+"short": "Vln.",
+"track": "",
+"musicxml_id": "strings.violin",
+"program": 40,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"popular"
+]
+},
+{
+"id": "violins",
+"name": "Violins",
+"short": "Vlns.",
+"track": "",
+"musicxml_id": "strings.group",
+"program": 48,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "viola",
+"name": "Viola",
+"short": "Vla.",
+"track": "",
+"musicxml_id": "strings.viola",
+"program": 41,
+"clef": "C3",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra"
+]
+},
+{
+"id": "violas",
+"name": "Violas",
+"short": "Vlas.",
+"track": "",
+"musicxml_id": "strings.group",
+"program": 48,
+"clef": "C3",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "violoncello",
+"name": "Violoncello",
+"short": "Vc.",
+"track": "",
+"musicxml_id": "strings.cello",
+"program": 42,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"popular"
+]
+},
+{
+"id": "violoncellos",
+"name": "Violoncellos",
+"short": "Vcs.",
+"track": "",
+"musicxml_id": "strings.group",
+"program": 48,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "contrabass",
+"name": "Contrabass",
+"short": "Cb.",
+"track": "",
+"musicxml_id": "strings.contrabass",
+"program": 43,
+"clef": "F",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"common",
+"jazz",
+"orchestra",
+"concertband"
+]
+},
+{
+"id": "contrabasses",
+"name": "Contrabasses",
+"short": "Cbs.",
+"track": "",
+"musicxml_id": "strings.group",
+"program": 48,
+"clef": "F",
+"perc": false,
+"diatonic": -7,
+"chromatic": -12,
+"genres": [
+"orchestra"
+]
+},
+{
+"id": "double-bass",
+"name": "Double Bass",
+"short": "Db.",
+"track": "",
+"musicxml_id": "",
+"program": 0,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": []
+},
+{
+"id": "pardessus-de-viole",
+"name": "Pardessus de viole",
+"short": "Pds. v.",
+"track": "",
+"musicxml_id": "strings.viol",
+"program": 40,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "treble-viol",
+"name": "Treble Viol",
+"short": "Tr. Vl.",
+"track": "",
+"musicxml_id": "strings.viol.treble",
+"program": 40,
+"clef": "G",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "alto-viol",
+"name": "Alto Viol",
+"short": "A. Vl.",
+"track": "",
+"musicxml_id": "strings.viol.alto",
+"program": 41,
+"clef": "C3",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "tenor-viol",
+"name": "Tenor Viol",
+"short": "T. Vl.",
+"track": "",
+"musicxml_id": "strings.viol.tenor",
+"program": 41,
+"clef": "C3",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "viola-da-gamba",
+"name": "Viola da gamba",
+"short": "Vla. d. g.",
+"track": "",
+"musicxml_id": "",
+"program": 42,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "baryton",
+"name": "Baryton",
+"short": "Bary.",
+"track": "",
+"musicxml_id": "strings.baryton",
+"program": 42,
+"clef": "F",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "violone",
+"name": "Violone",
+"short": "Vne.",
+"track": "",
+"musicxml_id": "strings.viol.violone",
+"program": 43,
+"clef": "F8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+},
+{
+"id": "d-violone",
+"name": "D Violone",
+"short": "D Vne.",
+"track": "",
+"musicxml_id": "strings.viol.violone",
+"program": 43,
+"clef": "F8vb",
+"perc": false,
+"diatonic": 0,
+"chromatic": 0,
+"genres": [
+"earlymusic"
+]
+}
+]
