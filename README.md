@@ -10,7 +10,7 @@
   <img alt="Python 3.12" src="https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=fff">
 </p>
 
-KobiMusic's **copisteria** optical music recognition reader: a page of printed music in, MusicXML out. Instead
+KobiMusic's **copisteria** optical music recognition reader: a scanned page of sheet music in, MusicXML out. Instead
 of hand-written rules, a 2M-parameter transformer reads every symbol in the context of the whole page: the naturals
 that say a key is wrong, the bars that add up to three beats under a 4/4 sign, the dot the repetitions have, the
 voice that works as the first. Nobody wrote that evidence down; the model learned it from rendered pages where the
@@ -19,6 +19,10 @@ truth is known.
 copisteria is the evidence model and the reader around it; the symbols come from a **copista** model's detector, in
 two sizes: **copista-28m** (a 28.7M-parameter detector, the default) and **copista-2m** (a 1.94M-parameter detector:
 about 4M parameters for the whole reader). Both read with the same evidence model.
+
+**Made for real scans.** It is focused on real scans, not just synthetic renders with wrinkles: strong on authentic
+scans of 1800s and 1900s editions, where other systems collapse (the charts below). It works for some handwritten
+scores too; but if even you have trouble reading a page, it will too.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/compare-scans-dark.png">
