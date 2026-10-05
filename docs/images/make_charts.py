@@ -27,8 +27,8 @@ SETS = [  # key, name, pages
 
 # system -> (kind, OMR-NED per set in SETS order; None = no figure)
 SYSTEMS = {
-    "copista-28m": ("evidence", [8.63, 5.86, 17.72, 14.75, 34.31]),
-    "copista-2m": ("small", [11.27, 8.92, 17.81, 16.12, 38.76]),
+    "copista-28m": ("evidence", [8.66, 5.83, 17.69, 14.56, 34.43]),
+    "copista-2m": ("small", [11.21, 8.83, 17.78, 15.90, 38.67]),
     "Legato 2 (unreleased)": ("unreleased", [31.6, 17.1, None, 27.6, None]),
     "Legato": ("published", [58.2, 32.9, None, 39.5, None]),
     "homr 0.7": ("run", [None, None, 42.3, 38.0, 48.3]),

@@ -26,7 +26,7 @@ scores too; but if even you have trouble reading a page, it will too.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/compare-scans-dark.png">
-  <img alt="Error rate on scanned pages, lower is better; Legato 2 is not released. String quartets: copista-28m 8.6 %, copista-2m 11.3 %, Legato 2 31.6 %, Legato 58.2 %, Audiveris 66.9 %. Lieder, 55 pages: copista-28m 17.7 %, copista-2m 17.8 %, homr 42.3 %, Transcoda 48.4 %, Audiveris 51.8 %. Polish piano scores: copista-28m 34.3 %, copista-2m 38.8 %, homr 48.3 %, Transcoda 55.1 %, Audiveris 62.6 %" src="docs/images/compare-scans-light.png" width="800">
+  <img alt="Error rate on scanned pages, lower is better; Legato 2 is not released. String quartets: copista-28m 8.7 %, copista-2m 11.2 %, Legato 2 31.6 %, Legato 58.2 %, Audiveris 66.9 %. Lieder, 55 pages: copista-28m 17.7 %, copista-2m 17.8 %, homr 42.3 %, Transcoda 48.4 %, Audiveris 51.8 %. Polish piano scores: copista-28m 34.4 %, copista-2m 38.7 %, homr 48.3 %, Transcoda 55.1 %, Audiveris 62.6 %" src="docs/images/compare-scans-light.png" width="800">
 </picture>
 
 ## How it reads a page
@@ -42,12 +42,16 @@ scores too; but if even you have trouble reading a page, it will too.
    detector has (real or not, class, dots, staff position, voice, grace) gets the model's *evidence* added to the
    detector's own log-probability, in nats: with no evidence, the detector stands. The rest is read from context:
    each note's sounding alteration, chord, tie, tuplet and onset in its bar, and each bar's clef, key and meter.
-4. **Decode the rhythm and the accidentals.** Each voice's notes are placed at the onsets the model reads for them,
+4. **Decode the meter, the rhythm and the accidentals.** The page's meter is decoded with its bars: each plausible
+   bar length is tried through the rhythm decode, and the one the model's reading and the bars agree on is written,
+   as not printed where the page prints none. Each voice's notes are placed at the onsets the model reads for them,
    and a voice's durations and tuplets are decoded jointly from the model's distributions, so one misread duration
    does not shift the rest of the bar. Each accidental glyph goes to its note and holds along its line to the bar's
    end, as notation defines it, unless the model is sure of another alteration.
 5. **Write.** The readings are written as MusicXML, with beams, slurs, ties, articulations, dynamics and page text
-   attached by position. Nothing is added that the detector did not see.
+   attached by position; a part's name is the text that sits beside its staves and names an instrument. Nothing is
+   added that the detector did not see: time a bar's notes leave is written as a rest that is not printed, so every
+   bar has its meter's length.
 
 `docs/ARCHITECTURE.md` is the design document: the front end, the model, the writer and the training.
 
@@ -149,8 +153,8 @@ wrong: a page read entirely wrong scores 100 %.
 
 | System | Figures | Quartets, scans ↓ | Quartets, renders ↓ | Lieder, scans ↓ | Lieder, renders ↓ | Polish piano, scans ↓ |
 |---|---|---|---|---|---|---|
-| **copista-28m** | KobiMusic | **8.6 %** | **5.9 %** | **17.7 %** | **14.8 %** | **34.3 %** |
-| **copista-2m** | KobiMusic | 11.3 % | 8.9 % | 17.8 % | 16.1 % | 38.8 % |
+| **copista-28m** | KobiMusic | **8.7 %** | **5.8 %** | **17.7 %** | **14.6 %** | **34.4 %** |
+| **copista-2m** | KobiMusic | 11.2 % | 8.8 % | 17.8 % | 15.9 % | 38.7 % |
 | Legato 2 (unreleased) | published | 31.6 % | 17.1 % | n/a ⁴ | 27.6 % | n/a |
 | Legato | published | 58.2 % | 32.9 % | n/a ⁴ | 39.5 % | n/a ¹ |
 | homr 0.7 | run by KobiMusic | piano only | piano only | 42.3 % | 38.0 % | 48.3 % |
@@ -178,7 +182,7 @@ read entirely wrong, as on the IMSLP piano leaderboard.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/compare-renders-dark.png">
-  <img alt="Error rate on rendered pages, lower is better; Legato 2 is not released. String quartets: copista-28m 5.9 %, copista-2m 8.9 %, Legato 2 17.1 %, Legato 32.9 %, Audiveris 33.2 %. Lieder: copista-28m 14.8 %, copista-2m 16.1 %, Legato 2 27.6 %, Audiveris 28.8 %, homr 38.0 %, Legato 39.5 %, Transcoda 42.0 %" src="docs/images/compare-renders-light.png" width="800">
+  <img alt="Error rate on rendered pages, lower is better; Legato 2 is not released. String quartets: copista-28m 5.8 %, copista-2m 8.8 %, Legato 2 17.1 %, Legato 32.9 %, Audiveris 33.2 %. Lieder: copista-28m 14.6 %, copista-2m 15.9 %, Legato 2 27.6 %, Audiveris 28.8 %, homr 38.0 %, Legato 39.5 %, Transcoda 42.0 %" src="docs/images/compare-renders-light.png" width="800">
 </picture>
 
 **copisteria alone.** Over the 735 pages of the five sets copista-28m reads 88.3 % of the score right (error rate

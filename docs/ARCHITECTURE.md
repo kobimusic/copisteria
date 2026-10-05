@@ -127,19 +127,33 @@ Transcription only: every decision was the model's. A symbol is written when its
   voice's durations and tuplets are decoded jointly by a Viterbi search over 48ths of a quarter: the model's
   duration, onset and tuplet distributions, with penalties for gaps, overlaps, two notes at one onset and running
   past the bar (strict for single-staff parts). One misread duration does not shift the rest of the bar.
-* **Bars**: keys, meters and clefs as the bar heads read them, printed where they change; a meter only where the
-  page prints one. A bar with nothing in it gets a `<forward>`, never an invented rest.
+* **Bars**: keys and clefs as the bar heads read them, printed where they change. The meter of the page's opening
+  bars is decoded with its bars: for each bar length the meter head finds likely at the first system's bar heads
+  (its distribution is the prior; a printed meter it reads near-certain), every voice's bar is read through the
+  rhythm decode at that length -- time left before a bar's end priced as missed notes, time past it as notes past
+  the bar line -- and the meter whose prior and fit score best wins; each voice's bar votes against a length at most
+  log 0.01, so misread bars do not decide. The meter is written from the first bar on, as not printed
+  (print-object="no") where the page does not print it, and a whole-bar rest under such a meter is typed whole. Time
+  a staff's first voice leaves before the bar line is written as a rest that is not printed, so every bar has its
+  meter's length; a piece's opening bar (the page prints its meter there) stays short and is marked implicit, an
+  upbeat, and so does the bar before a final or repeat bar line. A bar with nothing in it gets a `<forward>`;
+  nothing is drawn that the page does not show.
 * **Marks**, attached by position: beams (the notes whose stems a beam box reaches: a head under the beam has its
   stem at its right, a head over it at its left; a beam between the two staves of a keyboard part joins notes of
   both; levels from the note types), slurs (from their corners, across systems), ties,
   articulations, ornaments, fermatas, dynamics, arpeggios, octave lines (the pitches shifted), pedal, segno and coda,
   bar line styles and repeats, part groups from brackets and braces.
 * **Text**, from `<page>.texts.json` when present: OCR text boxes with a role. `pgHead_title`, `pgHead_composer`
-  give the title and composer; `label`, `labelAbbr` the part names; `dir`, `tempo`, `expression`, `words` become
-  directions before the nearest note (only words that are mostly letters), and a word followed by a run of dashes
-  in the ink ("cresc. - - -") starts dashes that stop at the last note they reach; digits over a multi-measure rest
-  give its count. A direction that falls on a chord member is written with the chord's root: between a root and
-  its `<chord/>` notes it would break the chord.
+  give the title and composer. Part names are decoded: every text could name any part, scored by where it sits
+  against that part's staves on any system (it ends 3.5 ± 2.5 staff spaces left of the staff's first symbol, centred
+  on the part's height), what it says (an instrument `instruments.py` knows, from MuseScore's instrument list with
+  classical scores' Italian, German and French names added) and the OCR's role for it; parts and texts are paired
+  one-to-one for the best total, a part taking no name where no text beats the price of none, so a bar number or a
+  lyric the OCR filed as a label names nothing. `dir`, `tempo`, `expression`, `words` become directions before the
+  nearest note (only words that are mostly letters), and a word followed by a run of dashes in the ink ("cresc. - -
+  -") starts dashes that stop at the last note they reach; digits over a multi-measure rest give its count. A
+  direction that falls on a chord member is written with the chord's root: between a root and its `<chord/>` notes
+  it would break the chord.
 
 ## 6. Training
 
