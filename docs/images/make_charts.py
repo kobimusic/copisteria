@@ -25,6 +25,12 @@ SETS = [  # key, name, pages
     ("polish", "Polish piano scores, scans", 112),
 ]
 
+# sets whose ground truth needs a word: an asterisk on the panel, the note under the chart
+NOTES = {"polish": ("* Polish: the ground truth holds notes, rests, beams and tuplets only (no slurs, pedals, dynamics, "
+                    "octave lines or text),",
+                    "so whatever a reader reads of those counts against it. Notes and rests only: copista-28m 28.2 %, "
+                    "copista-2m 33.4 %.")}
+
 # system -> (kind, OMR-NED per set in SETS order; None = no figure)
 SYSTEMS = {
     "copista-28m": ("evidence", [8.66, 5.83, 17.69, 14.56, 34.43]),
@@ -63,9 +69,12 @@ def panels(theme, keys, title, out):
         bars = sorted(((name, neds[i], kind) for name, (kind, neds) in SYSTEMS.items() if neds[i] is not None),
                       key=lambda b: b[1])
         rows.append((SETS[i], bars))
-    fig, axes = plt.subplots(len(rows), 1, figsize=(8, 0.33 * sum(len(b) for _, b in rows) + 0.75 * len(rows) + 1.3),
+    extra = 0.22 * sum(len(NOTES.get(k, ())) for k in keys)
+    fig, axes = plt.subplots(len(rows), 1, figsize=(8, 0.33 * sum(len(b) for _, b in rows) + 0.75 * len(rows) + 1.3 + extra),
                              sharex=True, gridspec_kw=dict(height_ratios=[len(b) + 0.6 for _, b in rows]))
-    for ax, ((_, name, pages), bars) in zip(axes, rows):
+    notes = [line for key in keys for line in NOTES.get(key, ())]
+    for ax, ((key, name, pages), bars) in zip(axes, rows):
+        name = name + ("*" if key in NOTES else "")
         for y, (system, ned, kind) in enumerate(bars):
             ax.barh(y, ned, 0.72, **bar_style(t, kind))
             ax.text(ned + 0.8, y, f"{ned:.1f} %", va="center", fontsize=9.5, color=t["text"],
@@ -97,7 +106,11 @@ def panels(theme, keys, title, out):
     fig.text(0.015, top - 0.3 / fig.get_figheight(), "Error rate = OMR-NED, the share of the score read wrong: "
              "lower is better ↓. Best at the top of each set.", ha="left", va="center", color=t["muted"],
              fontsize=9.5)
-    fig.tight_layout(rect=(0, 0, 1, 1 - 1.2 / fig.get_figheight()), h_pad=1.2)
+    bottom = 0.22 * len(notes) / fig.get_figheight()
+    for k, line in enumerate(notes):
+        fig.text(0.015, bottom - (k + 0.7) * 0.2 / fig.get_figheight(), line, ha="left", va="center",
+                 color=t["muted"], fontsize=8.5)
+    fig.tight_layout(rect=(0, bottom, 1, 1 - 1.2 / fig.get_figheight()), h_pad=1.2)
     fig.savefig(OUT / f"{out}-{theme}.png", dpi=200, transparent=True)
     plt.close(fig)
 

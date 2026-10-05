@@ -26,7 +26,7 @@ scores too; but if even you have trouble reading a page, it will too.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/compare-scans-dark.png">
-  <img alt="Error rate on scanned pages, lower is better; Legato 2 is not released. String quartets: copista-28m 8.7 %, copista-2m 11.2 %, Legato 2 31.6 %, Legato 58.2 %, Audiveris 66.9 %. Lieder, 55 pages: copista-28m 17.7 %, copista-2m 17.8 %, homr 42.3 %, Transcoda 48.4 %, Audiveris 51.8 %. Polish piano scores: copista-28m 34.4 %, copista-2m 38.7 %, homr 48.3 %, Transcoda 55.1 %, Audiveris 62.6 %" src="docs/images/compare-scans-light.png" width="800">
+  <img alt="Error rate on scanned pages, lower is better; Legato 2 is not released. String quartets: copista-28m 8.7 %, copista-2m 11.2 %, Legato 2 31.6 %, Legato 58.2 %, Audiveris 66.9 %. Lieder, 55 pages: copista-28m 17.7 %, copista-2m 17.8 %, homr 42.3 %, Transcoda 48.4 %, Audiveris 51.8 %. Polish piano scores (ground truth of notes only, see the note): copista-28m 34.4 %, copista-2m 38.7 %, homr 48.3 %, Transcoda 55.1 %, Audiveris 62.6 %" src="docs/images/compare-scans-light.png" width="800">
 </picture>
 
 ## How it reads a page
@@ -151,7 +151,7 @@ wrong: a page read entirely wrong scores 100 %.
 > **Every figure in the table and the charts is an error rate: lower is better ↓.** copista-28m is lowest on every
 > set; both sizes are ahead of every other system on every set.
 
-| System | Figures | Quartets, scans ↓ | Quartets, renders ↓ | Lieder, scans ↓ | Lieder, renders ↓ | Polish piano, scans ↓ |
+| System | Figures | Quartets, scans ↓ | Quartets, renders ↓ | Lieder, scans ↓ | Lieder, renders ↓ | Polish piano, scans\* ↓ |
 |---|---|---|---|---|---|---|
 | **copista-28m** | KobiMusic | **8.7 %** | **5.8 %** | **17.7 %** | **14.6 %** | **34.4 %** |
 | **copista-2m** | KobiMusic | 11.2 % | 8.8 % | 17.8 % | 15.9 % | 38.7 % |
@@ -170,6 +170,12 @@ the evidence model was trained on copista-28m's detector. "Published" figures ar
 released**: its figures are from the paper and nobody can run it (hatched bars in the charts). The systems marked
 "run by KobiMusic" were run on the same pages with the same scorer. A page a system gives no output for counts as
 read entirely wrong, as on the IMSLP piano leaderboard.
+
+\* **Polish scans:** the ground truth holds notes, rests, beams and tuplets only: no slurs, pedal marks, dynamics,
+octave lines or text, and almost no articulations (0.4 per 100 notes, against 5-19 in the other sets). Whatever a
+reader reads of those counts against it, and copisteria reads them: about 2.7 points of its error. Scored on notes
+and rests only, copista-28m's error rate is 28.2 % and copista-2m's 33.4 %. The comparison with the other systems
+stands: they are scored against the same ground truth.
 
 1. Legato's Polish figure (86.7 %) comes from a different pipeline and carries an asterisk where it is published; it
    is left out.
