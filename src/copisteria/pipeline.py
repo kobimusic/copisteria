@@ -1,11 +1,11 @@
 """Read pages end to end: page image -> v7 detections (cached) -> front end -> evidence model -> MusicXML + viewer.
 
-  python -m copista_evidence.pipeline page.png [more pages ...] --out out
-  python -m copista_evidence.pipeline --pdf score.pdf --range 1-4 --out out
+  python -m copisteria.pipeline page.png [more pages ...] --out out
+  python -m copisteria.pipeline --pdf score.pdf --range 1-4 --out out
 
 A page's detections are taken from a cached file (``<stem>.dets_<tag>_<imgsz>.json`` beside the page, tag v7 for the
 default detector) when one exists, else the detector runs here at the size the page's staff space asks for, and is
-cached the same way. ``--detector 2m`` (or COPISTA_DETECTOR=2m) reads as copista-2m, with the 1.94M-parameter detector. Page texts
+cached the same way. ``--detector 2m`` (or COPISTERIA_DETECTOR=2m) reads as copisteria-2m, with the 1.94M-parameter detector. Page texts
 (``<stem>.texts.json`` beside the page: OCR text boxes, see docs/ARCHITECTURE.md) are used when present: the
 title, the composer, words and multi-measure rest counts.
 """
@@ -140,11 +140,11 @@ def main(argv=None):
     ap.add_argument("--model", default=str(EVIDENCE))
     ap.add_argument("--out", default="out")
     ap.add_argument("--device", default="cpu")
-    ap.add_argument("--detector", choices=sorted(DETECTORS), help="the symbol detector: 28m (default) or 2m (or COPISTA_DETECTOR)")
+    ap.add_argument("--detector", choices=sorted(DETECTORS), help="the symbol detector: 28m (default) or 2m (or COPISTERIA_DETECTOR)")
     a = ap.parse_args(argv)
     if a.detector:
         import os
-        os.environ["COPISTA_DETECTOR"] = a.detector
+        os.environ["COPISTERIA_DETECTOR"] = a.detector
     pngs = [Path(p) for p in a.pages]
     if a.pdf:
         from .vision.page.scan import from_pdf
@@ -171,9 +171,9 @@ def index(out: Path, rows: list[dict], model: str) -> None:
                   f'<td>{r["systems"]}</td><td>{r["symbols"]}</td><td>{r["changes"]}</td>'
                   f'<td><a href="{html.escape(p)}.musicxml">musicxml</a></td></tr>' for p, r in sorted(prev.items()))
     (out / "index.html").write_text(
-        f'<!doctype html><meta charset="utf-8"><title>copista-evidence pages</title><style>body{{font:14px system-ui;'
+        f'<!doctype html><meta charset="utf-8"><title>copisteria pages</title><style>body{{font:14px system-ui;'
         f'margin:20px}}td,th{{padding:3px 10px;border-bottom:1px solid #ddd;text-align:left}}</style>'
-        f'<h2>copista-evidence &mdash; {html.escape(Path(model).name)}</h2><table><tr><th>page</th><th>staves</th>'
+        f'<h2>copisteria &mdash; {html.escape(Path(model).name)}</h2><table><tr><th>page</th><th>staves</th>'
         f'<th>systems</th><th>symbols</th><th>readings changed by context</th><th></th></tr>{trs}</table>')
 
 

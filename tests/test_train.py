@@ -1,6 +1,6 @@
 import numpy as np
 
-from copista_evidence.train import collate_np
+from copisteria.train import collate_np
 
 
 def test_collate_mixed_features():

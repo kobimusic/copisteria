@@ -3,7 +3,7 @@ detector's training frame, JPEG q92 -- ultralytics and the custom loops then dec
 3000-px one), YOLO txt labels on a fixed class list with rare-class bucketing, and one meta jsonl per split that
 carries every box with its attribute ids and the staff-line polylines. One export feeds every experiment.
 
-  python -m copista_evidence.detector.small.export <index.jsonl> <data_root> <out_dir> --taxonomy models/yolo_v6_taxonomy.json
+  python -m copisteria.detector.small.export <index.jsonl> <data_root> <out_dir> --taxonomy models/yolo_v6_taxonomy.json
                              [--min-count 20] [--long 1536] [--max-boxes 1600] [--workers 8]
 
 Output layout::
@@ -18,7 +18,7 @@ Output layout::
 Attribute vocabularies are compact and fixed (the corpus-built ones carried 196 staff positions, most seen once):
 staff_position -24..24 (49 + <na>), stem_dir / dots / grace / voice_slot as in the deployed taxonomy. Only notes
 and rests carry attributes; every other class is <na> throughout. The val split is by SOURCE score (crc32 of the
-row's source), as copista_evidence.detector.det.yolo_export does, so a partial export and the full one agree on which pages are val.
+row's source), as copisteria.detector.det.yolo_export does, so a partial export and the full one agree on which pages are val.
 """
 from __future__ import annotations
 
@@ -134,7 +134,7 @@ def export(index_jsonl, data_root, out_dir, tax: Taxonomy, *, long_side=1536, ma
     (out / "meta").mkdir(exist_ok=True)
     tax_json = out / "taxonomy.json"
     # the file carries the taxonomy schema's full attribute set: ``place`` (articulations / dynamics) is not one of
-    # the note attributes the models predict, but copista_evidence.detector.det.attr_stage's encoder walks every schema attribute
+    # the note attributes the models predict, but copisteria.detector.det.attr_stage's encoder walks every schema attribute
     tax_json.write_text(json.dumps({"classes": tax.classes, "attr_vocab": {**ATTR_VOCAB, "place": ["<na>", "above", "below"]}}))
     rows = [json.loads(l) for l in Path(index_jsonl).read_text().splitlines()]
     jobs = [(i, r, data_root, str(out), long_side, max_boxes, str(tax_json), dict(tax.bucket)) for i, r in enumerate(rows)]

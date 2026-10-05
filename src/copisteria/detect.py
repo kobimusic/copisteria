@@ -25,7 +25,7 @@ def imgsz_for(staff_space: float, long_side: int, target: float = TARGET_SP) -> 
 
 class Detector:
     def __init__(self, weights: str | Path | None = None, device: str | None = None):
-        """``weights``: a detector checkpoint; by default the one COPISTA_DETECTOR names (paths.detector)."""
+        """``weights``: a detector checkpoint; by default the one COPISTERIA_DETECTOR names (paths.detector)."""
         import torch
         weights = weights or detector()[0]
 

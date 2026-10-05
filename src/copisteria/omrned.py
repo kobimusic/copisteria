@@ -5,8 +5,8 @@ A set dir holds index.json ({"ids": [...]}), images/<id>.png and, optionally, th
 skipped (resumable); a page that fails gets no file (it then scores as read entirely wrong) and its error goes to
 run.json. The MusicXML is scored against the set's ground truth with musicdiff (see README, Benchmark).
 
-    python -m copista_evidence.omrned <set dir> --name evidence [--model models/evidence-2m.pt] [--jobs 6]
-    python -m copista_evidence.omrned <set dir> --name copista-2m --detector 2m
+    python -m copisteria.omrned <set dir> --name evidence [--model models/evidence-2m.pt] [--jobs 6]
+    python -m copisteria.omrned <set dir> --name copisteria-2m --detector 2m
 """
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ def _init(model_path: str):
     os.environ.setdefault("OMP_NUM_THREADS", "1")
     import torch
     torch.set_num_threads(1)
-    from copista_evidence import read
+    from copisteria import read
     _M["model"] = read.load_model(model_path)
 
 
@@ -36,7 +36,7 @@ def _one(job):
     png, texts_path, out = job
     t0 = time.time()
     try:
-        from copista_evidence.pipeline import transcribe
+        from copisteria.pipeline import transcribe
         texts = json.loads(Path(texts_path).read_text()) if texts_path and Path(texts_path).exists() else None
         Path(out).write_text(transcribe(Path(png), _M["model"], texts))
         return {"id": Path(png).stem, "status": 0, "seconds": round(time.time() - t0, 2)}
@@ -54,10 +54,10 @@ def main():
     ap.add_argument("--limit", type=int)
     ap.add_argument("--no-texts", action="store_true")
     ap.add_argument("--texts", default="texts", help="the folder (in the set dir) of the pages' OCR text boxes")
-    ap.add_argument("--detector", choices=sorted(DETECTORS), help="the symbol detector: 28m (default) or 2m (or COPISTA_DETECTOR)")
+    ap.add_argument("--detector", choices=sorted(DETECTORS), help="the symbol detector: 28m (default) or 2m (or COPISTERIA_DETECTOR)")
     a = ap.parse_args()
     if a.detector:
-        os.environ["COPISTA_DETECTOR"] = a.detector      # before the pool: its workers inherit it
+        os.environ["COPISTERIA_DETECTOR"] = a.detector      # before the pool: its workers inherit it
     d = Path(a.set_dir)
     ids = json.loads((d / "index.json").read_text())["ids"][:a.limit]
     out = d / "preds" / a.name
@@ -68,8 +68,8 @@ def main():
     _init(a.model)                       # fail here, not in a pool that respawns workers whose start-up fails
     if getattr(_M["model"], "feat_dim", 0):
         # image features: v7 over every page once, here on the GPU, before the CPU pool reads them
-        from copista_evidence.detect import Detector
-        from copista_evidence.pipeline import featcache
+        from copisteria.detect import Detector
+        from copisteria.pipeline import featcache
         det = Detector()
         for png, _, _ in jobs:
             featcache(Path(png), det)

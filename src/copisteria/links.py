@@ -2,7 +2,7 @@
 symbol spanning them, how their bar lines line up, the gap between them), fitted on rendered pages where the
 labels say which system every bar belongs to. The front end uses it when ``links.json`` exists, else its rule.
 
-  python -m copista_evidence.links --pages <rendered pages> --out src/copista_evidence/links.json [--limit 3000]
+  python -m copisteria.links --pages <rendered pages> --out src/copisteria/links.json [--limit 3000]
 """
 from __future__ import annotations
 

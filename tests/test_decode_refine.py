@@ -3,9 +3,9 @@ import xml.etree.ElementTree as ET
 
 import torch
 
-from copista_evidence import front, read, write
-from copista_evidence.model import EvidenceNet
-from copista_evidence.read import Reading
+from copisteria import front, read, write
+from copisteria.model import EvidenceNet
+from copisteria.read import Reading
 
 from .test_front_write import det, staff_row
 

@@ -6,7 +6,7 @@ runs on the GPU and leaves its detections (``.dets.json``), its sub-threshold ca
 image features of both (``.feat.npy``) beside the page; then the front end lays the page out and match.targets
 labels its symbols, and the arrays go to ``<out>/<tranche>/<page>.npz``, which train.py reads.
 
-  python -m copista_evidence.training.tokenize data/pages data/tok [--workers 4]
+  python -m copisteria.training.tokenize data/pages data/tok [--workers 4]
 """
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ class _Pages:
     def __getitem__(self, k):
         from PIL import Image
 
-        from copista_evidence.detect import Detector, imgsz_for
+        from copisteria.detect import Detector, imgsz_for
         r = self.rows[k]
         try:
             lab = json.loads(Path(r["labels"]).read_text())
@@ -75,7 +75,7 @@ def detect(rows: list[dict], det) -> int:
 def _tok_one(job):
     r, out = job
     try:
-        from copista_evidence import features, front, match
+        from copisteria import features, front, match
         from PIL import Image
         lab = json.loads(Path(r["labels"]).read_text())
         img = Path(r["image"])
@@ -127,7 +127,7 @@ def main(argv=None):
     ap.add_argument("out", help="where the token files go, one folder per tranche")
     ap.add_argument("--workers", type=int, default=4)
     a = ap.parse_args(argv)
-    from copista_evidence.detect import Detector
+    from copisteria.detect import Detector
     det = Detector()
     with Pool(a.workers) as pool:
         for tranche in sorted(d for d in Path(a.pages).iterdir() if (d / "index.jsonl").exists()):

@@ -1,6 +1,6 @@
 """Round 2 of the 2M-parameter search: six designs that differ in KIND from round 1's centre-heatmap
 family, not in width. Every model keeps the full capability set (266 classes + boxes, staff_position / stem_dir /
-dots / grace / voice_slot on notes and rests) and plugs into ``copista_evidence.detector.small.train`` through the same three calls as
+dots / grace / voice_slot on notes and rests) and plugs into ``copisteria.detector.small.train`` through the same three calls as
 the round-1 models: ``forward(x) -> dict``, ``loss(out, t, attr_cls_mask)`` and ``decode_out(out, ...)``.
 
   peak-relational  two stages: a class-agnostic objectness map proposes centres; the candidates (RoI features +
@@ -77,7 +77,7 @@ def _dets(boxes, scores, cls, attrs, cy, cx, nms_iou):
 
 
 class Base(nn.Module):
-    """What copista_evidence.detector.small.train / predict_real read off a model."""
+    """What copisteria.detector.small.train / predict_real read off a model."""
     mode = "x"
     staff_head = False
     stride = 4

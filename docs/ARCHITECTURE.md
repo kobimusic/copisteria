@@ -1,4 +1,4 @@
-# copista-evidence: architecture
+# copisteria: architecture
 
 The idea: do almost nothing by hand. A front end decides the page's geometry (which symbols there are, on which
 staff and in which bar) and a small model decides everything musical, from evidence it learned on its own. Nowhere
@@ -22,10 +22,10 @@ finds none, from a first pass's measure boxes, which are four staff spaces tall)
 position, stem direction, dots, grace, voice slot. Detections at confidence 0.05 and up are kept and cached beside
 the page.
 
-The two sizes are named after their detector: copista-28m reads with that one (28.7M parameters), copista-2m
+The two sizes are named after their detector: copisteria-28m reads with that one (28.7M parameters), copisteria-2m
 (`--detector 2m`) with the small v7 detector (architecture `obj-recall`, 1.94M parameters, the same classes and
 attributes), so the whole reader is about 4M parameters. The evidence model is the same in both; it was trained on
-copista-28m's detector, not the small one.
+copisteria-28m's detector, not the small one.
 
 ## 2. Front end (`front.py`, `links.py`)
 
@@ -123,7 +123,7 @@ Transcription only: every decision was the model's. A symbol is written when its
   neither takes the model's reading, and a model at least 97 % sure of another alteration keeps its own. A printed
   accidental is written where its glyph agrees with the alteration written.
 * **Rhythm**: notes go to voices by the model's voice reading; chord members attach to their nearest root. Each
-  note is placed at the onset the model reads for it when it is confident enough (`COPISTA_ONSET_P`), and each
+  note is placed at the onset the model reads for it when it is confident enough (`COPISTERIA_ONSET_P`), and each
   voice's durations and tuplets are decoded jointly by a Viterbi search over 48ths of a quarter: the model's
   duration, onset and tuplet distributions, with penalties for gaps, overlaps, two notes at one onset and running
   past the bar (strict for single-staff parts). One misread duration does not shift the rest of the bar.
@@ -175,10 +175,10 @@ swapped for a sibling, attributes masked or nudged, staff positions misread conf
 filled-in bars, symbols dropped, ghost symbols (moved, re-classed, not real), a confidence calibration shift, and
 whole families the page does not print (tuplet marks left out after the first). The targets never change.
 
-Tuplet emphasis (`COPISTA_TUP_UNMARK`, `COPISTA_TUP_WEIGHT`): in a share of the windows each staff row keeps only
-its first tuplet mark (engravers print a tuplet's number once), and pages with tuplets are drawn more often.
-`COPISTA_TUP_DROPALL` leaves every tuplet mark out of a share of the windows (a run marked pages earlier shows none
-on this page), `COPISTA_MULTIVOICE_WEIGHT` draws pages with two voices more often.
+Tuplet emphasis (`COPISTERIA_TUP_UNMARK`, `COPISTERIA_TUP_WEIGHT`): in a share of the windows each staff row keeps
+only its first tuplet mark (engravers print a tuplet's number once), and pages with tuplets are drawn more often.
+`COPISTERIA_TUP_DROPALL` leaves every tuplet mark out of a share of the windows (a run marked pages earlier shows
+none on this page), `COPISTERIA_MULTIVOICE_WEIGHT` draws pages with two voices more often.
 
 ### Recipe
 

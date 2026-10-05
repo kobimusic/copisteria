@@ -2,9 +2,9 @@ from fractions import Fraction
 
 import xml.etree.ElementTree as ET
 
-from copista_evidence import front, write
-from copista_evidence.read import Reading
-from copista_evidence.vocab import CLS_ID
+from copisteria import front, write
+from copisteria.read import Reading
+from copisteria.vocab import CLS_ID
 
 
 def det(cls, box, conf=0.9, **attrs):
@@ -43,7 +43,7 @@ def test_staff_chains_across_a_missed_bar_and_fills_it():
 
 
 def test_aligned_staves_form_a_system_unaligned_do_not(monkeypatch):
-    from copista_evidence import links
+    from copisteria import links
     monkeypatch.setattr(links, "load", lambda: None)              # the hand rule, not the fitted model
     dets = staff_row(100, [0, 100, 210, 300]) + staff_row(180, [0, 101, 209, 300]) + \
         staff_row(400, [0, 140, 230, 300])

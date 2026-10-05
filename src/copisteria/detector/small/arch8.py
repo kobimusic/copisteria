@@ -249,7 +249,7 @@ class HashCls(Base):
 # 4. copy-paste
 
 class CopyPaste(Base):
-    """The flat model; the novelty is ``augment_batch`` (copista_evidence.detector.small.train calls it before the targets are rendered):
+    """The flat model; the novelty is ``augment_batch`` (copisteria.detector.small.train calls it before the targets are rendered):
     glyphs are cut from one page of the batch, with their labels, and pasted onto another."""
 
     N_PASTE = (8, 40)

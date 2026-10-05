@@ -6,9 +6,9 @@ symbol inside the bar takes over from its x on), alterations are the model's sou
 clefs are the bar heads' readings and are printed where they change (a meter only where the page prints one).
 A bar that holds nothing gets a <forward> (an empty bar), never an invented rest.
 
-Rhythm (COPISTA_ONSET=1, the default): each voice's notes are placed at the onsets the model reads for them, and
+Rhythm (COPISTERIA_ONSET=1, the default): each voice's notes are placed at the onsets the model reads for them, and
 a voice's durations and tuplets are decoded jointly (Viterbi over 48ths of a quarter) from the model's onset,
-duration and tuplet distributions, so one misread duration does not shift the rest of the bar. COPISTA_ONSET=0
+duration and tuplet distributions, so one misread duration does not shift the rest of the bar. COPISTERIA_ONSET=0
 writes the read durations one after another.
 """
 from __future__ import annotations
@@ -24,9 +24,9 @@ from .read import Reading
 from .vocab import TYPE_QUARTERS, key_alter
 
 REAL = 0.5
-ONSET_GAPS = os.environ.get("COPISTA_ONSET", "1") == "1"
-ONSET_P = float(os.environ.get("COPISTA_ONSET_P", "0.6"))
-RHYTHM_DECODE = os.environ.get("COPISTA_RHYTHM", "1") == "1"
+ONSET_GAPS = os.environ.get("COPISTERIA_ONSET", "1") == "1"
+ONSET_P = float(os.environ.get("COPISTERIA_ONSET_P", "0.6"))
+RHYTHM_DECODE = os.environ.get("COPISTERIA_RHYTHM", "1") == "1"
 STEPS = "CDEFGAB"
 # diatonic index (octave * 7 + step) of the middle staff line under each clef
 MID_LINE = {"G2": 34, "G1": 36, "F4": 22, "F3": 24, "F5": 20, "C1": 32, "C2": 30, "C3": 28, "C4": 26, "C5": 24,
@@ -788,7 +788,7 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
     if composer:
         _sub(ident, "creator", composer, type="composer")
     enc = _sub(ident, "encoding")
-    _sub(enc, "software", "copista-evidence")
+    _sub(enc, "software", "copisteria")
     plist = _sub(root, "part-list")
     # OCR part labels, top to bottom, name the parts in order (a part book's page has one)
     labels = [t["text"] for t in sorted((t for t in texts if t.get("role") in ("label", "labelAbbr")),

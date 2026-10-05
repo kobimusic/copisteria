@@ -1,4 +1,4 @@
-"""Train the evidence model on tokenised pages (copista_evidence.training.tokenize).
+"""Train the evidence model on tokenised pages (copisteria.training.tokenize).
 
 A sample is a window of 1-4 consecutive systems of one page. The detector's readings are corrupted on the fly
 with generic, unspecific noise -- masked classes and attributes, a class swapped for a sibling, attribute values
@@ -7,18 +7,18 @@ sees everything from the clean detector to a badly read page. The targets never 
 contexts make which readings likely, and how far to trust the detector against them.
 
 The released model (evidence-2m.pt) in two stages: from scratch without the tuplet emphasis, then a fine-tune with
-it (COPISTA_TUP_UNMARK / COPISTA_TUP_WEIGHT: the share of windows whose tuplets keep only their first mark, and the
+it (COPISTERIA_TUP_UNMARK / COPISTERIA_TUP_WEIGHT: the share of windows whose tuplets keep only their first mark, and the
 sampling weight of pages with tuplets):
 
-  COPISTA_TUP_UNMARK=0 COPISTA_TUP_WEIGHT=1 python -m copista_evidence.train --data data/tok --out runs/base \
+  COPISTERIA_TUP_UNMARK=0 COPISTERIA_TUP_WEIGHT=1 python -m copisteria.train --data data/tok --out runs/base \
       --steps 70000 --batch 24
-  python -m copista_evidence.train --data data/tok --out runs/evidence --steps 25000 --batch 24 --lr 3e-4 \
+  python -m copisteria.train --data data/tok --out runs/evidence --steps 25000 --batch 24 --lr 3e-4 \
       --warmup 200 --init runs/base/last.pt
 
 Optional, not used by the released model: a refinement pass (--refine 2) that reads the window a second time with
 the first reading's sums fed back (model.EvidenceNet.feedback; --fb picks how many of its features), fine-tuned from
-a trained model (--init: the new layers start as an identity), with COPISTA_MULTIVOICE_WEIGHT (sampling weight of
-pages with two voices) and COPISTA_TUP_DROPALL (the share of windows that show no tuplet mark at all).
+a trained model (--init: the new layers start as an identity), with COPISTERIA_MULTIVOICE_WEIGHT (sampling weight of
+pages with two voices) and COPISTERIA_TUP_DROPALL (the share of windows that show no tuplet mark at all).
 """
 from __future__ import annotations
 
@@ -46,14 +46,14 @@ TARGET_KEYS = ("t_real", "t_cls", "t_dots", "t_pos", "t_alter", "t_voice", "t_ch
                "t_key", "t_time", "t_clef", "t_onset")
 MAX_TOK = 1024
 _env = os.environ.get
-USE_FEATS = _env("COPISTA_FEATS", "1") == "1"          # the detector's image features, where the tokens carry them
-USE_CANDS = _env("COPISTA_CANDS", "1") == "1"          # the detector's sub-threshold candidates, likewise
-TUPLET_UNMARK = float(_env("COPISTA_TUP_UNMARK", "0.5"))   # windows whose tuplets are marked once only
-TUPLET_WEIGHT = float(_env("COPISTA_TUP_WEIGHT", "3.0"))   # sampling weight of pages with tuplets
-TUPLET_DROPALL = float(_env("COPISTA_TUP_DROPALL", "0"))    # windows with no tuplet mark at all
+USE_FEATS = _env("COPISTERIA_FEATS", "1") == "1"          # the detector's image features, where the tokens carry them
+USE_CANDS = _env("COPISTERIA_CANDS", "1") == "1"          # the detector's sub-threshold candidates, likewise
+TUPLET_UNMARK = float(_env("COPISTERIA_TUP_UNMARK", "0.5"))   # windows whose tuplets are marked once only
+TUPLET_WEIGHT = float(_env("COPISTERIA_TUP_WEIGHT", "3.0"))   # sampling weight of pages with tuplets
+TUPLET_DROPALL = float(_env("COPISTERIA_TUP_DROPALL", "0"))    # windows with no tuplet mark at all
 # (engravers mark a run of tuplets once, often pages earlier: then the page shows none, and the bar's arithmetic,
 # the beaming and the spacing are what is left to read them by)
-MULTIVOICE_WEIGHT = float(_env("COPISTA_MULTIVOICE_WEIGHT", "1.0"))   # sampling weight of pages with two voices
+MULTIVOICE_WEIGHT = float(_env("COPISTERIA_MULTIVOICE_WEIGHT", "1.0"))   # sampling weight of pages with two voices
 LOSS_W = {"real": 1.0, "cls": 1.0, "dots": 1.0, "pos": 0.5, "alter": 1.0, "voice": 0.5, "chord": 0.5, "tie": 0.5,
           "tup": 0.5, "grace": 0.3, "key": 1.0, "time": 1.0, "clef": 1.0, "onset_beat": 0.3, "onset_frac": 0.3}
 

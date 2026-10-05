@@ -1,10 +1,10 @@
-"""Data for the custom (non-ultralytics) loops: the exported pages (copista_evidence.detector.small.export) as random square crops for
+"""Data for the custom (non-ultralytics) loops: the exported pages (copisteria.detector.small.export) as random square crops for
 training and whole pages for validation, and the dense targets a centre-heatmap model trains on, rendered on the
 GPU from the box lists (a 266-channel heatmap per sample is 70 MB at stride 4 -- far too much to move per sample
 from a worker).
 
 Boxes travel as float tensors ``[N, 10]``: cls, x0, y0, x1, y1 (pixels of the returned image), pos, stem, dots,
-grace, voice (attribute ids; copista_evidence.detector.small.export.ATTR_VOCAB). Staves as a list of polylines (pixels).
+grace, voice (attribute ids; copisteria.detector.small.export.ATTR_VOCAB). Staves as a list of polylines (pixels).
 """
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ _o = 0
 for _a in ATTRS:
     ATTR_OFFSETS[_a] = _o
     _o += ATTR_SIZES[_a]
-LEARN_NA = ("dots", "grace", "stem_dir")         # <na> is a real answer there (copista_evidence.detector.det.attr_stage)
+LEARN_NA = ("dots", "grace", "stem_dir")         # <na> is a real answer there (copisteria.detector.det.attr_stage)
 
 
 def load_meta(path):

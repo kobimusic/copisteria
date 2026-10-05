@@ -185,15 +185,15 @@ def families(classes):
     return fams, [fid[c.partition("_")[0]] for c in classes]
 
 
-ARCH2 = ("peak-relational", "seg-vote", "cnet-recur", "cnet-distill", "cnet-twostream", "cnet-embed")   # copista_evidence.detector.small.arch2
-ARCH3 = ("col-slots", "staff-canon")                                                                     # copista_evidence.detector.small.arch3
-ARCH4 = ("scan-state", "fovea", "dyn-proposals", "ink-proto", "hires-out", "fcos-dense")                  # copista_evidence.detector.small.arch4
-ARCH5 = ("gfl-dense", "reppoints", "simota", "staffless-in", "swin-trunk", "siam-scale")                   # copista_evidence.detector.small.arch5
-ARCH6 = ("corners", "retina-anchors", "page-moe", "nat-head", "o2o-dense", "recon-aux")                     # copista_evidence.detector.small.arch6
-ARCH7 = ("softmax-bg", "embed-nms", "duo-vote", "cls-prior-box", "gfnet-ctx", "scribble-aug")                # copista_evidence.detector.small.arch7
-ARCH8 = ("cascade-iou", "ema-consist", "hash-cls", "copy-paste", "deep-super", "scale-fuse")                 # copista_evidence.detector.small.arch8
-ARCH9 = ("bg-dense", "bg-verify", "ctx-crop", "obj-recall", "obj-recall-wide", "obj-recall-30m", "self-nms", "mix-teacher")                       # copista_evidence.detector.small.arch9
-ARCH10 = ("softmax-verify", "softmax-fcos", "frozen-verify", "tiny-verify")                                 # copista_evidence.detector.small.arch10
+ARCH2 = ("peak-relational", "seg-vote", "cnet-recur", "cnet-distill", "cnet-twostream", "cnet-embed")   # copisteria.detector.small.arch2
+ARCH3 = ("col-slots", "staff-canon")                                                                     # copisteria.detector.small.arch3
+ARCH4 = ("scan-state", "fovea", "dyn-proposals", "ink-proto", "hires-out", "fcos-dense")                  # copisteria.detector.small.arch4
+ARCH5 = ("gfl-dense", "reppoints", "simota", "staffless-in", "swin-trunk", "siam-scale")                   # copisteria.detector.small.arch5
+ARCH6 = ("corners", "retina-anchors", "page-moe", "nat-head", "o2o-dense", "recon-aux")                     # copisteria.detector.small.arch6
+ARCH7 = ("softmax-bg", "embed-nms", "duo-vote", "cls-prior-box", "gfnet-ctx", "scribble-aug")                # copisteria.detector.small.arch7
+ARCH8 = ("cascade-iou", "ema-consist", "hash-cls", "copy-paste", "deep-super", "scale-fuse")                 # copisteria.detector.small.arch8
+ARCH9 = ("bg-dense", "bg-verify", "ctx-crop", "obj-recall", "obj-recall-wide", "obj-recall-30m", "self-nms", "mix-teacher")                       # copisteria.detector.small.arch9
+ARCH10 = ("softmax-verify", "softmax-fcos", "frozen-verify", "tiny-verify")                                 # copisteria.detector.small.arch10
 CONFIGS.update({n: None for n in ARCH2 + ARCH3 + ARCH4 + ARCH5 + ARCH6 + ARCH7 + ARCH8 + ARCH9 + ARCH10})
 
 
@@ -292,7 +292,7 @@ def attr_loss(attr_logits, t, attr_cls_mask):
 
 
 def compute_loss(model, out, t, attr_cls_mask, fam_hm=None, staff_gt=None, w_wh=0.1, w_off=1.0, w_attr=1.0, w_staff=1.0):
-    if hasattr(model, "loss"):                                             # the round-2 designs (copista_evidence.detector.small.arch2)
+    if hasattr(model, "loss"):                                             # the round-2 designs (copisteria.detector.small.arch2)
         return model.loss(out, t, attr_cls_mask)
     losses = {}
     if model.mode == "family":
@@ -329,7 +329,7 @@ def compute_loss(model, out, t, attr_cls_mask, fam_hm=None, staff_gt=None, w_wh=
 def decode(model, out, K=3000, thresh=0.03, nms_iou=0.7):
     """Peaks of the heatmap -> boxes. Returns per image a dict of tensors: boxes [n, 4] (pixels), scores [n],
     cls [n], attrs [n, N_ATTR] logits, cell [n, 2] (cy, cx cell index)."""
-    if hasattr(model, "decode_out"):                                       # the round-2 designs (copista_evidence.detector.small.arch2)
+    if hasattr(model, "decode_out"):                                       # the round-2 designs (copisteria.detector.small.arch2)
         return model.decode_out(out, K=K, thresh=thresh, nms_iou=nms_iou)
     stride = model.stride
     hm = torch.sigmoid(out["hm"].float())

@@ -12,7 +12,7 @@ from pathlib import Path
 
 from .read import Reading, changes
 
-HTML = """<!doctype html><html><head><meta charset="utf-8"><title>copista-evidence {title}</title>
+HTML = """<!doctype html><html><head><meta charset="utf-8"><title>copisteria {title}</title>
 <style>
 :root {{ --bg:#fafaf7; --fg:#222; --muted:#777; --chg:#d62728; --add:#2ca02c; --del:#9467bd; --ctx:#ff9f1c; }}
 body {{ margin:0; font:13px system-ui, sans-serif; background:var(--bg); color:var(--fg); }}
