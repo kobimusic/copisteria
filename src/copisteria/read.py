@@ -138,6 +138,9 @@ def read(dets: list[dict], width: float, height: float, model: EvidenceNet, devi
                             # evidence for the final choice over the detector's choice, in nats
                             rec["ev"] = round(float(ev[int(z.argmax())] - ev[int(zp.argmax())]), 3)
                     r[k] = rec
+                if "measure" in fams:
+                    # the meter head's whole distribution: the writer decodes the page's meter jointly with its bars
+                    r["time_p"] = np.round(_softmax(out["time"][0, j].float().cpu().numpy()), 5).tolist()
                 if "note" in fams:
                     for k in ("chord", "tie"):
                         r[k] = round(float(1 / (1 + np.exp(-out[k][0, j, 0].item()))), 4)

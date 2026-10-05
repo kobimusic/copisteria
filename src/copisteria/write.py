@@ -333,7 +333,7 @@ def _decode_alters(rd: Reading, syms: list, events: list[Event], sp: float) -> N
 
 
 def _voices(events: list[Event], sp: float, single_staff_part: bool = True,
-            bar_len: Fraction | None = None) -> dict[int, list[Event]]:
+            bar_len: Fraction | None = None, score: list | None = None) -> dict[int, list[Event]]:
     """Events per voice, in time order. A chord member (chord head > 0.5) joins the root nearest it in x within
     1.5 staff spaces in its voice (a root is a note the model did not call a member); without one it stands alone."""
     vs: dict[int, list[Event]] = {}
@@ -354,7 +354,9 @@ def _voices(events: list[Event], sp: float, single_staff_part: bool = True,
         if ONSET_GAPS and RHYTHM_DECODE:
             # one voice on a one-staff part (a string, a singer): its events cannot overlap; a keyboard staff's
             # notes may sit in voices the reading merged
-            _decode_rhythm(order, strict=single_staff_part and len(vs) == 1, bar_len=bar_len)
+            sc = _decode_rhythm(order, strict=single_staff_part and len(vs) == 1, bar_len=bar_len)
+            if score is not None and sc is not None:
+                score.append(sc)
         elif ONSET_GAPS:
             _tuplets_from_onsets(order)
         out = []
@@ -632,17 +634,22 @@ GAP_LOGP = math.log(0.02)          # a stretch of the voice with no event read i
 OVERLAP_LOGP = math.log(0.02)
 SAME_ONSET_LOGP = math.log(0.05)
 PAST_BAR_LOGP = math.log(0.01)
+END_GAP_LOGP = GAP_LOGP            # a voice ending short of the bar: an event missed there (scores a meter only)
 
 
-def _decode_rhythm(order: list, strict: bool = False, bar_len: Fraction | None = None) -> None:
+def _decode_rhythm(order: list, strict: bool = False, bar_len: Fraction | None = None) -> float | None:
     """The onsets and tuplet ratios of one voice's events in a bar, decoded jointly from the model's own
     distributions: the most probable sequence in which every event starts where the one before it ends (or later,
     at a price, where an event may have been missed). Arithmetic of time over the model's probabilities -- the
-    model reads each note, this keeps the readings consistent with each other."""
+    model reads each note, this keeps the readings consistent with each other.
+
+    Returns the decoded reading's log-score under ``bar_len``, time left over before the bar's end priced as a
+    missed event (END_GAP_LOGP, which does not change the reading): how well the bar's length fits its notes, for
+    decoding the page's meter (None: nothing to decode)."""
     import numpy as np
     evs = [e for e in order if e.grace == "none" and e.kind in ("note", "rest") and e.dist is not None]
-    if len(evs) < 2:
-        return
+    if not evs:
+        return None
     G = 48
     K = 16 * G
     NEG = -1e18
@@ -666,6 +673,18 @@ def _decode_rhythm(order: list, strict: bool = False, bar_len: Fraction | None =
         d = _duration(e.typ, e.dots, t) * G
         return int(d) if d.denominator == 1 else None
 
+    def end_logp(e, t):
+        """Per state of the last event: what its end leaves of the bar (past it, or short of it)."""
+        d = dur48(e, t) if t not in ("other",) else None
+        if not d:
+            return np.zeros(K), np.zeros(K)
+        end = np.arange(K) + d
+        return np.where(end > L48, PAST_BAR_LOGP, 0.0), np.where(end < L48, END_GAP_LOGP, 0.0)
+
+    if len(evs) == 1:
+        over, short = end_logp(evs[0], evs[0].tup)
+        return float(np.max(emit(evs[0]) + over + short))
+    idx = np.arange(K)
     choices = [[t for t in dict.fromkeys(TUP_CHOICES + [e.tup]) if t not in ("other",) and dur48(e, t)]
                for e in evs]
     score = emit(evs[0]).copy()
@@ -675,19 +694,9 @@ def _decode_rhythm(order: list, strict: bool = False, bar_len: Fraction | None =
         em = emit(e)
         best = np.full(K, NEG); arg = np.zeros((K, 3), int)       # (prev state, choice index, gap flag)
         pref = np.maximum.accumulate(score)                       # best score at or before each state
-        pref_arg = np.zeros(K, int)
-        m = 0
-        for k in range(K):
-            if score[k] >= score[m]:
-                m = k
-            pref_arg[k] = m
+        pref_arg = np.maximum.accumulate(np.where(score >= pref, idx, 0))           # (the latest such state)
         suf = np.maximum.accumulate(score[::-1])[::-1]            # best score at or after each state
-        suf_arg = np.zeros(K, int)
-        m = K - 1
-        for k in range(K - 1, -1, -1):
-            if score[k] >= score[m]:
-                m = k
-            suf_arg[k] = m
+        suf_arg = np.minimum.accumulate(np.where(score >= suf, idx, K)[::-1])[::-1]   # (the earliest such)
         for c, t in enumerate(choices[i - 1]):
             d = dur48(prev, t)
             if d is None or d <= 0 or d >= K:
@@ -726,12 +735,10 @@ def _decode_rhythm(order: list, strict: bool = False, bar_len: Fraction | None =
         score = best + em
         back.append(arg)
     # the last event's own tuplet: its head's choice; a voice running past the bar's end pays for it
-    last = evs[-1]
-    d_last = dur48(last, last.tup) if last.tup not in ("other",) else None
-    if d_last:
-        over = np.arange(K) + d_last > L48
-        score = score + np.where(over, PAST_BAR_LOGP, 0.0)
+    over, short = end_logp(evs[-1], evs[-1].tup)
+    score = score + over
     j = int(np.argmax(score))
+    total = float(score[j] + short[j])
     states = [j]
     picks = []
     for arg in reversed(back):
@@ -744,6 +751,7 @@ def _decode_rhythm(order: list, strict: bool = False, bar_len: Fraction | None =
         e.onset, e.onset_p = states[i] / G, 1.0
         if i < len(picks):
             e.tup = choices[i][picks[i]]
+    return total
 
 
 def _tuplets_from_onsets(order: list) -> None:
@@ -772,6 +780,48 @@ def _sub(parent, tag, text=None, **attrs):
     if text is not None:
         el.text = str(text)
     return el
+
+
+METER_LENGTHS = 6                  # bar lengths tried for a page's meter: those of the model's likeliest meters
+BAR_VOTE_FLOOR = math.log(0.01)    # the most one voice's bar can count against a length: a bar its notes fit under no
+                                   # length (a misread) must not outvote the rest of the page
+
+
+def _page_meter(rd: Reading, build) -> str | None:
+    """The meter of the page's opening bars, decoded with the bars: for each bar length the model's meter head
+    finds likely at the first system's bars (its distribution is the prior; a printed meter it reads near-certain),
+    the page is read through the rhythm decode at that length, and the meter whose prior and fit together score
+    best is the page's -- a page that prints no meter (a continuation page) gets the one its bars add up to: time
+    left over before a bar's end is priced as missed notes, time past it as notes past the bar line. Each voice's
+    bar votes with a floor (BAR_VOTE_FLOOR), so misread bars do not decide the meter."""
+    import numpy as np
+
+    from .vocab import TIMES
+    L = rd.layout
+    if not L.systems:
+        return None
+    heads = [rd.tok.get(L.staves[k].bars[0]) for k in L.systems[0].staves if L.staves[k].bars]
+    dists = [np.asarray(r["time_p"], float) for r in heads if r is not None and "time_p" in r]
+    if not dists:
+        return None
+    p = np.mean(dists, axis=0)
+    meters = [(t, _time_len(t), float(p[i])) for i, t in enumerate(TIMES) if t not in (None, "other")]
+    z = sum(m[2] for m in meters) or 1.0
+    lengths: dict = {}
+    for t, ln, pr in sorted(meters, key=lambda m: -m[2]):
+        if ln not in lengths and len(lengths) < METER_LENGTHS:
+            lengths[ln] = t
+    runs = {ln: build(t)[2] for ln, t in lengths.items()}
+    # each voice's bar votes: its decode's score at a length against its best length, floored (robust to bars that
+    # fit no length); the same bars are decoded under every length, in the same order
+    n = min(len(v) for v in runs.values())
+    fit = {ln: 0.0 for ln in runs}
+    for i in range(n):
+        best = max(runs[ln][i] for ln in runs)
+        for ln in runs:
+            fit[ln] += max(runs[ln][i] - best, BAR_VOTE_FLOOR)
+    return max((m for m in meters if m[1] in fit),
+               key=lambda m: math.log(max(m[2] / z, 1e-9)) + fit[m[1]])[0]
 
 
 def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None, image=None) -> str:
@@ -812,50 +862,63 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
         columns += [(s_i, c) for c in range(ncol)]
     single_part = len(plans) == 1
 
-    all_durs: set = set()
-    built = []
-    for n, pl in enumerate(plans):
-        state = [{"key": 0, "time": "4/4", "clef": "G2"} for _ in pl.staves]
-        measures = []
-        prev_events = [None] * len(pl.staves)
-        for s_i, c in columns:
-            sy = L.systems[s_i]
-            m = {"staves": [], "time": None, "key": None}
-            for k_i, pos in enumerate(pl.staves):
-                if pos >= len(sy.staves):
-                    m["staves"].append(None)
-                    continue
-                staff = sy.staves[pos]
-                cols = sy.columns[pos]
-                bars = [j for j, cc in enumerate(cols) if cc == c]
-                if not bars:
-                    m["staves"].append(None)
-                    continue
-                j = bars[0]
-                state[k_i] = _bar_state(rd, staff, j, state[k_i])
-                ev, dirs, marks = _events(rd, staff, j, state[k_i]["clef"], state[k_i]["key"], texts)
-                for j2 in bars[1:]:            # two boxes of this staff under one column: one bar
-                    ev2, dirs2, marks2 = _events(rd, staff, j2, state[k_i]["clef"], state[k_i]["key"], texts)
-                    ev += ev2; dirs += dirs2
-                    marks["right"] = marks2["right"] or marks["right"]
-                    marks["endings"] += marks2["endings"]
-                    marks["end_clef"] = marks2["end_clef"] or marks["end_clef"]
-                    marks["repeat_bar"] |= marks2["repeat_bar"]
-                if marks["repeat_bar"] and not ev and prev_events[k_i]:
-                    ev = [Event(**{**e.__dict__, "tie": False, "tie_stop": False, "marks": [], "beams": [],
-                                   "slurs": [], "pre": [], "post": [], "copied": True})
-                          for e in prev_events[k_i]]
-                vs = _voices(ev, L.staves[staff].sp, single_staff_part=len(pl.staves) == 1,
-                             bar_len=_time_len(state[k_i]["time"]))
-                prev_events[k_i] = ev or prev_events[k_i]
-                m["staves"].append({"staff": staff, "bar": j, "voices": vs, "dirs": dirs, "marks": marks,
-                                    "state": dict(state[k_i])})
-                if marks["end_clef"]:                      # a clef inside the bar holds for the bars after it
-                    state[k_i]["clef"] = marks["end_clef"]
-                for evs in vs.values():
-                    all_durs.update(e.dur for e in evs)
-            measures.append(m)
-        built.append(measures)
+    def build(opening: str | None):
+        """Every part's measures as events (ties are resolved across them next); ``opening``: the meter of the page's
+        opening bars, over the bar heads' own reading (None: as read). Returns (measures, durations, the rhythm
+        decode's total log-score)."""
+        all_durs: set = set()
+        built = []
+        fit: list = []
+        for n, pl in enumerate(plans):
+            state = [{"key": 0, "time": "4/4", "clef": "G2"} for _ in pl.staves]
+            first = [True] * len(pl.staves)
+            measures = []
+            prev_events = [None] * len(pl.staves)
+            for s_i, c in columns:
+                sy = L.systems[s_i]
+                m = {"staves": [], "time": None, "key": None}
+                for k_i, pos in enumerate(pl.staves):
+                    if pos >= len(sy.staves):
+                        m["staves"].append(None)
+                        continue
+                    staff = sy.staves[pos]
+                    cols = sy.columns[pos]
+                    bars = [j for j, cc in enumerate(cols) if cc == c]
+                    if not bars:
+                        m["staves"].append(None)
+                        continue
+                    j = bars[0]
+                    state[k_i] = _bar_state(rd, staff, j, state[k_i])
+                    if first[k_i]:
+                        first[k_i] = False
+                        if opening is not None:
+                            state[k_i]["time"] = opening
+                    ev, dirs, marks = _events(rd, staff, j, state[k_i]["clef"], state[k_i]["key"], texts)
+                    for j2 in bars[1:]:            # two boxes of this staff under one column: one bar
+                        ev2, dirs2, marks2 = _events(rd, staff, j2, state[k_i]["clef"], state[k_i]["key"], texts)
+                        ev += ev2; dirs += dirs2
+                        marks["right"] = marks2["right"] or marks["right"]
+                        marks["endings"] += marks2["endings"]
+                        marks["end_clef"] = marks2["end_clef"] or marks["end_clef"]
+                        marks["repeat_bar"] |= marks2["repeat_bar"]
+                    if marks["repeat_bar"] and not ev and prev_events[k_i]:
+                        ev = [Event(**{**e.__dict__, "tie": False, "tie_stop": False, "marks": [], "beams": [],
+                                       "slurs": [], "pre": [], "post": [], "copied": True})
+                              for e in prev_events[k_i]]
+                    vs = _voices(ev, L.staves[staff].sp, single_staff_part=len(pl.staves) == 1,
+                                 bar_len=_time_len(state[k_i]["time"]), score=fit)
+                    prev_events[k_i] = ev or prev_events[k_i]
+                    m["staves"].append({"staff": staff, "bar": j, "voices": vs, "dirs": dirs, "marks": marks,
+                                        "state": dict(state[k_i])})
+                    if marks["end_clef"]:                      # a clef inside the bar holds for the bars after it
+                        state[k_i]["clef"] = marks["end_clef"]
+                    for evs in vs.values():
+                        all_durs.update(e.dur for e in evs)
+                measures.append(m)
+            built.append(measures)
+        return built, all_durs, fit
+
+    built, all_durs, _ = build(_page_meter(rd, build))
 
     # ties: a tied note's partner is the next note of its voice with the same step and octave (this bar or next)
     for measures in built:
@@ -907,6 +970,7 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
     for n, (pl, measures) in enumerate(zip(plans, built)):
         part = _sub(root, "part", id=f"P{n + 1}")
         last = {"key": None, "time": None, "clefs": [None] * len(pl.staves)}
+        meter_shown = False                  # the meter in effect is one the page prints (else written as not)
         number = 0
         pending_endings: list = []
         for m_i, m in enumerate(measures):
@@ -928,10 +992,12 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                     _sub(attrs, "divisions", div)
                 if m_i == 0 or key != last["key"]:
                     _sub(_sub(attrs, "key"), "fifths", key)
-                # a meter is printed where the page prints one; elsewhere it only measures the bars
-                if (m_i == 0 or time != last["time"]) and time != "other" and \
-                        any(st_ is not None and st_["marks"]["meter"] for st_ in staves):
-                    t = _sub(attrs, "time")
+                # the meter is written from the first bar on, so the bars are measured by it; where the page does
+                # not print it there (a continuation page), it is written as not printed
+                if (m_i == 0 or time != last["time"]) and time != "other":
+                    printed = any(st_ is not None and st_["marks"]["meter"] for st_ in staves)
+                    meter_shown = printed
+                    t = _sub(attrs, "time", **({} if printed else {"print-object": "no"}))
                     b, bt = time.split("/")
                     _sub(t, "beats", b); _sub(t, "beat-type", bt)
                 if m_i == 0 and len(pl.staves) > 1:
@@ -1023,7 +1089,8 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                             continue
                         for kind, payload, below in e.pre:
                             _direction(meas, (e.x, kind, payload, below), staff_no if len(pl.staves) > 1 else None)
-                        _note(meas, e, units(dur), voice_no, staff_no if len(pl.staves) > 1 else None)
+                        _note(meas, e, units(dur), voice_no, staff_no if len(pl.staves) > 1 else None,
+                              whole_rest=not meter_shown)
                         for kind, payload, below in e.post:
                             _direction(meas, (e.x, kind, payload, below), staff_no if len(pl.staves) > 1 else None)
                         if not e.chord:
@@ -1093,7 +1160,9 @@ def _direction(meas, d, staff_no):
         _sub(de, "staff", staff_no)
 
 
-def _note(meas, e: Event, dur: int, voice: int, staff_no):
+def _note(meas, e: Event, dur: int, voice: int, staff_no, whole_rest: bool = False):
+    """``whole_rest``: a whole-bar rest's type is written (whole, as it is drawn in any meter) -- where the meter is
+    written as not printed, so a reader that skips such a meter does not type the rest from its own default."""
     ne = _sub(meas, "note")
     if e.grace != "none":
         _sub(ne, "grace", **({"slash": "yes"} if e.grace == "unacc" else {}))
@@ -1117,7 +1186,10 @@ def _note(meas, e: Event, dur: int, voice: int, staff_no):
     if e.tie:
         _sub(ne, "tie", type="start")
     _sub(ne, "voice", voice)
-    if e.kind != "mrest":
+    if e.kind == "mrest":
+        if whole_rest:
+            _sub(ne, "type", "whole")
+    else:
         _sub(ne, "type", e.typ if e.typ not in ("256", "512") else e.typ + "th")
         for _ in range(e.dots):
             _sub(ne, "dot")
