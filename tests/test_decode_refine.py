@@ -22,8 +22,9 @@ def _note(pos, alter="key", p=0.6, chord=0.0, typ="note_quarter"):
 
 
 def _notes(xml):
+    """The written notes and rests the page shows (a rest written as not printed only completes a bar)."""
     root = ET.fromstring(xml.split("\n", 2)[2])
-    return root, root.findall(".//note")
+    return root, [n for n in root.findall(".//note") if n.get("print-object") != "no"]
 
 
 def test_accidental_carries_along_its_line_unless_the_model_is_sure():
@@ -124,3 +125,17 @@ def test_part_names_are_decoded_from_where_texts_sit_and_what_they_say(monkeypat
     texts2 = [{"text": "SSS", "role": "label", "xyxy": [40, 114, 78, 126]}, texts[4]]
     root, _ = _notes(write.write(Reading(layout=L, tok=tok), texts=texts2))
     assert [e.text for e in root.iter("part-name")] == ["Part 1", "Cello"]
+
+
+def test_a_short_bar_is_completed_with_an_unprinted_rest():
+    # three quarters in a 4/4 bar that is neither a piece's first nor a closing bar: the fourth beat is time the
+    # page's notes leave, written as a rest that is not printed
+    dets = staff_row(100, [0, 150, 300]) + [det("note_quarter", (x, 115, x + 10, 125), staff_position=0)
+                                           for x in (20, 60, 100, 170, 210, 250, 280)]
+    L = front.build(dets, 400, 300)
+    tok = {s.i: (_bar(L) if s.fam == "measure" else _note(0)) for s in L.syms}
+    root = ET.fromstring(write.write(Reading(layout=L, tok=tok)).split("\n", 2)[2])
+    ms = root.findall(".//measure")
+    hidden = [n for m in ms for n in m.findall("note") if n.get("print-object") == "no"]
+    assert len(hidden) == 1 and hidden[0].find("rest") is not None
+    assert root.find(".//time").get("print-object") == "no"          # the page prints no meter: written, not shown

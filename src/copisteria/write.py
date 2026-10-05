@@ -2,9 +2,12 @@
 
 The writer lays the model's readings out the way MusicXML wants them and adds nothing to the page: a bar's notes
 are its real note / rest symbols in x order per voice, pitches are staff position under the bar's clef (a clef
-symbol inside the bar takes over from its x on), alterations are the model's sounding alterations, keys / meters /
-clefs are the bar heads' readings and are printed where they change (a meter only where the page prints one).
-A bar that holds nothing gets a <forward> (an empty bar), never an invented rest.
+symbol inside the bar takes over from its x on), alterations are decoded per bar from the model's readings and
+the accidental glyphs, keys / clefs are the bar heads' readings and are printed where they change, the meter is
+decoded for the page with its bars and written from the first bar on (as not printed where the page does not print
+it). Nothing is drawn that the page does not show: a bar that holds nothing gets a <forward> (an empty bar), and
+time a staff's first voice leaves before the bar line is a rest that is not printed (print-object="no"), so every
+bar has its meter's length.
 
 Rhythm (COPISTERIA_ONSET=1, the default): each voice's notes are placed at the onsets the model reads for them, and
 a voice's durations and tuplets are decoded jointly (Viterbi over 48ths of a quarter) from the model's onset,
@@ -1094,7 +1097,12 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                 if first["marks"]["left"]:
                     _sub(bl, "repeat", direction="forward")
                 pending_endings = starts[:1]
+            # a bar is left short where notation makes it so: the opening bar of a piece (the page prints its meter
+            # there), an upbeat; the bar before a final or repeat bar line, its complement
+            opening = m_i == 0 and first["marks"]["meter"]
+            keep_short = opening or first["marks"]["right"] in ("barLine_final", "barLine_repeat_end")
             pos_q = Fraction(0)
+            max_end = Fraction(0)
             for k_i, st in enumerate(staves):
                 if st is None:
                     continue
@@ -1161,8 +1169,22 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                             _direction(meas, (e.x, kind, payload, below), staff_no if len(pl.staves) > 1 else None)
                         if not e.chord:
                             pos_q += dur
+                    if v_i == 0 and pos_q < bar_len and not keep_short:
+                        # time a staff's first voice leaves before the bar line (what the decode reads as notes the
+                        # detector missed) is the bar's all the same: written as a rest that is not printed, so the
+                        # bar has its length on every staff and nothing is drawn that the page does not show
+                        ne = _sub(meas, "note", print_object="no")
+                        _sub(ne, "rest")
+                        _sub(ne, "duration", units(bar_len - pos_q))
+                        _sub(ne, "voice", voice_no)
+                        if len(pl.staves) > 1:
+                            _sub(ne, "staff", staff_no)
+                        pos_q = bar_len
+                    max_end = max(max_end, pos_q)
                     for d in dirs:
                         _direction(meas, d, staff_no if len(pl.staves) > 1 else None)
+            if opening and 0 < max_end < bar_len:
+                meas.set("implicit", "yes")          # an upbeat: the bar is not counted
             for i, st_ in enumerate(staves):        # a clef changed inside the bar is printed already
                 if st_ is not None and st_["marks"]["end_clef"]:
                     last["clefs"][i] = st_["marks"]["end_clef"]
