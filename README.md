@@ -1,7 +1,7 @@
 # copisteria
 
 <p>
-  <a href="https://huggingface.co/kobimusic/copisteria"><picture>
+  <a href="https://huggingface.co/collections/kobimusic/copista-6ac3033f1a779b0c63ad41a9"><picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://huggingface.co/datasets/huggingface/badges/resolve/main/model-on-hf-md-dark.svg">
     <img alt="Model on Hugging Face" src="https://huggingface.co/datasets/huggingface/badges/resolve/main/model-on-hf-md.svg">
   </picture></a>
@@ -61,9 +61,11 @@ about 4M parameters for the whole reader). Both read with the same evidence mode
 
 ## Weights
 
-The evidence model and the symbol detectors are in the Hugging Face repo
-[`kobimusic/copisteria`](https://huggingface.co/kobimusic/copisteria) (private for now), with the model
-card. Put them where the pipeline looks:
+The weights are public on Hugging Face, one repo per size, in the
+[copista](https://huggingface.co/collections/kobimusic/copista-6ac3033f1a779b0c63ad41a9) collection:
+[`kobimusic/copista-28m`](https://huggingface.co/kobimusic/copista-28m) and
+[`kobimusic/copista-2m`](https://huggingface.co/kobimusic/copista-2m), each with its model card. The pipeline looks
+for them here:
 
 ```
 models/evidence-2m.pt                     # the evidence model (2.03M parameters), both sizes
@@ -71,12 +73,11 @@ models/small/v7_obj-recall-30m_best.pt    # copista-28m's detector (28.7M parame
 models/small/v7_obj-recall_best.pt        # copista-2m's detector (1.94M parameters)
 ```
 
-With the Hugging Face CLI (`pip install huggingface_hub`, then `hf auth login` with an account that can see the repo):
+With the Hugging Face CLI (`pip install huggingface_hub`), from the repository's root:
 
 ```
-hf download kobimusic/copisteria evidence-2m.pt --local-dir models
-hf download kobimusic/copisteria v7_obj-recall-30m_best.pt --local-dir models/small    # copista-28m
-hf download kobimusic/copisteria v7_obj-recall_best.pt --local-dir models/small        # copista-2m
+hf download kobimusic/copista-28m --include "*.pt" --local-dir models    # evidence-2m.pt + copista-28m's detector
+hf download kobimusic/copista-2m --include "*.pt" --local-dir models     # evidence-2m.pt + copista-2m's detector
 ```
 
 ## Install
@@ -188,7 +189,7 @@ dir>` reads a set. `docs/images/make_charts.py` draws the charts.
 
 | | |
 |---|---|
-| 🤗 [kobimusic/copisteria](https://huggingface.co/kobimusic/copisteria) | The evidence model's and the detectors' weights, and the model card |
+| 🤗 [copista](https://huggingface.co/collections/kobimusic/copista-6ac3033f1a779b0c63ad41a9) | The weights: [copista-28m](https://huggingface.co/kobimusic/copista-28m) and [copista-2m](https://huggingface.co/kobimusic/copista-2m), with their model cards |
 | 🤗 [kobimusic on Hugging Face](https://huggingface.co/kobimusic) | KobiMusic's models |
 | [kobi.music](https://kobi.music) | KobiMusic, with the hosted reader |
 | [efficient-musicdiff](https://github.com/guang-yng/efficient-musicdiff) | The OMR-NED scorer |

@@ -12,4 +12,5 @@ The weights are not in the repository. Put them here:
 | `small/v7_obj-recall-30m_best.pt` | copista-28m's symbol detector (28.7M parameters), the default |
 | `small/v7_obj-recall_best.pt` | copista-2m's symbol detector (1.94M parameters, the same 270 classes), `--detector 2m` |
 
-All three are in the Hugging Face repo `kobimusic/copisteria`.
+They are on Hugging Face: `hf download kobimusic/copista-28m --include "*.pt" --local-dir models` (and the same for
+`kobimusic/copista-2m`) puts them here.
