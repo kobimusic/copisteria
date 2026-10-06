@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,6 +7,9 @@ name = "copisteria"
 version = "1.3.0"
 description = "copisteria: KobiMusic's optical music recognition reader with a learned evidence model, page images of printed music to MusicXML"
 readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "KobiMusic" }]
 requires-python = ">=3.12"
 dependencies = [
     "numpy",

@@ -207,3 +207,24 @@ dir>` reads a set. `docs/images/make_charts.py` draws the charts.
 | 🤗 [kobimusic on Hugging Face](https://huggingface.co/kobimusic) | KobiMusic's models |
 | [kobi.music](https://kobi.music) | KobiMusic, with the hosted reader |
 | [efficient-musicdiff](https://github.com/guang-yng/efficient-musicdiff) | The OMR-NED scorer |
+
+## License
+
+The copisteria code is released under the [Apache License 2.0](LICENSE). You may use, change and redistribute it,
+commercially too, as long as you keep the copyright notice and the [NOTICE](NOTICE) file that credits KobiMusic, and
+mark the files you changed.
+
+## Citation
+
+If you use copisteria in research or in a product, please cite it:
+
+```bibtex
+@software{copisteria,
+  author  = {{KobiMusic}},
+  title   = {copisteria: optical music recognition with a learned evidence model},
+  year    = {2026},
+  version = {1.3.0},
+  url     = {https://github.com/kobimusic/copisteria},
+  license = {Apache-2.0}
+}
+```
