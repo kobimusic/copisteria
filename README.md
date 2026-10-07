@@ -26,7 +26,7 @@ scores too; but if even you have trouble reading a page, it will too.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/compare-scans-dark.png">
-  <img alt="Error rate on scanned pages, lower is better; Legato 2 is not released. String quartets: copista-28m 8.7 %, copista-2m 11.2 %, Legato 2 31.6 %, Legato 58.2 %, Audiveris 66.9 %. Lieder, 55 pages: copista-28m 16.9 %, copista-2m 17.0 %, homr 42.3 %, Transcoda 48.4 %, Audiveris 51.8 %. Polish piano scores (ground truth of notes only, see the note): copista-28m 34.4 %, copista-2m 38.7 %, homr 48.3 %, Transcoda 55.1 %, Audiveris 62.6 %" src="docs/images/compare-scans-light.png" width="800">
+  <img alt="Error rate on scanned pages, lower is better; Legato 2 is not released. String quartets: copista-28m 8.6 %, copista-2m 11.1 %, Legato 2 31.6 %, Legato 58.2 %, Audiveris 66.9 %. Lieder, 55 pages: copista-28m 16.8 %, copista-2m 17.0 %, homr 42.3 %, Transcoda 48.4 %, Audiveris 51.8 %. Polish piano scores (ground truth of notes only, see the note): copista-28m 34.4 %, copista-2m 38.5 %, homr 48.3 %, Transcoda 55.1 %, Audiveris 62.6 %" src="docs/images/compare-scans-light.png" width="800">
 </picture>
 
 ## How it reads a page
@@ -117,6 +117,10 @@ words, the counts over multi-measure rests) is read from `<page>.texts.json` bes
 text boxes with their role on the page, `[{"text": ..., "xyxy": [x0, y0, x1, y1], "role": ...}]`
 (docs/ARCHITECTURE.md lists the roles). Without it the music is read the same and the text is left out.
 
+The text is only as good as the OCR behind it. The figures here use Tesseract, which misses or misreads much of a
+scan's small print; a stronger engine that writes the same boxes (a vision-language OCR such as PaddleOCR-VL, for
+one) gives the parts their instrument names more often and the page a cleaner title and composer.
+
 | Environment variable | What it does |
 |---|---|
 | `COPISTERIA_DETECTOR` | `28m` (default) or `2m`, or a detector checkpoint of the same 270 classes; `--detector` sets it |
@@ -153,8 +157,8 @@ wrong: a page read entirely wrong scores 100 %.
 
 | System | Figures | Quartets, scans ↓ | Quartets, renders ↓ | Lieder, scans ↓ | Lieder, renders ↓ | Polish piano, scans\* ↓ |
 |---|---|---|---|---|---|---|
-| **copista-28m** | KobiMusic | **8.7 %** | **5.8 %** | **16.9 %** | **14.6 %** | **34.4 %** |
-| **copista-2m** | KobiMusic | 11.2 % | 8.8 % | 17.0 % | 15.9 % | 38.7 % |
+| **copista-28m** | KobiMusic | **8.6 %** | **5.8 %** | **16.8 %** | **14.5 %** | **34.4 %** |
+| **copista-2m** | KobiMusic | 11.1 % | 8.7 % | 17.0 % | 15.8 % | 38.5 % |
 | Legato 2 (unreleased) | published | 31.6 % | 17.1 % | n/a ⁴ | 27.6 % | n/a |
 | Legato | published | 58.2 % | 32.9 % | n/a ⁴ | 39.5 % | n/a ¹ |
 | homr 0.7 | run by KobiMusic | piano only | piano only | 42.3 % | 38.0 % | 48.3 % |
@@ -174,7 +178,7 @@ read entirely wrong, as on the IMSLP piano leaderboard.
 \* **Polish scans:** the ground truth holds notes, rests, beams and tuplets only: no slurs, pedal marks, dynamics,
 octave lines or text, and almost no articulations (0.4 per 100 notes, against 5-19 in the other sets). Whatever a
 reader reads of those counts against it, and copisteria reads them: about 2.7 points of its error. Scored on notes
-and rests only, copista-28m's error rate is 28.2 % and copista-2m's 33.4 %. The comparison with the other systems
+and rests only, copista-28m's error rate is 28.1 % and copista-2m's 33.3 %. The comparison with the other systems
 stands: they are scored against the same ground truth.
 
 1. Legato's Polish figure (86.7 %) comes from a different pipeline and carries an asterisk where it is published; it
@@ -188,11 +192,11 @@ stands: they are scored against the same ground truth.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/compare-renders-dark.png">
-  <img alt="Error rate on rendered pages, lower is better; Legato 2 is not released. String quartets: copista-28m 5.8 %, copista-2m 8.8 %, Legato 2 17.1 %, Legato 32.9 %, Audiveris 33.2 %. Lieder: copista-28m 14.6 %, copista-2m 15.9 %, Legato 2 27.6 %, Audiveris 28.8 %, homr 38.0 %, Legato 39.5 %, Transcoda 42.0 %" src="docs/images/compare-renders-light.png" width="800">
+  <img alt="Error rate on rendered pages, lower is better; Legato 2 is not released. String quartets: copista-28m 5.8 %, copista-2m 8.7 %, Legato 2 17.1 %, Legato 32.9 %, Audiveris 33.2 %. Lieder: copista-28m 14.5 %, copista-2m 15.8 %, Legato 2 27.6 %, Audiveris 28.8 %, homr 38.0 %, Legato 39.5 %, Transcoda 42.0 %" src="docs/images/compare-renders-light.png" width="800">
 </picture>
 
-**copisteria alone.** Over the 735 pages of the five sets copista-28m reads 88.3 % of the score right (error rate
-11.7 %), copista-2m 85.6 % (14.4 %). A known weakness: triplets a page does not mark (marked once, often pages
+**copisteria alone.** Over the 735 pages of the five sets copista-28m reads 88.4 % of the score right (error rate
+11.6 %), copista-2m 85.7 % (14.3 %). A known weakness: triplets a page does not mark (marked once, often pages
 earlier), which it can read as plain notes.
 
 The figures are this code's run with `evidence-2m.pt` and the default settings (`--detector 2m` for copista-2m),
@@ -223,7 +227,7 @@ If you use copisteria in research or in a product, please cite it:
   author  = {{KobiMusic}},
   title   = {copisteria: optical music recognition with a learned evidence model},
   year    = {2026},
-  version = {1.3.1},
+  version = {1.3.2},
   url     = {https://github.com/kobimusic/copisteria},
   license = {Apache-2.0}
 }
