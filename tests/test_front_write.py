@@ -51,6 +51,21 @@ def test_aligned_staves_form_a_system_unaligned_do_not(monkeypatch):
     assert [sy.staves for sy in L.systems] == [[0, 1], [2]]
 
 
+def test_a_scans_frame_is_not_ink():
+    import numpy as np
+    page = np.full((400, 300), 230, np.uint8)
+    page[100:104, 50:250] = 40                                    # a staff line
+    page[60:300, 50:52] = 40                                      # a system's opening line
+    framed = page.copy()
+    framed[:, :12] = 25                                           # the scanner bed around the sheet
+    framed[:, -9:] = 25
+    framed[:10, :] = 25
+    assert front.unframe(page) is page                            # no frame: the page as it is
+    assert (front.ink_mask(framed) == front.ink_mask(page)).all()
+    gap = front.ink_mask(framed)[150:250]                         # the gap below the staff, left of the line
+    assert not gap[:, :45].any() and gap[:, 50:52].all()
+
+
 def test_pitch_under_clefs():
     assert write._pitch("G2", 0) == ("B", 4)
     assert write._pitch("G2", -6) == ("C", 4)

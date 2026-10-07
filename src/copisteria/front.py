@@ -6,7 +6,8 @@ Only geometry is decided here, and only the parts the writer cannot do without:
   boxes' confidence mass per class, its P(real) their noisy-or. Different families never merge: two readings of
   one glyph in different families stay two symbols, and the model decides which one is real.
 * **staves** -- from the staff lines in the page's ink (five long thin runs at one spacing), checked against the
-  staff space of the detector's ``measure`` boxes; a row of measure boxes no ink staff explains is a staff too.
+  staff space of the detector's ``measure`` boxes; a row of measure boxes no ink staff explains is a staff too. A
+  scan's frame (the scanner bed around the sheet) is painted out first: it is not ink.
   Without the page image (or when the line finder fails on it), a staff is a chain of side-by-side, vertically
   overlapping measure boxes, and a gap between two of them that holds notes or rests becomes a bar of its own.
 * **systems** -- two consecutive staves share a system when an ink run crosses the gap between them at the
@@ -337,14 +338,49 @@ def _braced(syms: list[Sym], a: Staff, b: Staff) -> bool:
 
 INK_LINK = 0.85               # share of the gap a vertical ink run must cover to join two staves
 INK_SPLIT = 0.4               # below this (and no bar line through the gap): two systems
+FRAME_FRAC = 0.5              # an image edge whose rows (columns) are at least this much ink is a scan's frame
+FRAME_TAIL = 0.1              # ... which runs on inward while its lines stay this dark (a skewed sheet's edge)
+
+
+def _dark(gray):
+    import numpy as np
+    paper, ink = np.percentile(gray, 50), np.percentile(gray, 1)
+    return gray < paper - 0.35 * max(1.0, paper - ink)
+
+
+def _frame(dark) -> tuple[int, int, int, int]:
+    """The sheet inside a scan's frame -- the scanner bed or the dark backing around the paper, a band of ink
+    along the image's edges -- as (x0, y0, x1, y1); the whole image when there is none."""
+    H, W = dark.shape
+
+    def inward(share) -> int:
+        n = 0
+        if len(share) and share[0] >= FRAME_FRAC:
+            while n < len(share) // 4 and share[n] >= FRAME_TAIL:
+                n += 1
+        return n
+    rows, cols = dark.mean(axis=1), dark.mean(axis=0)
+    return inward(cols), inward(rows), W - inward(cols[::-1]), H - inward(rows[::-1])
+
+
+def unframe(gray):
+    """The page with a scan's frame painted the paper's tone. The frame is not ink: left in, it carries staff
+    lines out to the image's edge and reads as one line through every gap between staves at the page's left."""
+    import numpy as np
+    x0, y0, x1, y1 = _frame(_dark(gray))
+    H, W = gray.shape
+    if (x0, y0, x1, y1) == (0, 0, W, H) or x1 <= x0 or y1 <= y0:
+        return gray
+    out = np.full_like(gray, np.median(gray[y0:y1, x0:x1]))
+    out[y0:y1, x0:x1] = gray[y0:y1, x0:x1]
+    return out
 
 
 def ink_mask(gray):
     """Ink pixels of a page: darker than 35 % of the way from its paper (median) to its ink (1st percentile), so a
-    thin anti-aliased line on a small render counts as well as a thick stroke on a 1-bit scan."""
-    import numpy as np
-    paper, ink = np.percentile(gray, 50), np.percentile(gray, 1)
-    return gray < paper - 0.35 * max(1.0, paper - ink)
+    thin anti-aliased line on a small render counts as well as a thick stroke on a 1-bit scan. A scan's frame is
+    not ink (unframe)."""
+    return _dark(unframe(gray))
 
 
 def clean_page(gray):
@@ -804,7 +840,7 @@ def build(dets: list[dict], width: float, height: float, image=None, cands: list
     _FORCED.update(cuts or {})
     gray = None
     if image is not None:
-        gray = np.asarray(image.convert("L") if hasattr(image, "convert") else image)
+        gray = unframe(np.asarray(image.convert("L") if hasattr(image, "convert") else image))
     syms = merge(dets)
     staves = _ink_staves(gray, syms) if gray is not None else None
     mask = ink_mask(gray) if gray is not None else None
