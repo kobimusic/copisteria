@@ -130,6 +130,39 @@ def test_lone_member_stands_alone_and_tuplets_close():
     assert a.dur == Fraction(1, 3)
 
 
+def _staff_bar(*voices, meter="3/4"):
+    return {"voices": dict(enumerate(voices, 1)), "marks": {"meter": False, "right": None},
+            "state": {"time": meter}}
+
+
+def test_an_overfull_voice_is_cut_at_the_length_most_staves_give_the_bar():
+    E = write.Event
+    q = lambda x, **kw: E(x=x, kind="note", typ="quarter", dur=Fraction(1), **kw)         # noqa: E731
+    full = [q(10), q(20), q(30)]
+    over = [q(10, beams=[(1, "begin")]), q(20, beams=[(1, "end")]), E(x=30, kind="note", typ="half", dur=Fraction(2)),
+            E(x=40, kind="mrest", tie_stop=True)]
+    over[2].tie = True
+    over[3].step, over[3].octave = over[2].step, over[2].octave
+    built = [[{"staves": [_staff_bar(full)]}], [{"staves": [_staff_bar(over)]}], [{"staves": [_staff_bar(list(full))]}]]
+    assert write._column_lengths(built) == [3]                       # 3, 5 + a bar, 3: the bar is 3 beats
+    out = write._chop(over, Fraction(3))
+    assert [(e.typ, e.dur) for e in out] == [("quarter", 1), ("quarter", 1), ("quarter", 1)]    # the half ends at 3
+    assert not out[2].tie                                            # its partner was cut away
+    assert write._chop(full, Fraction(3)) is full                    # a voice in time is left as it is
+
+
+def test_a_cut_closes_the_beams_and_tuplets_it_breaks():
+    E = write.Event
+    t = lambda x, mark="": E(x=x, kind="note", typ="eighth", tup="3/2", dur=Fraction(1, 3), tuplet_mark=mark)  # noqa
+    evs = [E(x=0, kind="note", typ="half", dur=Fraction(2))] + [t(10, "start"), t(20), t(30, "stop")]
+    for e, b in zip(evs[1:], ("begin", "continue", "end")):
+        e.beams = [(1, b)]
+    out = write._chop(evs, Fraction(8, 3))                           # the last triplet eighth falls past the cut
+    assert len(out) == 3
+    assert (out[1].tuplet_mark, out[2].tuplet_mark) == ("start", "stop")
+    assert (out[1].beams, out[2].beams) == ([(1, "begin")], [(1, "end")])
+
+
 def _dist(onset, tup_none=0.6):
     beat = [0.0] * 16; frac = [0.0] * 48
     b = int(onset); f = round((onset - b) * 48)

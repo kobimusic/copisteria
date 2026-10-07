@@ -7,7 +7,9 @@ the accidental glyphs, keys / clefs are the bar heads' readings and are printed 
 decoded for the page with its bars and written from the first bar on (as not printed where the page does not print
 it). Nothing is drawn that the page does not show: a bar that holds nothing gets a <forward> (an empty bar), and
 time a staff's first voice leaves before the bar line is a rest that is not printed (print-object="no"), so every
-bar has its meter's length.
+bar has its meter's length. A bar column is as long as most of the page's staves make it (the meter's length unless
+most run past it): a voice that runs past that is cut there (_chop), so one overfull staff does not stretch the bar
+on every other part.
 
 Rhythm (COPISTERIA_ONSET=1, the default): each voice's notes are placed at the onsets the model reads for them, and
 a voice's durations and tuplets are decoded jointly (Viterbi over 48ths of a quarter) from the model's onset,
@@ -20,6 +22,7 @@ import math
 import os
 import re
 import xml.etree.ElementTree as ET
+from collections import Counter
 from dataclasses import dataclass, field
 from fractions import Fraction
 
@@ -778,6 +781,152 @@ def _time_len(time: str) -> Fraction:
     return Fraction(int(b) * 4, int(t))
 
 
+SHORT_RIGHT = ("barLine_final", "barLine_repeat_end")      # a bar before these may be short (an upbeat's complement)
+
+
+def _voice_starts(evs: list[Event], mrest_len: Fraction) -> tuple[list, Fraction]:
+    """Each event's start in the bar as the writer places it (a chord member's is its root's, a gap has none) and
+    where the voice ends."""
+    starts, pos, end, root = [], Fraction(0), Fraction(0), Fraction(0)
+    for e in evs:
+        if e.kind == "gap":
+            starts.append(None)
+            pos += e.dur
+        elif e.chord:
+            starts.append(root)
+        else:
+            starts.append(pos)
+            root = pos
+            pos += mrest_len if e.kind == "mrest" else e.dur
+            end = max(end, pos)
+    return starts, end
+
+
+def _column_lengths(built: list) -> list:
+    """Each bar column's length: the one most of the page's staves give it as written (a staff's first voice is
+    filled to its meter's length unless the bar may be short); on a tie, the meter's."""
+    out = []
+    for m_i in range(max((len(ms) for ms in built), default=0)):
+        votes: Counter = Counter()
+        meters = set()
+        for ms in built:
+            first = next((s for s in ms[m_i]["staves"] if s), None) if m_i < len(ms) else None
+            if first is None:
+                continue
+            bar_len = _time_len(first["state"]["time"])
+            meters.add(bar_len)
+            short = (m_i == 0 and first["marks"]["meter"]) or first["marks"]["right"] in SHORT_RIGHT
+            for st in ms[m_i]["staves"]:
+                if st is None:
+                    continue
+                n = max((_voice_starts(evs, bar_len)[1] for evs in st["voices"].values()), default=bar_len)
+                votes[n if short or not st["voices"] else max(n, bar_len)] += 1
+        out.append(max(votes, key=lambda n: (votes[n], n in meters, -n)) if votes else None)
+    return out
+
+
+def _fit_value(q: Fraction) -> tuple[str, int] | None:
+    """The note value (type, dots) that lasts ``q`` quarters, if one does."""
+    for typ, t in TYPE_QUARTERS.items():
+        for dots in range(3):
+            if t * (2 - Fraction(1, 2 ** dots)) == q:
+                return typ, dots
+    return None
+
+
+def _chop(evs: list[Event], cut: Fraction) -> list[Event]:
+    """A voice cut at ``cut`` quarters, its bar column's length: what starts at or after it is dropped, a plain note
+    or rest that runs past it ends there (a tuplet member, or one no note value fits, is dropped); the beams, tuplet
+    brackets, ties and slurs the cut leaves open are closed. A voice that ends in time comes back as it is."""
+    starts, end = _voice_starts(evs, cut)
+    if end <= cut:
+        return evs
+    kept, dropped, root, shortened = [], [], None, False
+    for e, s in zip(evs, starts):
+        if e.kind == "gap":
+            continue
+        if e.chord:
+            if root is None:
+                dropped.append(e)
+                continue
+            if shortened:                                    # a chord ends with its root
+                e.typ, e.dots, e.dur, e.beams = root.typ, root.dots, root.dur, []
+            kept.append((e, s))
+            continue
+        length = cut if e.kind == "mrest" else e.dur
+        root, shortened = None, False
+        if s >= cut:
+            dropped.append(e)
+            continue
+        if s + length > cut:
+            fit = _fit_value(cut - s) if e.kind in ("note", "rest") and e.tup in ("none", "other") else None
+            if fit is None:
+                dropped.append(e)
+                continue
+            e.typ, e.dots = fit
+            e.dur = cut - s
+            e.beams = []
+            shortened = True
+        root = e
+        kept.append((e, s))
+    out, cursor = [], Fraction(0)
+    for e, s in kept:
+        if not e.chord:
+            if s != cursor:
+                out.append(Event(x=e.x - 0.01, kind="gap", voice=e.voice, dur=s - cursor))
+                cursor = s
+            cursor += cut if e.kind == "mrest" else e.dur
+        out.append(e)
+    notes = [e for e in out if e.kind == "note"]
+    for d in dropped:
+        if d.tie_stop:                                       # its tie's start, now without an end
+            for e in reversed(notes):
+                if e.tie and e.step == d.step and e.octave == d.octave:
+                    e.tie = False
+                    break
+        for typ, num in d.slurs:                             # a slur that ended on it ends on the last note kept
+            if typ == "stop" and notes:
+                last = next((e for e in reversed(notes) if not e.chord), notes[-1])
+                if ("start", num) in last.slurs:
+                    last.slurs.remove(("start", num))
+                else:
+                    last.slurs.append(("stop", num))
+    heads = [e for e in notes if not e.chord and e.grace == "none"]
+    for lvl in sorted({lv for e in heads for lv, _ in e.beams}):
+        group: list[Event] = []
+        for e in heads:
+            val = dict(e.beams).get(lvl)
+            if val == "begin" or (val == "continue" and not group):
+                group = [e]
+                e.beams = [(lv, "begin" if lv == lvl else v) for lv, v in e.beams]
+            elif val == "continue":
+                group.append(e)
+            elif val == "end":
+                if not group:
+                    e.beams = [(lv, v) for lv, v in e.beams if lv < lvl]
+                group = []
+        if len(group) > 1:
+            group[-1].beams = [(lv, "end" if lv == lvl else v) for lv, v in group[-1].beams]
+        elif group:
+            group[0].beams = [(lv, v) for lv, v in group[0].beams if lv < lvl]
+    run: list[Event] = []
+    for e in out:
+        if e.kind in ("note", "rest") and not e.chord and e.grace == "none":
+            if e.tuplet_mark == "start":
+                run = [e]
+            elif run and e.tup == run[0].tup:
+                run.append(e)
+                if e.tuplet_mark == "stop":
+                    run = []
+            else:
+                run = []
+    if len(run) > 1:
+        run[-1].tuplet_mark = "stop"
+    elif run:
+        run[0].tuplet_mark = ""
+    return out
+
+
 def _sub(parent, tag, text=None, **attrs):
     el = ET.SubElement(parent, tag, {k.replace("_", "-"): str(v) for k, v in attrs.items()})
     if text is not None:
@@ -1025,6 +1174,17 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
         mask = ink_mask(np.asarray(image.convert("L") if hasattr(image, "convert") else image))
     _attach(rd, built, plans, texts, mask)
 
+    # each bar column is as long as most staves make it; a voice running past that is cut there
+    bar_ends = _column_lengths(built)
+    for measures in built:
+        for m_i, m in enumerate(measures):
+            for st in m["staves"]:
+                if st is not None and bar_ends[m_i] is not None:
+                    for v, evs in st["voices"].items():
+                        st["voices"][v] = _chop(evs, bar_ends[m_i])
+                        all_durs.update(e.dur for e in st["voices"][v])
+    all_durs.update(n for n in bar_ends if n)
+
     all_durs |= {_time_len(m["staves"][0]["state"]["time"]) for ms in built for m in ms
                  if m["staves"] and m["staves"][0]}
     div = 1
@@ -1086,6 +1246,7 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                 ms = _sub(attrs, "measure-style")
                 _sub(ms, "multiple-rest", mr)
             bar_len = _time_len(time)
+            bar_end = bar_ends[m_i] or bar_len          # the column's length: the meter's unless most staves run past it
             # left bar line: forward repeat, ending starts
             starts = [num for num, box in first["marks"]["endings"]]
             if first["marks"]["left"] or starts:
@@ -1100,7 +1261,7 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
             # a bar is left short where notation makes it so: the opening bar of a piece (the page prints its meter
             # there), an upbeat; the bar before a final or repeat bar line, its complement
             opening = m_i == 0 and first["marks"]["meter"]
-            keep_short = opening or first["marks"]["right"] in ("barLine_final", "barLine_repeat_end")
+            keep_short = opening or first["marks"]["right"] in SHORT_RIGHT
             pos_q = Fraction(0)
             max_end = Fraction(0)
             for k_i, st in enumerate(staves):
@@ -1113,10 +1274,10 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                         _sub(_sub(meas, "backup"), "duration", units(pos_q))
                         pos_q = Fraction(0)
                     fw = _sub(meas, "forward")
-                    _sub(fw, "duration", units(bar_len))
+                    _sub(fw, "duration", units(bar_end))
                     if len(pl.staves) > 1:
                         _sub(fw, "staff", staff_no)
-                    pos_q = bar_len
+                    pos_q = bar_end
                     continue
                 for v_i, (v, evs) in enumerate(sorted(vs.items())):
                     if pos_q:
@@ -1149,7 +1310,7 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                         while dirs and not (e.kind == "note" and e.chord) and \
                                 dirs[0][0] <= e.x + 0.5 * L.staves[st["staff"]].sp:
                             _direction(meas, dirs.pop(0), staff_no if len(pl.staves) > 1 else None)
-                        dur = bar_len if e.kind == "mrest" else e.dur
+                        dur = bar_end if e.kind == "mrest" else e.dur
                         if e.kind == "gap":
                             if dur > 0:
                                 fw = _sub(meas, "forward")
@@ -1169,17 +1330,17 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                             _direction(meas, (e.x, kind, payload, below), staff_no if len(pl.staves) > 1 else None)
                         if not e.chord:
                             pos_q += dur
-                    if v_i == 0 and pos_q < bar_len and not keep_short:
+                    if v_i == 0 and pos_q < bar_end and not keep_short:
                         # time a staff's first voice leaves before the bar line (what the decode reads as notes the
                         # detector missed) is the bar's all the same: written as a rest that is not printed, so the
                         # bar has its length on every staff and nothing is drawn that the page does not show
                         ne = _sub(meas, "note", print_object="no")
                         _sub(ne, "rest")
-                        _sub(ne, "duration", units(bar_len - pos_q))
+                        _sub(ne, "duration", units(bar_end - pos_q))
                         _sub(ne, "voice", voice_no)
                         if len(pl.staves) > 1:
                             _sub(ne, "staff", staff_no)
-                        pos_q = bar_len
+                        pos_q = bar_end
                     max_end = max(max_end, pos_q)
                     for d in dirs:
                         _direction(meas, d, staff_no if len(pl.staves) > 1 else None)

@@ -137,7 +137,11 @@ Transcription only: every decision was the model's. A symbol is written when its
   a staff's first voice leaves before the bar line is written as a rest that is not printed, so every bar has its
   meter's length; a piece's opening bar (the page prints its meter there) stays short and is marked implicit, an
   upbeat, and so does the bar before a final or repeat bar line. A bar with nothing in it gets a `<forward>`;
-  nothing is drawn that the page does not show.
+  nothing is drawn that the page does not show. A bar column is as long as most of the page's staves make it (on a
+  tie, the meter's length): a voice that runs past that is cut there -- what starts at or after it is dropped, a
+  plain note or rest across it ends there, and the beams, tuplets, ties and slurs the cut breaks are closed -- so
+  one overfull staff does not stretch the bar on every part (a reader that sizes a bar by its longest part pads all
+  the others with rests).
 * **Marks**, attached by position: beams (the notes whose stems a beam box reaches: a head under the beam has its
   stem at its right, a head over it at its left; a beam between the two staves of a keyboard part joins notes of
   both; levels from the note types), slurs (from their corners, across systems), ties,
