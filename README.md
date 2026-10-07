@@ -26,7 +26,7 @@ scores too; but if even you have trouble reading a page, it will too.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/compare-scans-dark.png">
-  <img alt="Error rate on scanned pages, lower is better; Legato 2 is not released. String quartets: copista-28m 8.7 %, copista-2m 11.2 %, Legato 2 31.6 %, Legato 58.2 %, Audiveris 66.9 %. Lieder, 55 pages: copista-28m 17.7 %, copista-2m 17.8 %, homr 42.3 %, Transcoda 48.4 %, Audiveris 51.8 %. Polish piano scores (ground truth of notes only, see the note): copista-28m 34.4 %, copista-2m 38.7 %, homr 48.3 %, Transcoda 55.1 %, Audiveris 62.6 %" src="docs/images/compare-scans-light.png" width="800">
+  <img alt="Error rate on scanned pages, lower is better; Legato 2 is not released. String quartets: copista-28m 8.7 %, copista-2m 11.2 %, Legato 2 31.6 %, Legato 58.2 %, Audiveris 66.9 %. Lieder, 55 pages: copista-28m 16.9 %, copista-2m 17.0 %, homr 42.3 %, Transcoda 48.4 %, Audiveris 51.8 %. Polish piano scores (ground truth of notes only, see the note): copista-28m 34.4 %, copista-2m 38.7 %, homr 48.3 %, Transcoda 55.1 %, Audiveris 62.6 %" src="docs/images/compare-scans-light.png" width="800">
 </picture>
 
 ## How it reads a page
@@ -153,8 +153,8 @@ wrong: a page read entirely wrong scores 100 %.
 
 | System | Figures | Quartets, scans ↓ | Quartets, renders ↓ | Lieder, scans ↓ | Lieder, renders ↓ | Polish piano, scans\* ↓ |
 |---|---|---|---|---|---|---|
-| **copista-28m** | KobiMusic | **8.7 %** | **5.8 %** | **17.7 %** | **14.6 %** | **34.4 %** |
-| **copista-2m** | KobiMusic | 11.2 % | 8.8 % | 17.8 % | 15.9 % | 38.7 % |
+| **copista-28m** | KobiMusic | **8.7 %** | **5.8 %** | **16.9 %** | **14.6 %** | **34.4 %** |
+| **copista-2m** | KobiMusic | 11.2 % | 8.8 % | 17.0 % | 15.9 % | 38.7 % |
 | Legato 2 (unreleased) | published | 31.6 % | 17.1 % | n/a ⁴ | 27.6 % | n/a |
 | Legato | published | 58.2 % | 32.9 % | n/a ⁴ | 39.5 % | n/a ¹ |
 | homr 0.7 | run by KobiMusic | piano only | piano only | 42.3 % | 38.0 % | 48.3 % |
@@ -192,7 +192,7 @@ stands: they are scored against the same ground truth.
 </picture>
 
 **copisteria alone.** Over the 735 pages of the five sets copista-28m reads 88.3 % of the score right (error rate
-11.7 %), copista-2m 85.5 % (14.5 %). A known weakness: triplets a page does not mark (marked once, often pages
+11.7 %), copista-2m 85.6 % (14.4 %). A known weakness: triplets a page does not mark (marked once, often pages
 earlier), which it can read as plain notes.
 
 The figures are this code's run with `evidence-2m.pt` and the default settings (`--detector 2m` for copista-2m),
@@ -223,7 +223,7 @@ If you use copisteria in research or in a product, please cite it:
   author  = {{KobiMusic}},
   title   = {copisteria: optical music recognition with a learned evidence model},
   year    = {2026},
-  version = {1.3.0},
+  version = {1.3.1},
   url     = {https://github.com/kobimusic/copisteria},
   license = {Apache-2.0}
 }
