@@ -338,8 +338,10 @@ def _braced(syms: list[Sym], a: Staff, b: Staff) -> bool:
 
 INK_LINK = 0.85               # share of the gap a vertical ink run must cover to join two staves
 INK_SPLIT = 0.4               # below this (and no bar line through the gap): two systems
-FRAME_FRAC = 0.5              # an image edge whose rows (columns) are at least this much ink is a scan's frame
-FRAME_TAIL = 0.1              # ... which runs on inward while its lines stay this dark (a skewed sheet's edge)
+FRAME_PAPER = 0.5             # a row (column) is the sheet's once it holds half the paper of the page's middle lines
+FRAME_MAX = 0.35              # a frame reaches at most this far in from its side (past it, that side has none)
+FRAME_SLIVER = 0.01           # a white sliver this thin may run along the image's edge outside a frame (export padding)
+FRAME_MARGIN = 0.005          # a frame's inner edge is ragged: the sheet is taken to start this far past it (its margin)
 
 
 def _dark(gray):
@@ -348,19 +350,41 @@ def _dark(gray):
     return gray < paper - 0.35 * max(1.0, paper - ink)
 
 
+def _sheet_edges(paper) -> tuple[int, int]:
+    """Where the sheet starts and ends along one dimension, from its paper profile (each line's share of paper): a
+    frame is the run of lines from a side whose paper falls short of FRAME_PAPER of the middle lines'."""
+    import numpy as np
+    n = len(paper)
+    edge = FRAME_PAPER * float(np.median(paper[n // 4: 3 * n // 4]))
+    sliver = max(2, int(FRAME_SLIVER * n))
+    margin = max(2, round(FRAME_MARGIN * n))
+
+    def inward(line) -> int:
+        k = 0
+        while k < sliver and k < n and line[k] >= edge:
+            k += 1
+        if k == n or line[k] >= edge:
+            return 0                                     # paper from the edge in: no frame on this side
+        while k < n and line[k] < edge:
+            k += 1
+        return k + margin if k <= FRAME_MAX * n else 0
+    a, b = inward(paper), n - inward(paper[::-1])
+    return (a, b) if b > a else (0, n)
+
+
 def _frame(dark) -> tuple[int, int, int, int]:
     """The sheet inside a scan's frame -- the scanner bed or the dark backing around the paper, a band of ink
-    along the image's edges -- as (x0, y0, x1, y1); the whole image when there is none."""
+    along the image's edges -- as (x0, y0, x1, y1); the whole image when there is none. Each dimension's paper
+    profile is near nothing across a frame and high on the sheet, however dense its music; the profiles are taken
+    twice, the second time over the sheet the first found, so one side's band does not count against the others'
+    lines."""
     H, W = dark.shape
-
-    def inward(share) -> int:
-        n = 0
-        if len(share) and share[0] >= FRAME_FRAC:
-            while n < len(share) // 4 and share[n] >= FRAME_TAIL:
-                n += 1
-        return n
-    rows, cols = dark.mean(axis=1), dark.mean(axis=0)
-    return inward(cols), inward(rows), W - inward(cols[::-1]), H - inward(rows[::-1])
+    x0, y0, x1, y1 = 0, 0, W, H
+    for _ in range(2):
+        cols = 1.0 - dark[y0:y1].mean(axis=0)
+        rows = 1.0 - dark[:, x0:x1].mean(axis=1)
+        (x0, x1), (y0, y1) = _sheet_edges(cols), _sheet_edges(rows)
+    return x0, y0, x1, y1
 
 
 def unframe(gray):

@@ -66,6 +66,20 @@ def test_a_scans_frame_is_not_ink():
     assert not gap[:, :45].any() and gap[:, 50:52].all()
 
 
+def test_a_thick_frame_round_a_dense_page_ends_where_the_paper_starts():
+    import numpy as np
+    page = np.full((400, 300), 230, np.uint8)
+    page[50:351:6, 40:261] = 40                                   # dense staff lines: 13 % of every column is ink
+    page[50:351, 60:62] = 40                                      # a system's opening line
+    page[:40] = 25                                                # a thick scanner bed on every side: with it,
+    page[-40:] = 25                                               # a third of every column is ink
+    page[:, :30] = 25
+    page[:, -30:] = 25
+    x0, y0, x1, y1 = front._frame(front._dark(page))
+    assert 30 <= x0 <= 36 and 40 <= y0 <= 46 and 264 <= x1 <= 270 and 354 <= y1 <= 360
+    assert front.ink_mask(page)[100:300, 60].all()                # the opening line is still ink
+
+
 def test_pitch_under_clefs():
     assert write._pitch("G2", 0) == ("B", 4)
     assert write._pitch("G2", -6) == ("C", 4)
