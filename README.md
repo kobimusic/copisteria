@@ -227,7 +227,7 @@ If you use copisteria in research or in a product, please cite it:
   author  = {{KobiMusic}},
   title   = {copisteria: optical music recognition with a learned evidence model},
   year    = {2026},
-  version = {1.3.2},
+  version = {1.3.3},
   url     = {https://github.com/kobimusic/copisteria},
   license = {Apache-2.0}
 }
