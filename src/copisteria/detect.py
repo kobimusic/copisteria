@@ -15,12 +15,28 @@ from .paths import detector
 
 TARGET_SP = 10.6
 IMGSZ_MIN, IMGSZ_MAX = 640, 4096
+SPACE_AGREE = 0.25      # the ink's staff space stands while the measure boxes' is within a quarter of it
 
 
 def imgsz_for(staff_space: float, long_side: int, target: float = TARGET_SP) -> int:
     if staff_space <= 0:
         return 2048
     return int(min(IMGSZ_MAX, max(IMGSZ_MIN, round(long_side * target / staff_space / 32) * 32)))
+
+
+def measure_space(dets: list[dict]) -> float:
+    """The staff space the confident measure boxes give (a measure box is four staff spaces tall), 0 without any."""
+    hs = sorted(d["xyxy"][3] - d["xyxy"][1] for d in dets if d["cls"] == "measure" and d["conf"] >= 0.5)
+    return hs[len(hs) // 2] / 4 if hs else 0.0
+
+
+def staff_space(ink: float, boxes: float) -> float:
+    """The staff space a page is read at: the ink staff finder's, unless it found none or the measure boxes of a
+    first read (``boxes``, measure_space) put it more than SPACE_AGREE away. On a scan the finder can lock onto half
+    or twice the spacing, and the detector read at that size misses most of the page."""
+    if ink <= 0 or (boxes > 0 and abs(ink / boxes - 1) > SPACE_AGREE):
+        return boxes
+    return ink
 
 
 class Detector:

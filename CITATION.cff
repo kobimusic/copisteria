@@ -5,8 +5,8 @@ title: "copisteria: optical music recognition with a learned evidence model"
 authors:
   - name: KobiMusic
     website: "https://kobi.music"
-version: 1.3.3
-date-released: 2026-10-08
+version: 1.3.4
+date-released: 2026-10-10
 license: Apache-2.0
 repository-code: "https://github.com/kobimusic/copisteria"
 url: "https://github.com/kobimusic/copisteria"

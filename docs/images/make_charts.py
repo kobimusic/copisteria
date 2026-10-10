@@ -28,13 +28,13 @@ SETS = [  # key, name, pages
 # sets whose ground truth needs a word: an asterisk on the panel, the note under the chart
 NOTES = {"polish": ("* Polish: the ground truth holds notes, rests, beams and tuplets only (no slurs, pedals, dynamics, "
                     "octave lines or text),",
-                    "so whatever a reader reads of those counts against it. Notes and rests only: copista-28m 28.1 %, "
-                    "copista-2m 33.3 %.")}
+                    "so whatever a reader reads of those counts against it. Notes and rests only: copista-28m 24.7 %, "
+                    "copista-2m 28.5 %.")}
 
 # system -> (kind, OMR-NED per set in SETS order; None = no figure)
 SYSTEMS = {
-    "copista-28m": ("evidence", [8.63, 5.79, 16.84, 14.52, 34.37]),
-    "copista-2m": ("small", [11.08, 8.71, 16.98, 15.83, 38.53]),
+    "copista-28m": ("evidence", [8.647, 5.795, 16.883, 14.514, 31.536]),
+    "copista-2m": ("small", [11.083, 8.699, 16.973, 15.803, 34.324]),
     "Legato 2 (unreleased)": ("unreleased", [31.6, 17.1, None, 27.6, None]),
     "Legato": ("published", [58.2, 32.9, None, 39.5, None]),
     "homr 0.7": ("run", [None, None, 42.3, 38.0, 48.3]),

@@ -32,38 +32,38 @@ def detections(png: Path, want_size: bool = False):
         return (d, size(cached[0])) if want_size else d
     if cached:                       # several sizes cached: the one whose staff space sat nearest the detector's
         from PIL import Image
-        from .detect import TARGET_SP
+        from .detect import TARGET_SP, measure_space
         with Image.open(png) as im:
             long_side = max(im.size)
 
         def gap(path):
             d = json.loads(path.read_text())
-            hs = sorted(x["xyxy"][3] - x["xyxy"][1] for x in d if x["cls"] == "measure" and x["conf"] >= 0.5)
-            if not hs:
+            sp = measure_space(d)
+            if not sp:
                 return 1e9, d, size(path)
-            return abs(hs[len(hs) // 2] / 4 * size(path) / long_side - TARGET_SP), d, size(path)
+            return abs(sp * size(path) / long_side - TARGET_SP), d, size(path)
 
         _, d, imgsz = min((gap(p) for p in cached), key=lambda t: t[0])
         return (d, imgsz) if want_size else d
     from .vision.page.scan import from_png
     from .vision.page.staves import find_staves
 
-    from .detect import Detector, imgsz_for
+    from .detect import Detector, imgsz_for, measure_space, staff_space
     page = from_png(png)
-    sp = find_staves(page.image()).spacing
+    ink = find_staves(page.image()).spacing
     det = Detector()
     from PIL import Image
     im = Image.open(png)
-    if sp <= 0:
-        # the line finder found no staves (a small or yellowed scan): a first read at the default size, and the
-        # staff space from its measure boxes (their height is four staff spaces)
-        arr, s = det.prepare(im, 2048)
-        first = det.run_array(arr, s)
-        hs = sorted(d["xyxy"][3] - d["xyxy"][1] for d in first if d["cls"] == "measure" and d["conf"] >= 0.5)
-        sp = hs[len(hs) // 2] / 4 if hs else 0.0
-    imgsz = imgsz_for(sp, max(im.width, im.height))
-    arr, s = det.prepare(im, imgsz)
-    dets = det.run_array(arr, s)
+    # a first read at the default size: its measure boxes check the ink's staff space, and stand in for it where the
+    # line finder found no staves (a small or yellowed scan) or locked onto half or twice the spacing
+    arr, s = det.prepare(im, 2048)
+    first = det.run_array(arr, s)
+    imgsz = imgsz_for(staff_space(ink, measure_space(first)), max(im.width, im.height))
+    if imgsz == 2048:
+        dets = first
+    else:
+        arr, s = det.prepare(im, imgsz)
+        dets = det.run_array(arr, s)
     png.with_name(f"{png.stem}.dets_{tag}_{imgsz}.json").write_text(json.dumps(dets))
     return (dets, imgsz) if want_size else dets
 

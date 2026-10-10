@@ -16,8 +16,10 @@ page image ──► detector (v7) ──► front end ──► tokens ──�
 ## 1. Detector
 
 `detect.py` runs the v7 symbol detector (`detector/small`, architecture `obj-recall-30m`) over the page at the size
-that puts the staff space at 10.6 px (the staff space comes from the staff lines in the ink; when the line finder
-finds none, from a first pass's measure boxes, which are four staff spaces tall). Every detection has a class (270,
+that puts the staff space at 10.6 px. The staff space comes from the staff lines in the ink, checked against a first
+read at 2048 px: its measure boxes are four staff spaces tall. Where the line finder finds no staves, or one more than
+a quarter off the measure boxes' (on a scan it can lock onto half or twice the spacing, and a page read at that size
+loses most of its symbols), the measure boxes' staff space is used. Every detection has a class (270,
 `models/yolo_v7_taxonomy.json`), a confidence and a box; notes and rests also carry attribute distributions: staff
 position, stem direction, dots, grace, voice slot. Detections at confidence 0.05 and up are kept and cached beside
 the page.
