@@ -109,13 +109,17 @@ python -m copisteria.pipeline --pdf score.pdf --range 1-12 --out out
 Each page gives `<page>.musicxml`, `<page>.reading.json` (every symbol's reading: the detector's choice, the final
 choice and the evidence for it) and `<page>.html`, a viewer: the scan with every symbol, the readings the context
 changed (hover: what the detector said, what the model reads, and the symbols it looked at most), and the MusicXML
-engraved by Verovio. `out/index.html` lists the pages read.
+engraved by Verovio. `out/index.html` lists the pages read. When more than one page is read, `out/<pdf-stem>.musicxml` (`score.musicxml` for
+PNG arguments) joins them: one score, measures numbered on, a new page at each page's first bar, and ties and lyric
+words that cross a page break connected. The pages must have the same number of parts (else `ValueError`).
 
 The detections are cached beside each page (`<page>.dets_v7_<size>.json` for copista-28m,
 `<page>.dets_v7small_<size>.json` for copista-2m). Page text (title, composer, part names, tempo and expression
 words, the counts over multi-measure rests) is read from `<page>.texts.json` beside the page when it is there: OCR
 text boxes with their role on the page, `[{"text": ..., "xyxy": [x0, y0, x1, y1], "role": ...}]`
 (docs/ARCHITECTURE.md lists the roles). Without it the music is read the same and the text is left out.
+`python -m copisteria.ocr page.png [...]` writes it with Tesseract (the `tesseract` command), giving each word its
+role from where it sits against the staves; the words under a staff become the notes' lyrics.
 
 The text is only as good as the OCR behind it. The figures here use Tesseract, which misses or misreads much of a
 scan's small print; a stronger engine that writes the same boxes (a vision-language OCR such as PaddleOCR-VL, for
