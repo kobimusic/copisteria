@@ -158,6 +158,9 @@ def main(argv=None):
         rows.append(res)
         print(json.dumps(res), flush=True)
     index(Path(a.out), rows, a.model)
+    if len(pngs) > 1:                                        # the pages' scores as one
+        (Path(a.out) / f"{Path(a.pdf).stem if a.pdf else 'score'}.musicxml").write_text(
+            write.join([(Path(a.out) / f"{p.stem}.musicxml").read_text() for p in pngs]))
 
 
 def index(out: Path, rows: list[dict], model: str) -> None:

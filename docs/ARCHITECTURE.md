@@ -173,6 +173,17 @@ Transcription only: every decision was the model's. A symbol is written when its
   -") starts dashes that stop at the last note they reach; digits over a multi-measure rest give its count. A
   direction that falls on a chord member is written with the chord's root: between a root and its `<chord/>` notes
   it would break the chord.
+* **Lyrics**, from the `syl` texts: each syllable goes to the staff it sits under, that staff's lines of syllables (top
+  to bottom) are its verses, and each syllable is sung on the nearest chord root within 3 staff spaces (a tied note's
+  continuation last). Hyphens beside a syllable, as words of their own or inside one ("co-ra"), give its syllabic; a
+  thin line along its baseline gives an extender; "/" between two vowels is an elision (‿).
+
+* **Joining pages** (`join`): each page is written alone; the pipeline then joins them by part index, taking the
+  header and part list from page 1 (a generic "Part N" name takes the first real name a later page gives). Measures are
+  renumbered on and each later page opens with `<print new-page="yes"/>`; attributes equal to the running divisions,
+  key, time and clefs are dropped (a changed `divisions` stays, no rescaling). A tie left open in a page's last bar
+  takes its stop on the next page's first matching note, else is dropped; an open lyric word (begin/middle) makes the
+  next page's first syllable of that verse middle/end. Per-page files may end with a lone tie start (valid MusicXML).
 
 ## 6. Training
 
@@ -227,4 +238,3 @@ detector's own argmax, with and without the corruption.
 * Triplets a page does not mark (marked once, often pages earlier) are still often read as plain notes: with every
   tuplet mark removed from rendered pages, 65 % of tuplet notes are written as tuplets (96 % with the marks). The
   writer's rhythm decoding cannot recover the rest: it is bounded by what the model believes.
-* Lyrics are not written.
