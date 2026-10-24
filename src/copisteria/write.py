@@ -543,6 +543,63 @@ def _voices(events: list[Event], sp: float, single_staff_part: bool = True,
     return vs
 
 
+TIE_RISE = 2.0                  # how far a tie's curve may lie above / below its notehead (staff spaces)
+TIE_FAR = 6.0                   # a partner further on than this, and not the next note, is not a tie's (staff spaces)
+
+
+def _drawn_ties(rd: Reading, pairs: list) -> set:
+    """Which of the read ties (tied note, partner or None, whether the partner is the voice's next note) the page
+    draws. The tie head is read note by note and fires on chord notes under a slur, whose partner is then found
+    bars later. A tie is kept when a curve starts beside its notehead and ends at its partner's (or runs off the
+    system's end, for a partner on the next one); each curve is one tie's, the closest pairs first, so a chord's
+    ties each take the curve beside their own head. With no such curve a tie goes only on evidence against it --
+    a partner far on that is not the next note, or a curve starting at the note that ends elsewhere (the slur):
+    a short tie between close notes is often not detected."""
+    L = rd.layout
+    sym = L.syms
+    curves = [s for s in sym if s.staff >= 0 and _real(rd, s.i) and _cls(rd, s.i) == "curve"]
+
+    def beside(c, a, reach=0.5):
+        sp = L.staves[a.staff].sp
+        return (max(c.box[1] - a.cy, a.cy - c.box[3]) <= TIE_RISE * sp and
+                a.box[0] - reach * sp <= c.box[0] <= a.box[2] + 1.5 * sp)
+
+    edges = []
+    for n, (e, f, _) in enumerate(pairs):
+        if f is None or e.si < 0 or f.si < 0:
+            continue
+        a, z = sym[e.si], sym[f.si]
+        st = L.staves[a.staff]
+        sp, across = st.sp, L.staves[z.staff].system != st.system
+        for c in curves:
+            if c.staff != a.staff or not beside(c, a):
+                continue
+            if across and c.box[2] < st.x1 - 3 * sp:
+                continue                                # to the next system: it runs off this one's end
+            if not across and not z.box[0] - 1.5 * sp <= c.box[2] <= z.box[2] + 0.5 * sp:
+                continue
+            edges.append(((abs(c.cy - a.cy) + abs(c.box[0] - a.box[2])) / sp, n, c.i))
+    kept, used = set(), set()
+    for _, n, c in sorted(edges):
+        if n not in kept and c not in used:
+            kept.add(n)
+            used.add(c)
+    for n, (e, f, nxt) in enumerate(pairs):
+        if n in kept or f is None:
+            continue
+        if e.si < 0 or f.si < 0:
+            if nxt:
+                kept.add(n)
+            continue
+        a, z = sym[e.si], sym[f.si]
+        sp = L.staves[a.staff].sp
+        far = L.staves[z.staff].system != L.staves[a.staff].system or z.box[0] - a.box[2] > TIE_FAR * sp
+        slur = any(c.i not in used and c.staff == a.staff and beside(c, a, 1.5) for c in curves)
+        if not (far and not nxt) and not slur:
+            kept.add(n)
+    return kept
+
+
 BEAM_REACH = 0.7                # how far past a beam box's ends a stem may stand (staff spaces)
 
 
@@ -1283,7 +1340,9 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
 
     built, all_durs, _ = build(_page_meter(rd, build))
 
-    # ties: a tied note's partner is the next note of its voice with the same step and octave (this bar or next)
+    # ties: a tied note's partner is the next note of its voice with the same step and octave (this bar or next);
+    # the page then has to agree (_drawn_ties)
+    pairs: list[tuple[Event, Event | None, bool]] = []
     for measures in built:
         for k_i in range(max((len(m["staves"]) for m in measures), default=0)):
             streams: dict[int, list[Event]] = {}
@@ -1294,22 +1353,27 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                 for v, evs in st["voices"].items():
                     streams.setdefault(v, []).extend(evs)
             for v, evs in streams.items():
+                group, groups = -1, []                 # the chord (onset) each event belongs to, in voice order
+                for f in evs:
+                    group += not (f.kind == "note" and f.chord)
+                    groups.append(group)
                 for a_i, e in enumerate(evs):
                     if e.kind != "note" or not e.tie:
                         continue
                     partner = None
-                    for f in evs[a_i + 1:a_i + 12]:
-                        if f.kind == "note" and not f.chord and f.step == e.step and f.octave == e.octave:
+                    for f_i in range(a_i + 1, min(a_i + 12, len(evs))):
+                        f = evs[f_i]
+                        if f.kind == "note" and f.step == e.step and f.octave == e.octave:
                             partner = f
                             break
-                        if f.kind == "note" and f.chord and f.step == e.step and f.octave == e.octave:
-                            partner = f
-                            break
-                    if partner is None:
-                        e.tie = False
-                    else:
-                        partner.tie_stop = True
-                        partner.alter = e.alter
+                    pairs.append((e, partner, partner is not None and groups[f_i] == groups[a_i] + 1))
+    kept = _drawn_ties(rd, pairs)
+    for n, (e, partner, _) in enumerate(pairs):
+        if n not in kept:
+            e.tie = False
+        else:
+            partner.tie_stop = True
+            partner.alter = e.alter
 
     mask = None
     if image is not None:

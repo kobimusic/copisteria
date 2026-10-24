@@ -123,6 +123,42 @@ def test_write_one_bar():
     assert root.findtext(".//key/fifths") == "-1" and root.findtext(".//time/beats") == "2"
 
 
+def _tied_bar(curves, ties=(1.0, 0.0, 0.0, 0.0)):
+    """One 4/4 bar of four quarter Bs, the first read as tied, with these curves drawn; its notes as written."""
+    xs = (40, 80, 120, 160)
+    dets = staff_row(100, [0, 200]) + [det("meterSig_4_4", (10, 100, 20, 140))]
+    dets += [det("note_quarter", (x - 5, 115, x + 5, 125), staff_position=0) for x in xs]
+    dets += [det("curve", box) for box in curves]
+    L = front.build(dets, 300, 300)
+    tok = {}
+    for s in L.syms:
+        real = {"real": {"p": 1.0, "det": 1.0, "ev": 0}}
+        if s.fam == "measure":
+            tok[s.i] = {**real, "cls": {"v": "measure"}, "key": {"v": 0}, "time": {"v": "4/4"}, "clef": {"v": "G2"}}
+        elif s.fam == "meterSig":
+            tok[s.i] = {**real, "cls": {"v": "meterSig_4_4"}}
+        elif s.cls == "curve":
+            tok[s.i] = {**real, "cls": {"v": "curve"}}
+        else:
+            tok[s.i] = {**real, "cls": {"v": "note_quarter"}, "dots": {"v": 0}, "pos": {"v": 0}, "voice": {"v": 1},
+                        "tup": {"v": "none"}, "alter": {"v": 0}, "grace": {"v": "none"}, "chord": 0.0,
+                        "tie": ties[xs.index(round(s.cx))]}
+    root = ET.fromstring(write.write(_reading(L, tok)).split("\n", 2)[2])
+    return root.findall(".//note")
+
+
+def test_a_tie_needs_the_page_to_agree():
+    ties = lambda notes: [[t.get("type") for t in n.findall("tie")] for n in notes]     # noqa: E731
+    # drawn between the two heads: a tie
+    assert ties(_tied_bar([(46, 125, 74, 131)])) == [["start"], ["stop"], [], []]
+    # no curve found (a short tie is often missed), the partner the next note: still a tie
+    assert ties(_tied_bar([])) == [["start"], ["stop"], [], []]
+    # the curve starting at the note ends two notes on: a slur, not a tie
+    notes = _tied_bar([(44, 126, 156, 134)])
+    assert ties(notes) == [[], [], [], []]
+    assert [s.get("type") for s in notes[0].findall("notations/slur")] == ["start"]
+
+
 def test_chord_member_joins_nearest_root():
     E = write.Event
     root, member, other = E(x=10, kind="note", typ="quarter"), E(x=11, kind="note", typ="eighth", chord=True), \
