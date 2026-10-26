@@ -40,10 +40,12 @@ def from_pdf(pdf: str | Path, page_no: int, cache: str | Path) -> Page:
     """Page ``page_no`` (1-based) of ``pdf`` as a grey PNG in ``cache``, extracted once."""
     pdf, cache = Path(pdf), Path(cache)
     cache.mkdir(parents=True, exist_ok=True)
+    turn = _turn(pdf, page_no)
     stem = f"{re.sub(r'[^A-Za-z0-9]+', '_', pdf.stem).strip('_')}_p{page_no:02d}"
+    stem += f"_r{turn}" if turn else ""           # not the page or detections cached before turns were read
     png = cache / f"{stem}.png"
     if not png.exists():
-        _extract(pdf, page_no, png)
+        _extract(pdf, page_no, png, turn)
     with Image.open(png) as im:
         size = im.size
     return Page(stem=stem, source=f"{pdf.name}#{page_no}", path=png, dpi=_ppi(pdf, page_no), size=size)
@@ -56,10 +58,11 @@ def from_png(png: str | Path, dpi: int = 300) -> Page:
     return Page(stem=png.stem, source=png.name, path=png, dpi=dpi, size=size)
 
 
-def _extract(pdf: Path, page_no: int, png: Path) -> None:
+def _extract(pdf: Path, page_no: int, png: Path, turn: int) -> None:
     """Write the page's scan to ``png``: byte for byte when the page holds it as one image. A scan stored as
     several strips (one per staff or so, e.g. Abdallah.pdf) is rasterised instead, since only the rasteriser
-    knows where each strip sits; so is a page with no image at all (one re-encoded as drawing commands)."""
+    knows where each strip sits; so is a page with no image at all (one re-encoded as drawing commands).
+    Either way it is written turned by the page's /Rotate, as the page shows it."""
     prefix = png.with_name(f".{png.stem}")
 
     def written(cmd: list[str]) -> list[Path]:
@@ -69,12 +72,19 @@ def _extract(pdf: Path, page_no: int, png: Path) -> None:
     parts = written(["pdfimages", "-png"])
     if len(parts) != 1:
         _unlink(parts)
-        parts = written(["pdftoppm", "-r", str(RENDER_PPI), "-gray", "-png"])
+        parts, turn = written(["pdftoppm", "-r", str(RENDER_PPI), "-gray", "-png"]), 0     # rendered turned
         if not parts:
             raise FileNotFoundError(f"{pdf} page {page_no}: no embedded image and nothing rendered")
     with Image.open(parts[0]) as im:
-        im.convert("L").save(png)
+        im.convert("L").rotate(-turn, expand=True).save(png)      # a transpose: not resampled
     _unlink(parts)
+
+
+def _turn(pdf: Path, page_no: int) -> int:
+    """The page's /Rotate in degrees clockwise, 0, 90, 180 or 270 (``pdfinfo``: "Page    1 rot:  180")."""
+    out = subprocess.run(["pdfinfo", *_one_page(pdf, page_no)], capture_output=True, text=True, check=True).stdout
+    m = re.search(rf"^Page\s+{page_no} rot:\s+(-?\d+)", out, re.M)
+    return int(m[1]) % 360 if m else 0
 
 
 def _ppi(pdf: Path, page_no: int) -> int:
