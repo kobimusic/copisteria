@@ -4,3 +4,4 @@ __pycache__/
 out/
 models/*.pt
 models/small/*.pt
+*.egg-info/

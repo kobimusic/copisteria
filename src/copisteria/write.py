@@ -88,6 +88,7 @@ class Event:
     arpeggiate: bool = False
     pre: list = field(default_factory=list)         # directions written before the note: (kind, payload, below)
     post: list = field(default_factory=list)        # ... and after it
+    lyrics: list = field(default_factory=list)      # (verse number, syllabic, text, extend)
     copied: bool = False                            # a measure-repeat copy (spanners attach to the original only)
     onset: float | None = None                      # the model's onset in the bar (quarters) and its confidence
     onset_p: float = 0.0
@@ -683,6 +684,7 @@ def _attach(rd: Reading, built: list, plans: list, texts: list, place: list, mas
         elif c in ("repeatMark_segno", "repeatMark_coda") and evs:
             e = min(evs, key=lambda e: abs(sym[e.si].cx - s.cx))
             e.pre.append(("segno" if c.endswith("segno") else "coda", None, False))
+    _lyrics(L, notes_on, texts, mask)
     # OCR'd words over / under a staff (tempo and expression marks): before the nearest note
     for t in texts or ():
         if t.get("role") not in ("dir", "tempo", "expression", "words"):
@@ -1059,6 +1061,112 @@ def _chop(evs: list[Event], cut: Fraction) -> list[Event]:
     return out
 
 
+LYRIC_BELOW_SP = 12.0          # a lyric syllable's centre sits at most this many staff spaces under its staff
+LYRIC_REACH_SP = 3.0           # ... and at most this far left or right of the note it is sung on
+_LYRIC_NOISE = re.compile(r"[^\w.,;:!?'’/\-]|\d")
+
+
+def _syllables(line: list) -> list:
+    """One verse line's OCR words, left to right, cut into syllables: (cx, text, hyphen before, hyphen after, box).
+    A hyphen is a word of its own ("Tris - te") or inside one ("co-ra", whose box is shared out by letters)."""
+    parts = []
+    for t in sorted(line, key=lambda t: t["xyxy"][0]):
+        x0, y0, x1, y1 = t["xyxy"]
+        word = _LYRIC_NOISE.sub("", str(t["text"])).replace("/", "‿")
+        if word and set(word) <= {"-"}:
+            parts.append("-")
+            continue
+        pieces = word.split("-")
+        n = max(1, sum(len(pc) for pc in pieces))
+        at = x0
+        for i, pc in enumerate(pieces):
+            if i:
+                parts.append("-")
+            if not any(ch.isalpha() for ch in pc):
+                continue
+            w = (x1 - x0) * len(pc) / n
+            parts.append((at + w / 2, pc, (at, y0, at + w, y1)))
+            at += w
+    out = []
+    for i, pc in enumerate(parts):
+        if pc == "-":
+            continue
+        before = i > 0 and parts[i - 1] == "-"
+        after = i + 1 < len(parts) and parts[i + 1] == "-"
+        out.append((pc[0], pc[1], before, after, pc[2]))
+    # a short word in capitals among lower-case syllables is the OCR's ("VO" for "vo")
+    if sum(t.islower() for _, t, *_ in out) > len(out) / 2:
+        out = [(cx, t.lower() if t.isupper() and len(t) <= 3 else t, b, a, box) for cx, t, b, a, box in out]
+    return out
+
+
+def _extends(box, sp: float, mask) -> bool:
+    """A lyric extender: a thin line along the syllable's baseline, starting just past it."""
+    if mask is None:
+        return False
+    x0, y0, x1, y1 = box
+    H, W = mask.shape
+    h = max(1.0, y1 - y0)
+    a, b = max(0, int(y1 - 0.4 * h)), min(H, int(y1 + 0.4 * h))
+    xa, xb = int(x1 + 0.2 * sp), min(W, int(x1 + 12 * sp))
+    if b - a < 2 or xb - xa < 4:
+        return False
+    on = mask[a:b, xa:xb].any(axis=0)
+    start = next((i for i, v in enumerate(on) if v), None)
+    if start is None or start > 1.5 * sp:
+        return False
+    end = start
+    while end < len(on) and on[end]:
+        end += 1
+    if end - start < 2 * sp:
+        return False
+    return mask[a:b, xa + start:xa + end].any(axis=1).sum() <= max(3, 0.3 * sp)
+
+
+def _lyrics(L, notes_on: dict, texts, mask) -> None:
+    """OCR'd lyric syllables (role ``syl``) on the notes they are sung on: each syllable to the staff it sits under,
+    that staff's lines of syllables top to bottom its verses, each syllable to the nearest chord root within reach
+    (a tied note's continuation last); syllabic from the hyphens beside it, an extender from the line drawn after."""
+    on_staff: dict[int, list] = {}
+    for t in texts or ():
+        if t.get("role") != "syl" or "xyxy" not in t:
+            continue
+        x0, y0, x1, y1 = t["xyxy"]
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        under = [(cy - st.y1, k) for k, st in enumerate(L.staves)
+                 if st.y1 < cy <= st.y1 + LYRIC_BELOW_SP * st.sp and st.x0 - 2 * st.sp <= cx <= st.x1 + st.sp]
+        if under:
+            on_staff.setdefault(min(under)[1], []).append(t)
+    for k, words in on_staff.items():
+        st = L.staves[k]
+        notes = [e for e in notes_on.get(k, []) if not e.chord and e.grace == "none"]
+        if not notes:
+            continue
+        verses: list[list] = []                     # [syllables' words, the last one's centre row], top to bottom
+        for t in sorted(words, key=lambda t: (t["xyxy"][1] + t["xyxy"][3]) / 2):
+            cy = (t["xyxy"][1] + t["xyxy"][3]) / 2
+            if verses and cy - verses[-1][1] < 1.2 * st.sp:
+                verses[-1][0].append(t)
+                verses[-1][1] = cy
+            else:
+                verses.append([[t], cy])
+        for number, (line, _) in enumerate(verses, start=1):
+            sylls = _syllables(line)
+            pairs = sorted((abs(e.x - cx) + (st.sp if e.tie_stop else 0), j, i)
+                           for j, (cx, *_) in enumerate(sylls) for i, e in enumerate(notes)
+                           if abs(e.x - cx) <= LYRIC_REACH_SP * st.sp)
+            took, sung = set(), set()
+            for _, j, i in pairs:
+                if j in took or i in sung:
+                    continue
+                took.add(j)
+                sung.add(i)
+                _, text, before, after, box = sylls[j]
+                syllabic = {(False, False): "single", (False, True): "begin", (True, True): "middle",
+                            (True, False): "end"}[before, after]
+                notes[i].lyrics.append((number, syllabic, text, not after and _extends(box, st.sp, mask)))
+
+
 def _sub(parent, tag, text=None, **attrs):
     el = ET.SubElement(parent, tag, {k.replace("_", "-"): str(v) for k, v in attrs.items()})
     if text is not None:
@@ -1266,7 +1374,7 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                         marks["repeat_bar"] |= marks2["repeat_bar"]
                     if marks["repeat_bar"] and not ev and prev_events[k_i]:
                         ev = [Event(**{**e.__dict__, "tie": False, "tie_stop": False, "marks": [], "beams": [],
-                                       "slurs": [], "pre": [], "post": [], "copied": True})
+                                       "slurs": [], "pre": [], "post": [], "copied": True, "lyrics": []})
                               for e in prev_events[k_i]]
                     vs = _voices(ev, L.staves[staff].sp, single_staff_part=len(pl.staves) == 1,
                                  bar_len=_time_len(state[k_i]["time"]), score=fit)
@@ -1293,6 +1401,7 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                     continue
                 for v, evs in st["voices"].items():
                     streams.setdefault(v, []).extend(evs)
+            last = {id(e) for st in measures[-1]["staves"][k_i:k_i + 1] if st for evs in st["voices"].values() for e in evs}
             for v, evs in streams.items():
                 for a_i, e in enumerate(evs):
                     if e.kind != "note" or not e.tie:
@@ -1306,7 +1415,7 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
                             partner = f
                             break
                     if partner is None:
-                        e.tie = False
+                        e.tie = id(e) in last                # may run on to the next page: join() ties it or drops it
                     else:
                         partner.tie_stop = True
                         partner.alter = e.alter
@@ -1523,6 +1632,97 @@ def write(rd: Reading, texts: list[dict] | None = None, title: str | None = None
         '"http://www.musicxml.org/dtds/partwise.dtd">\n' + ET.tostring(root, encoding="unicode")
 
 
+def join(xmls: list[str]) -> str:
+    """One score from the pages' scores: parts matched by index (a different count raises ValueError), measures
+    renumbered on, a new page at each page's first bar, attributes the page repeats dropped, ties and lyric words
+    that cross a page break connected."""
+    roots = [ET.fromstring(x.encode()) for x in xmls]
+    root = roots[0]
+    parts = [r.findall("part") for r in roots]
+    if len({len(p) for p in parts}) > 1:
+        raise ValueError(f"pages have different part counts: {[len(p) for p in parts]}")
+    names = root.findall("part-list/score-part/part-name")
+    for r in roots[1:]:
+        for n0, n in zip(names, r.findall("part-list/score-part/part-name")):
+            if re.fullmatch(r"Part \d+", n0.text or "") and not re.fullmatch(r"Part \d+|", n.text or ""):
+                n0.text = n.text
+    def ser(c):
+        c = ET.fromstring(ET.tostring(c))
+        c.attrib.pop("print-object", None)
+        c.tail = None
+        return ET.tostring(c)
+    for i, p0 in enumerate(parts[0]):
+        state: dict = {}
+        prev = None
+        for pn in range(len(roots)):
+            ms = parts[pn][i].findall("measure")
+            for mi, m in enumerate(ms):
+                for at in m.findall("attributes"):
+                    for c in list(at):
+                        k, v = (c.tag, c.get("number")), ser(c)
+                        if pn and mi == 0 and state.get(k) == v:
+                            at.remove(c)
+                        state[k] = v
+                    if not len(at):
+                        m.remove(at)
+            if pn:
+                ms[0].insert(0, ET.Element("print", {"new-page": "yes"}))
+                _cross(prev, ms)
+                off = int(p0.findall("measure")[-1].get("number"))
+                for m in ms:
+                    m.set("number", str(off + int(m.get("number"))))
+                    p0.append(m)
+            prev = ms
+    ET.indent(root)
+    return '<?xml version="1.0" encoding="UTF-8"?>\n' + \
+        '<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 4.0 Partwise//EN" ' \
+        '"http://www.musicxml.org/dtds/partwise.dtd">\n' + ET.tostring(root, encoding="unicode")
+
+
+def _cross(prev, ms):
+    """Ties and lyric words left open at the end of one page's part (prev) meet the next page's first bars (ms)."""
+    def key(n):
+        return n.findtext("staff"), n.findtext("voice")
+    def pitch(n):
+        return n.findtext("pitch/step"), n.findtext("pitch/octave"), n.findtext("pitch/alter")
+    pending = []
+    for n in prev[-1].iter("note"):
+        for t in n.findall("tie"):
+            if t.get("type") == "stop":
+                pending = [q for q in pending if (key(q), pitch(q)) != (key(n), pitch(n))]
+        if any(t.get("type") == "start" for t in n.findall("tie")):
+            pending.append(n)
+    for n in pending:
+        m = next((f for f in ms[0].iter("note") if key(f) == key(n) and pitch(f)[:2] == pitch(n)[:2]
+                  and f.find("pitch") is not None), None)
+        if m is None:
+            for t in n.findall("tie"):
+                n.remove(t)
+            for nt in n.findall("notations"):
+                for t in nt.findall("tied"):
+                    nt.remove(t)
+                if not len(nt):
+                    n.remove(nt)
+            continue
+        m.insert(next(j for j, c in enumerate(m) if c.tag in ("tie", "voice")), ET.Element("tie", {"type": "stop"}))
+        nt = m.find("notations")
+        if nt is None:
+            nt = ET.Element("notations")
+            m.insert(next((j for j, c in enumerate(m) if c.tag == "lyric"), len(m)), nt)
+        nt.insert(0, ET.Element("tied", {"type": "stop"}))
+    last = {}
+    for ly in (l for m in prev for l in m.iter("lyric")):
+        last[ly.get("number")] = ly
+    first = {}
+    for ly in (l for m in ms for l in m.iter("lyric")):
+        first.setdefault(ly.get("number"), ly)
+    for v, a in last.items():
+        b = first.get(v)
+        if b is not None and a.findtext("syllabic") in ("begin", "middle"):
+            sy = b.find("syllabic")
+            sy.text = {"single": "end", "begin": "middle"}.get(sy.text, sy.text)
+
+
 def _direction(meas, d, staff_no):
     x, kind, payload, below = d
     if kind == "clef":
@@ -1637,3 +1837,9 @@ def _note(meas, e: Event, dur: int, voice: int, staff_no, whole_rest: bool = Fal
                 _sub(te, t_)
         if ferm:
             _sub(nn, "fermata")
+    for number, syllabic, text, extend in sorted(e.lyrics):
+        ly = _sub(ne, "lyric", number=number)
+        _sub(ly, "syllabic", syllabic)
+        _sub(ly, "text", text)
+        if extend:
+            _sub(ly, "extend")

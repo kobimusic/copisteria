@@ -1,3 +1,4 @@
+import pytest
 from fractions import Fraction
 
 import xml.etree.ElementTree as ET
@@ -347,3 +348,55 @@ def test_a_pale_opening_line_joins_two_staves_and_a_white_gap_does_not():
     pale = front.build(dets, 620, 360, image=Image.fromarray(page))
     assert [len(sy.staves) for sy in white.systems] == [1, 1]
     assert [len(sy.staves) for sy in pale.systems] == [2]
+
+
+def test_lyric_syllables_from_hyphens_and_ocr_damage():
+    def word(text, x0, x1):
+        return {"text": text, "xyxy": [x0, 100, x1, 120], "role": "syl"}
+    line = [word("Tris", 0, 40), word("-", 50, 55), word("te", 70, 90), word("co-ra", 120, 170),
+            word("VO", 200, 220), word("do/o", 250, 290), word("‘7", 300, 310)]
+    syl = write._syllables(line)
+    assert [(t, b, a) for _, t, b, a, _ in syl] == [("Tris", False, True), ("te", True, False), ("co", False, True),
+                                                     ("ra", True, False), ("vo", False, False),
+                                                     ("do‿o", False, False)]
+    assert syl[2][0] == 132.5 and syl[3][0] == 157.5      # "co-ra"'s box shared out by its letters
+
+
+def _page(names, divisions, body, time_hidden=False):
+    ps = "".join(f'<score-part id="P{i + 1}"><part-name>{n}</part-name></score-part>' for i, n in enumerate(names))
+    parts = "".join(f'<part id="P{i + 1}">{body}</part>' for i in range(len(names)))
+    return (f'<?xml version="1.0" encoding="UTF-8"?><score-partwise version="4.0"><part-list>{ps}</part-list>'
+            f'{parts}</score-partwise>')
+
+
+def _m(n, attrs, notes):
+    return f'<measure number="{n}">{attrs}{notes}</measure>'
+
+
+A = ('<attributes><divisions>{d}</divisions><key><fifths>0</fifths></key><time{p}><beats>4</beats>'
+     '<beat-type>4</beat-type></time><clef><sign>G</sign><line>2</line></clef></attributes>')
+
+
+def test_join_pages():
+    n1 = ('<note><pitch><step>C</step><octave>4</octave></pitch><duration>4</duration><tie type="start"/>'
+          '<voice>1</voice><type>whole</type><notations><tied type="start"/></notations>'
+          '<lyric number="1"><syllabic>begin</syllabic><text>a</text></lyric></note>')
+    n2 = ('<note><pitch><step>C</step><octave>4</octave></pitch><duration>2</duration>'
+          '<voice>1</voice><type>whole</type><lyric number="1"><syllabic>single</syllabic><text>b</text></lyric></note>')
+    p1 = _page(["Soprano", "Alto"], 1, _m(1, A.format(d=1, p=""), n1))
+    p2 = _page(["Part 1", "Part 2"], 2, _m(1, A.format(d=2, p=' print-object="no"'), n2) + _m(2, "", ""))
+    x = write.join([p1, p2])
+    r = ET.fromstring(x.encode())
+    assert [e.text for e in r.findall("part-list/score-part/part-name")] == ["Soprano", "Alto"]
+    ms = r.find("part").findall("measure")
+    assert [m.get("number") for m in ms] == ["1", "2", "3"]
+    assert ms[1][0].tag == "print" and ms[1][0].get("new-page") == "yes"
+    at = ms[1].find("attributes")
+    assert [c.tag for c in at] == ["divisions"] and at.findtext("divisions") == "2"
+    assert ms[1].find("note/tie").get("type") == "stop" and ms[1].find("note/notations/tied").get("type") == "stop"
+    assert ms[1].findtext("note/lyric/syllabic") == "end"
+    n2b = n2.replace("single", "begin")
+    r = ET.fromstring(write.join([p1, p2.replace(n2, n2b)]).encode())
+    assert r.find("part").findall("measure")[1].findtext("note/lyric/syllabic") == "middle"
+    with pytest.raises(ValueError):
+        write.join([p1, _page(["Part 1"], 1, _m(1, "", ""))])
