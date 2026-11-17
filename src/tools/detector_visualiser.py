@@ -11,8 +11,11 @@ where that is given, else ``--out`` with a .png suffix), whose paths are checked
 exist) before the detector runs. The detector in use is the default copista-28m, or the one
 COPISTERIA_DETECTOR names (see paths.detector); a run of the test page gives these records.
 
-Output format: a JSON list, one record per detection at confidence 0.05 and up (630 over the test page, a 1272 x
-1759 px Galuppi scan), in the detector's own order (not reading order). Every record has:
+Output format: a JSON object with two keys:
+
+  detection    a list, one record per detection at confidence 0.05 and up (630 over the test page, a 1272 x 1759
+               px Galuppi scan), in the detector's own order (not reading order). Every record has:
+  input_path   the page the detections came from, absolute (so the file says what it is a reading of).
 
   cls    the class name, from the v7 taxonomy (models/yolo_v7_taxonomy.json, 270 classes): "note_half",
          "rest_quarter", "beam", "barLine_single", "measure", "clef_G2", "keySig_2f", "accid_natural", ...
@@ -47,8 +50,9 @@ page is read: ``COLORS`` at the top of this file maps all 270 classes of the v7 
 (copisteria.vocab.CLASSES, the same list models/yolo_v7_taxonomy.json gives the detector) to a colour, every class
 wearing its family's, so a family reads the same colour on every page.
 
-This is exactly the format the reader caches beside a page (``<stem>.dets_v7_<imgsz>.json``); a file written here
-with the same detector and size can be dropped in next to the page and copisteria will read from it.
+The ``detection`` list alone is the format the reader caches beside a page (``<stem>.dets_v7_<imgsz>.json``), which
+holds the list un-wrapped; saving this file's list under that name, from the same detector and size, lets
+copisteria read from it.
 """
 from __future__ import annotations
 
@@ -176,7 +180,7 @@ def main(argv=None):
             sys.exit(f"{p.parent}: no such directory for an output file")
 
     dets, imgsz = detect(png)
-    out.write_text(json.dumps(dets, indent=2))
+    out.write_text(json.dumps({"detection": dets, "input_path": str(png.resolve())}, indent=2))
     wrote = [str(out)]
     if dest:
         overlay(png, dets, dest, a.width)
