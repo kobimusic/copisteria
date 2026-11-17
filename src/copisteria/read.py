@@ -14,6 +14,7 @@ import torch
 
 from . import features, front
 from .model import PRIOR_HEADS, EvidenceNet
+from .paths import require
 from .train import MAX_TOK, TOKEN_KEYS, collate
 from .vocab import ALTERS, CLASSES, CLEFS, KEYS, POS_MAX, TIMES, TUPLETS, GRACE
 
@@ -24,7 +25,7 @@ OPTIONAL = ("heads.onset",)
 
 
 def load_model(path: str | Path, device="cpu") -> EvidenceNet:
-    ck = torch.load(path, map_location=device, weights_only=False)
+    ck = torch.load(require(path), map_location=device, weights_only=False)
     m = EvidenceNet(**{k: v for k, v in ck["cfg"].items()}).to(device).eval()
     missing, unexpected = m.load_state_dict(ck["model"], strict=False)
     # an older checkpoint lacks heads added since (their outputs are then not read); anything else is an error

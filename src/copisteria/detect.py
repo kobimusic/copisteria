@@ -11,7 +11,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .paths import detector
+from .paths import detector, require
 
 TARGET_SP = 10.6
 IMGSZ_MIN, IMGSZ_MAX = 640, 4096
@@ -43,7 +43,7 @@ class Detector:
     def __init__(self, weights: str | Path | None = None, device: str | None = None):
         """``weights``: a detector checkpoint; by default the one COPISTERIA_DETECTOR names (paths.detector)."""
         import torch
-        weights = weights or detector()[0]
+        weights = require(weights or detector()[0])
 
         from .detector.small import models as M
         from .detector.small.data import ATTR_OFFSETS, ATTR_SIZES

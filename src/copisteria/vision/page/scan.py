@@ -7,6 +7,7 @@ that is done only for a page the scan cannot be pulled from.
 from __future__ import annotations
 
 import re
+import shutil
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
@@ -39,6 +40,7 @@ class Page:
 def from_pdf(pdf: str | Path, page_no: int, cache: str | Path) -> Page:
     """Page ``page_no`` (1-based) of ``pdf`` as a grey PNG in ``cache``, extracted once."""
     pdf, cache = Path(pdf), Path(cache)
+    _poppler()
     cache.mkdir(parents=True, exist_ok=True)
     turn = _turn(pdf, page_no)
     stem = f"{re.sub(r'[^A-Za-z0-9]+', '_', pdf.stem).strip('_')}_p{page_no:02d}"
@@ -56,6 +58,14 @@ def from_png(png: str | Path, dpi: int = 300) -> Page:
     with Image.open(png) as im:
         size = im.size
     return Page(stem=png.stem, source=png.name, path=png, dpi=dpi, size=size)
+
+
+def _poppler() -> None:
+    """The PDF tools come with poppler-utils, not with pip: say so, instead of a bare FileNotFoundError."""
+    missing = [t for t in ("pdfimages", "pdfinfo", "pdftoppm") if shutil.which(t) is None]
+    if missing:
+        raise FileNotFoundError(f"{', '.join(missing)} not found: reading a PDF needs poppler-utils "
+                                f"(apt install poppler-utils, brew install poppler)")
 
 
 def _extract(pdf: Path, page_no: int, png: Path, turn: int) -> None:
