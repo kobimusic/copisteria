@@ -59,54 +59,7 @@ except ImportError:  # running from the repository without one
 from PIL import Image
 
 from copisteria.detect import Detector, imgsz_for, measure_space, staff_space
-from copisteria.vocab import CLASSES, family
-
-# One colour per class family of the v7 taxonomy, spread over the colour wheel in the golden-ratio order and in two
-# brightness levels so neighbours stay apart. Fixed by family name, so a family reads the same colour on every
-# page; src/tools/visualizer.py colours its overlay with these.
-FAM_COLORS = {
-    "accid": "#f22424",
-    "arpeg": "#113fad",
-    "artic": "#9df224",
-    "bTrem": "#ad119a",
-    "barLine": "#24f2d0",
-    "beam": "#ad6611",
-    "breath": "#5824f2",
-    "caesura": "#18ad11",
-    "clef": "#f22469",
-    "curve": "#1173ad",
-    "dots": "#e1f224",
-    "dynam": "#8d11ad",
-    "ending": "#24f28b",
-    "fTrem": "#ad3211",
-    "fermata": "#2436f2",
-    "flag": "#4cad11",
-    "gliss": "#f224ae",
-    "grpSym": "#11a7ad",
-    "hairpin": "#f2be24",
-    "keySig": "#5811ad",
-    "mRest": "#24f246",
-    "mRpt": "#ad1125",
-    "measure": "#247bf2",
-    "meterSig": "#80ad11",
-    "mordent": "#f224f2",
-    "multiRest": "#11ad7f",
-    "multiRpt": "#f27924",
-    "note": "#2411ad",
-    "octave": "#47f224",
-    "pedal": "#ad1159",
-    "repeatMark": "#24c0f2",
-    "rest": "#ada611",
-    "spanEnd": "#ad24f2",
-    "trill": "#11ad4b",
-    "tuplet": "#f23524",
-    "tupletBracket": "#1133ad",
-    "tupletNum": "#8cf224",
-}
-
-# class -> colour for all 270 v7 classes, taken from the taxonomy before any page is read: a class wears its
-# family's colour, so the two readings of one glyph (say a sharp and its accidental) share it.
-COLORS = {c: FAM_COLORS[family(c)] for c in CLASSES}
+from copisteria.vocab import family
 
 
 def detect(png: Path):

@@ -13,7 +13,8 @@ start): only the boxes of the checked classes are drawn, so the overlay can be r
 
 The web source is not in this file: ``templates/visualizer.html`` is the markup, rendered with the detections as
 ``DATA`` by flask's template engine, and ``static/visualizer.css`` and ``static/visualizer.js`` are the style and
-the drawing, hover and checkbox logic (both beside this file, in the repository's ``src/tools/``).
+the drawing, hover and checkbox logic (both beside this file, in the repository's ``src/tools/``). A box is drawn
+in its class's colour, from ``COLORS`` at the top of this file.
 
 Needs flask: pip install -e ".[tools]".
 """
@@ -29,9 +30,57 @@ try:
     import copisteria  # noqa: F401  (installed editable, per the README)
 except ImportError:  # running from the repository without one
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from copisteria.vocab import CLASSES, family
 
 HERE = Path(__file__).resolve().parent
+
+# One colour per class family of the v7 taxonomy, spread over the colour wheel in the golden-ratio order and in
+# two brightness levels so neighbours stay apart. Fixed by family name, so a family reads the same colour on
+# every page and in every run of this visualizer.
+FAM_COLORS = {
+    "accid": "#f22424",
+    "arpeg": "#113fad",
+    "artic": "#9df224",
+    "bTrem": "#ad119a",
+    "barLine": "#24f2d0",
+    "beam": "#ad6611",
+    "breath": "#5824f2",
+    "caesura": "#18ad11",
+    "clef": "#f22469",
+    "curve": "#1173ad",
+    "dots": "#e1f224",
+    "dynam": "#8d11ad",
+    "ending": "#24f28b",
+    "fTrem": "#ad3211",
+    "fermata": "#2436f2",
+    "flag": "#4cad11",
+    "gliss": "#f224ae",
+    "grpSym": "#11a7ad",
+    "hairpin": "#f2be24",
+    "keySig": "#5811ad",
+    "mRest": "#24f246",
+    "mRpt": "#ad1125",
+    "measure": "#247bf2",
+    "meterSig": "#80ad11",
+    "mordent": "#f224f2",
+    "multiRest": "#11ad7f",
+    "multiRpt": "#f27924",
+    "note": "#2411ad",
+    "octave": "#47f224",
+    "pedal": "#ad1159",
+    "repeatMark": "#24c0f2",
+    "rest": "#ada611",
+    "spanEnd": "#ad24f2",
+    "trill": "#11ad4b",
+    "tuplet": "#f23524",
+    "tupletBracket": "#1133ad",
+    "tupletNum": "#8cf224",
+}
+
+# class -> colour for all 270 v7 classes, taken from the taxonomy before any page is read: a class wears its
+# family's colour, so the two readings of one glyph (say a sharp and its accidental) share it.
+COLORS = {c: FAM_COLORS[family(c)] for c in CLASSES}
 
 
 def load(dets_json: Path):
@@ -107,5 +156,4 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
-    from detector import COLORS  # the overlay wears the colours of the dictionary at the top of detector.py
     main()
