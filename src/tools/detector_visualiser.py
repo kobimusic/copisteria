@@ -2,7 +2,7 @@
 page with every box drawn on it.
 
     python src/tools/detector_visualiser.py page.png --out detections.json    # the PNG goes beside it
-    python src/tools/detector_visualiser.py page.png --out detections.json --png overlay.png
+    python src/tools/detector_visualiser.py page.png --out detections.json --png overlay.png --width 4
 
 The page is read the way the reader reads it: the staff space from the ink, checked against the measure boxes of a
 first read at 2048 px, then a run at the size that puts that staff space at 10.6 px (this page: 1760 px). Nothing
@@ -40,10 +40,11 @@ A record of each kind, from the test run:
    "attr_dist": {"stem_dir": {"down": 0.9999}, "dots": {"<na>": 1.0}, "grace": {"<na>": 1.0},
                  "voice_slot": {"1": 0.9997}}}
 
-The PNG is the page as it is, converted to RGB, with the box of every detection drawn on it (xyxy, page pixels, one
-pixel wide) in a colour per class family: the families the page shows, in alphabetical order, taken from a palette
-of sixteen colours cycled through. Nothing is written on the boxes: class and confidence are in the JSON, record i
-is box i of the PNG.
+The PNG is the page as it is, converted to RGB, with the box of every detection drawn on it (xyxy, page pixels),
+``--width`` page pixels thick (default 2). Nothing is written on the boxes: class and confidence are in the JSON,
+record i is box i of the PNG. The colour is decided before any page is read: ``COLORS`` at the top of this file
+maps all 270 classes of the v7 taxonomy (copisteria.vocab.CLASSES, the same list models/yolo_v7_taxonomy.json
+gives the detector) to a colour, every class wearing its family's, so a family reads the same colour on every page.
 
 This is exactly the format the reader caches beside a page (``<stem>.dets_v7_<imgsz>.json``); a file written here
 with the same detector and size can be dropped in next to the page and copisteria will read from it.
@@ -63,9 +64,53 @@ except ImportError:  # running from the repository without one
 from PIL import Image
 
 from copisteria.detect import Detector, imgsz_for, measure_space, staff_space
+from copisteria.vocab import CLASSES, family
 
-PALETTE = ("#d62728", "#1f77b4", "#2ca02c", "#9467bd", "#ff7f0e", "#e377c2", "#8c564b", "#17becf", "#bcbd22",
-           "#7f7f7f", "#ff9f1c", "#005f73", "#0a9396", "#ae2012", "#355070", "#6a994e")
+# One colour per class family of the v7 taxonomy, spread over the colour wheel in the golden-ratio order and in two
+# brightness levels so neighbours stay apart. Fixed by family name, so a family reads the same colour on every page.
+FAM_COLORS = {
+    "accid": "#f22424",
+    "arpeg": "#113fad",
+    "artic": "#9df224",
+    "bTrem": "#ad119a",
+    "barLine": "#24f2d0",
+    "beam": "#ad6611",
+    "breath": "#5824f2",
+    "caesura": "#18ad11",
+    "clef": "#f22469",
+    "curve": "#1173ad",
+    "dots": "#e1f224",
+    "dynam": "#8d11ad",
+    "ending": "#24f28b",
+    "fTrem": "#ad3211",
+    "fermata": "#2436f2",
+    "flag": "#4cad11",
+    "gliss": "#f224ae",
+    "grpSym": "#11a7ad",
+    "hairpin": "#f2be24",
+    "keySig": "#5811ad",
+    "mRest": "#24f246",
+    "mRpt": "#ad1125",
+    "measure": "#247bf2",
+    "meterSig": "#80ad11",
+    "mordent": "#f224f2",
+    "multiRest": "#11ad7f",
+    "multiRpt": "#f27924",
+    "note": "#2411ad",
+    "octave": "#47f224",
+    "pedal": "#ad1159",
+    "repeatMark": "#24c0f2",
+    "rest": "#ada611",
+    "spanEnd": "#ad24f2",
+    "trill": "#11ad4b",
+    "tuplet": "#f23524",
+    "tupletBracket": "#1133ad",
+    "tupletNum": "#8cf224",
+}
+
+# class -> colour for all 270 v7 classes, taken from the taxonomy before any page is read: a class wears its
+# family's colour, so the two readings of one glyph (say a sharp and its accidental) share it.
+COLORS = {c: FAM_COLORS[family(c)] for c in CLASSES}
 
 
 def detect(png: Path):
@@ -89,18 +134,15 @@ def detect(png: Path):
     return det.run_array(arr, s), imgsz
 
 
-def overlay(png: Path, dets: list[dict], out: Path) -> int:
-    """The page with every detection's box drawn on it, one colour per family; the number of families shown."""
+def overlay(png: Path, dets: list[dict], out: Path, width: int):
+    """The page with every detection's box drawn on it, ``width`` page pixels thick, each in its class's colour."""
     from PIL import ImageDraw
 
     im = Image.open(png).convert("RGB")
     d = ImageDraw.Draw(im)
-    fams = sorted({r["cls"].partition("_")[0] for r in dets})
-    col = {f: PALETTE[i % len(PALETTE)] for i, f in enumerate(fams)}
     for r in dets:
-        d.rectangle(r["xyxy"], outline=col[r["cls"].partition("_")[0]])
+        d.rectangle(r["xyxy"], outline=COLORS[r["cls"]], width=width)
     im.save(out)
-    return len(fams)
 
 
 def main(argv=None):
@@ -110,6 +152,7 @@ def main(argv=None):
     ap.add_argument("image", help="the page to run the detector over (png)")
     ap.add_argument("--out", "-o", required=True, help="where to write the detections JSON")
     ap.add_argument("--png", help="where to write the boxes-over-the-page PNG (default: --out with a .png suffix)")
+    ap.add_argument("--width", type=int, default=2, help="bounding box thickness in page pixels (default 2)")
     a = ap.parse_args(argv)
 
     png = Path(a.image)
@@ -126,9 +169,10 @@ def main(argv=None):
 
     dets, imgsz = detect(png)
     out.write_text(json.dumps(dets, indent=2))
-    fams = overlay(png, dets, dest)
-    print(f"{png.name}: {len(dets)} detections in {fams} families (read at {imgsz} px) -> {out}, {dest}",
-          file=sys.stderr)
+    overlay(png, dets, dest, a.width)
+    fams = len({family(r["cls"]) for r in dets})
+    print(f"{png.name}: {len(dets)} detections in {fams} families, boxes {a.width} px (read at {imgsz} px) "
+          f"-> {out}, {dest}", file=sys.stderr)
 
 
 if __name__ == "__main__":
