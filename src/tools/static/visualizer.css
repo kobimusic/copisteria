@@ -1,0 +1,20 @@
+:root { --bg:#fafaf7; --fg:#222; --muted:#777; }
+body { margin:0; font:13px system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+header { padding:8px 14px; border-bottom:1px solid #ddd; }
+header b { font-size:15px }  header span { color:var(--muted); margin-left:12px }
+.wrap { display:flex; height:calc(100vh - 42px); }
+#pane { flex:1; overflow:auto; }
+#stage { position:relative; display:inline-block; min-width:100%; }
+#stage img { display:block; width:100%; }
+#ov { position:absolute; left:0; top:0; width:100%; height:100%; }
+rect { fill:none; stroke-width:2; vector-effect:non-scaling-stroke; pointer-events:stroke; cursor:pointer }
+#side { width:260px; overflow:auto; border-left:1px solid #ddd; padding:8px 10px; flex:none }
+#side .all { display:flex; gap:8px; margin-bottom:8px }
+#side button { font:12px system-ui; }
+label.cls { display:flex; align-items:center; gap:6px; padding:1px 0; cursor:pointer;
+  font:12px ui-monospace,monospace; white-space:nowrap }
+label.cls input { margin:0 }
+label.cls .sw { width:10px; height:10px; border:1px solid #999; flex:none }
+label.cls .n { color:var(--muted); margin-left:auto; font-variant-numeric:tabular-nums }
+#tip { position:fixed; pointer-events:none; background:#fff; border:1px solid #999; padding:4px 8px;
+  font:12px ui-monospace,monospace; white-space:pre; display:none; z-index:9; box-shadow:0 2px 6px rgba(0,0,0,.15) }

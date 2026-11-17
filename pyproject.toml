@@ -22,6 +22,7 @@ dependencies = [
 
 [project.optional-dependencies]
 test = ["pytest"]
+tools = ["flask"]    # src/tools/visualizer.py
 
 [tool.setuptools.packages.find]
 where = ["src"]

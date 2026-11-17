@@ -1,0 +1,13 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<title>copisteria detections {{ title }}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='visualizer.css') }}"></head><body>
+<header><b>{{ title }}</b><span>{{ n }} detections, {{ m }} classes &mdash; hover a box for class and
+confidence</span></header>
+<div class="wrap"><div id="pane"><div id="stage"><img id="img" src="/image"><svg id="ov"></svg></div></div>
+<div id="side"><div class="all"><button id="on">show all</button><button id="off">hide all</button></div>
+<div id="boxes"></div></div></div>
+<div id="tip"></div>
+<script>const DATA = {{ data | tojson }};</script>
+<script src="{{ url_for('static', filename='visualizer.js') }}"></script>
+</body></html>
