@@ -1,0 +1,21 @@
+name: tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: poppler-utils (the PDF tests call pdfimages and pdfinfo)
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - name: CPU-only torch (the tests load no weights, and the CUDA build is a multi-GB download)
+        run: pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install -e ".[test]"
+      - run: python -m pytest -q
