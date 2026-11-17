@@ -1,12 +1,15 @@
-"""Run the copista symbol detector over one page image and write its detections as a JSON file.
+"""Run the copista symbol detector over one page image and write its detections as a JSON file and as a PNG of the
+page with every box drawn on it.
 
-    python src/tools/detector_visualiser.py page.png --out detections.json
+    python src/tools/detector_visualiser.py page.png --out detections.json    # the PNG goes beside it
+    python src/tools/detector_visualiser.py page.png --out detections.json --png overlay.png
 
 The page is read the way the reader reads it: the staff space from the ink, checked against the measure boxes of a
 first read at 2048 px, then a run at the size that puts that staff space at 10.6 px (this page: 1760 px). Nothing
-is cached beside the page; the detections go only to ``--out``, whose path is checked (not a directory, its parent
-exists) before the detector runs. The detector in use is the default copista-28m, or the one COPISTERIA_DETECTOR
-names (see paths.detector); a run of the test page gives these records.
+is cached beside the page; the detections go only to the two files named on the command line (and the PNG file is
+the same path with a .png suffix when ``--png`` is not given), whose paths are checked (not directories, the
+parents exist) before the detector runs. The detector in use is the default copista-28m, or the one
+COPISTERIA_DETECTOR names (see paths.detector); a run of the test page gives these records.
 
 Output format: a JSON list, one record per detection at confidence 0.05 and up (630 over the test page, a 1272 x
 1759 px Galuppi scan), in the detector's own order (not reading order). Every record has:
@@ -37,6 +40,11 @@ A record of each kind, from the test run:
    "attr_dist": {"stem_dir": {"down": 0.9999}, "dots": {"<na>": 1.0}, "grace": {"<na>": 1.0},
                  "voice_slot": {"1": 0.9997}}}
 
+The PNG is the page as it is, converted to RGB, with the box of every detection drawn on it (xyxy, page pixels, one
+pixel wide) in a colour per class family: the families the page shows, in alphabetical order, taken from a palette
+of sixteen colours cycled through. Nothing is written on the boxes: class and confidence are in the JSON, record i
+is box i of the PNG.
+
 This is exactly the format the reader caches beside a page (``<stem>.dets_v7_<imgsz>.json``); a file written here
 with the same detector and size can be dropped in next to the page and copisteria will read from it.
 """
@@ -55,6 +63,9 @@ except ImportError:  # running from the repository without one
 from PIL import Image
 
 from copisteria.detect import Detector, imgsz_for, measure_space, staff_space
+
+PALETTE = ("#d62728", "#1f77b4", "#2ca02c", "#9467bd", "#ff7f0e", "#e377c2", "#8c564b", "#17becf", "#bcbd22",
+           "#7f7f7f", "#ff9f1c", "#005f73", "#0a9396", "#ae2012", "#355070", "#6a994e")
 
 
 def detect(png: Path):
@@ -78,25 +89,46 @@ def detect(png: Path):
     return det.run_array(arr, s), imgsz
 
 
+def overlay(png: Path, dets: list[dict], out: Path) -> int:
+    """The page with every detection's box drawn on it, one colour per family; the number of families shown."""
+    from PIL import ImageDraw
+
+    im = Image.open(png).convert("RGB")
+    d = ImageDraw.Draw(im)
+    fams = sorted({r["cls"].partition("_")[0] for r in dets})
+    col = {f: PALETTE[i % len(PALETTE)] for i, f in enumerate(fams)}
+    for r in dets:
+        d.rectangle(r["xyxy"], outline=col[r["cls"].partition("_")[0]])
+    im.save(out)
+    return len(fams)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Run the copista symbol detector over a page image and write its "
                                              "detections as JSON (the format of the reader's "
                                              "<stem>.dets_v7_<imgsz>.json cache).")
     ap.add_argument("image", help="the page to run the detector over (png)")
     ap.add_argument("--out", "-o", required=True, help="where to write the detections JSON")
+    ap.add_argument("--png", help="where to write the boxes-over-the-page PNG (default: --out with a .png suffix)")
     a = ap.parse_args(argv)
 
     png = Path(a.image)
     out = Path(a.out)
     # the detector run is the slow part: fail on a bad output path before it, not after
-    if out.is_dir():
-        sys.exit(f"{out}: the output is a directory")
-    if not out.parent.is_dir():
-        sys.exit(f"{out.parent}: no such directory for the output file")
+    dest = Path(a.png) if a.png else out.with_suffix(".png")
+    if dest == out:                     # --out names a .png: the two files would be the one
+        dest = out.with_name(out.stem + "_boxes.png")
+    for p in (out, dest):
+        if p.is_dir():
+            sys.exit(f"{p}: an output is a directory")
+        if not p.parent.is_dir():
+            sys.exit(f"{p.parent}: no such directory for an output file")
 
     dets, imgsz = detect(png)
     out.write_text(json.dumps(dets, indent=2))
-    print(f"{png.name}: {len(dets)} detections (read at {imgsz} px) -> {out}", file=sys.stderr)
+    fams = overlay(png, dets, dest)
+    print(f"{png.name}: {len(dets)} detections in {fams} families (read at {imgsz} px) -> {out}, {dest}",
+          file=sys.stderr)
 
 
 if __name__ == "__main__":
