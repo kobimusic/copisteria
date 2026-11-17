@@ -1,14 +1,11 @@
-"""Run the copista symbol detector over one page image and write its detections as a JSON file, and with
-``--add-png-output`` also as a PNG of the page with every box drawn on it.
+"""Run the copista symbol detector over one page image and write its detections as a JSON file.
 
     python src/tools/detector.py page.png --out detections.json
-    python src/tools/detector.py page.png --out detections.json --add-png-output --png overlay.png --width 4
 
 The page is read the way the reader reads it: the staff space from the ink, checked against the measure boxes of a
 first read at 2048 px, then a run at the size that puts that staff space at 10.6 px (this page: 1760 px). Nothing
-is cached beside the page; the detections go only to the files named on the command line (the PNG is ``--png``
-where that is given, else ``--out`` with a .png suffix), whose paths are checked (not directories, the parents
-exist) before the detector runs. The detector in use is the default copista-28m, or the one
+is cached beside the page; the detections go only to ``--out``, whose path is checked (not a directory, its
+parent exists) before the detector runs. The detector in use is the default copista-28m, or the one
 COPISTERIA_DETECTOR names (see paths.detector); a run of the test page gives these records.
 
 Output format: a JSON object with two keys:
@@ -43,16 +40,9 @@ A record of each kind, from the test run:
    "attr_dist": {"stem_dir": {"down": 0.9999}, "dots": {"<na>": 1.0}, "grace": {"<na>": 1.0},
                  "voice_slot": {"1": 0.9997}}}
 
-The PNG, written only when ``--add-png-output`` is given, is the page as it is, converted to RGB, with the box of
-every detection drawn on it (xyxy, page pixels), ``--width`` page pixels thick (default 2). Nothing is written on
-the boxes: class and confidence are in the JSON, record i is box i of the PNG. The colour is decided before any
-page is read: ``COLORS`` at the top of this file maps all 270 classes of the v7 taxonomy
-(copisteria.vocab.CLASSES, the same list models/yolo_v7_taxonomy.json gives the detector) to a colour, every class
-wearing its family's, so a family reads the same colour on every page.
-
 The ``detection`` list alone is the format the reader caches beside a page (``<stem>.dets_v7_<imgsz>.json``), which
 holds the list un-wrapped; saving this file's list under that name, from the same detector and size, lets
-copisteria read from it.
+copisteria read from it. ``src/tools/visualizer.py`` draws these boxes over the page in the browser.
 """
 from __future__ import annotations
 
@@ -72,7 +62,8 @@ from copisteria.detect import Detector, imgsz_for, measure_space, staff_space
 from copisteria.vocab import CLASSES, family
 
 # One colour per class family of the v7 taxonomy, spread over the colour wheel in the golden-ratio order and in two
-# brightness levels so neighbours stay apart. Fixed by family name, so a family reads the same colour on every page.
+# brightness levels so neighbours stay apart. Fixed by family name, so a family reads the same colour on every
+# page; src/tools/visualizer.py colours its overlay with these.
 FAM_COLORS = {
     "accid": "#f22424",
     "arpeg": "#113fad",
@@ -139,55 +130,26 @@ def detect(png: Path):
     return det.run_array(arr, s), imgsz
 
 
-def overlay(png: Path, dets: list[dict], out: Path, width: int):
-    """The page with every detection's box drawn on it, ``width`` page pixels thick, each in its class's colour."""
-    from PIL import ImageDraw
-
-    im = Image.open(png).convert("RGB")
-    d = ImageDraw.Draw(im)
-    for r in dets:
-        d.rectangle(r["xyxy"], outline=COLORS[r["cls"]], width=width)
-    im.save(out)
-
-
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Run the copista symbol detector over a page image and write its "
                                              "detections as JSON (the format of the reader's "
                                              "<stem>.dets_v7_<imgsz>.json cache).")
     ap.add_argument("image", help="the page to run the detector over (png)")
     ap.add_argument("--out", "-o", required=True, help="where to write the detections JSON")
-    ap.add_argument("--add-png-output", action="store_true",
-                    help="also write a PNG of the page with every box drawn on it")
-    ap.add_argument("--png", help="with --add-png-output: where to write it (default: --out with a .png suffix)")
-    ap.add_argument("--width", type=int, default=2, help="bounding box thickness in page pixels (default 2)")
     a = ap.parse_args(argv)
 
     png = Path(a.image)
     out = Path(a.out)
-    if a.png and not a.add_png_output:
-        sys.exit("--png names the overlay file: ask for the overlay with --add-png-output too")
-    dest = None
-    if a.add_png_output:
-        dest = Path(a.png) if a.png else out.with_suffix(".png")
-        if dest == out:                   # --out names a .png: the two files would be the one
-            dest = out.with_name(out.stem + "_boxes.png")
-
     # the detector run is the slow part: fail on a bad output path before it, not after
-    for p in [out] + ([dest] if dest else []):
-        if p.is_dir():
-            sys.exit(f"{p}: an output is a directory")
-        if not p.parent.is_dir():
-            sys.exit(f"{p.parent}: no such directory for an output file")
+    if out.is_dir():
+        sys.exit(f"{out}: the output is a directory")
+    if not out.parent.is_dir():
+        sys.exit(f"{out.parent}: no such directory for the output file")
 
     dets, imgsz = detect(png)
     out.write_text(json.dumps({"detection": dets, "input_path": str(png.resolve())}, indent=2))
-    wrote = [str(out)]
-    if dest:
-        overlay(png, dets, dest, a.width)
-        wrote.append(str(dest))
     fams = len({family(r["cls"]) for r in dets})
-    print(f"{png.name}: {len(dets)} detections in {fams} families" + (f", boxes {a.width} px" if dest else "")
-          + f" (read at {imgsz} px) -> {', '.join(wrote)}", file=sys.stderr)
+    print(f"{png.name}: {len(dets)} detections in {fams} families (read at {imgsz} px) -> {out}", file=sys.stderr)
 
 
 if __name__ == "__main__":

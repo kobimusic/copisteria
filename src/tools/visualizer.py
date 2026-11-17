@@ -31,8 +31,6 @@ except ImportError:  # running from the repository without one
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from copisteria.vocab import family
-
 HERE = Path(__file__).resolve().parent
 
 
@@ -90,7 +88,7 @@ def main(argv=None):
     cnt = Counter(r["cls"] for r in recs)
     data = {"syms": [[cid[r["cls"]], r["conf"]] + list(r["xyxy"]) for r in recs],
             "classes": classes, "counts": [cnt[c] for c in classes],
-            "cols": [FAM_COLORS[family(c)] for c in classes]}
+            "cols": [COLORS[c] for c in classes]}
 
     app = Flask(__name__, template_folder=str(HERE / "templates"), static_folder=str(HERE / "static"))
 
@@ -109,5 +107,5 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
-    from detector import FAM_COLORS  # the PNG and this page colour the same way, from one dictionary
+    from detector import COLORS  # the overlay wears the colours of the dictionary at the top of detector.py
     main()
