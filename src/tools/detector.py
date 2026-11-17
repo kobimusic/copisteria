@@ -1,8 +1,8 @@
 """Run the copista symbol detector over one page image and write its detections as a JSON file, and with
 ``--add-png-output`` also as a PNG of the page with every box drawn on it.
 
-    python src/tools/detector_visualiser.py page.png --out detections.json
-    python src/tools/detector_visualiser.py page.png --out detections.json --add-png-output --png overlay.png --width 4
+    python src/tools/detector.py page.png --out detections.json
+    python src/tools/detector.py page.png --out detections.json --add-png-output --png overlay.png --width 4
 
 The page is read the way the reader reads it: the staff space from the ink, checked against the measure boxes of a
 first read at 2048 px, then a run at the size that puts that staff space at 10.6 px (this page: 1760 px). Nothing
