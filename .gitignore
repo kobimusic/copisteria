@@ -4,3 +4,10 @@ __pycache__/
 out/
 models/*.pt
 models/small/*.pt
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+data/
+runs/

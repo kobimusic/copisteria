@@ -22,3 +22,16 @@ def detector() -> tuple[Path, str]:
         return DETECTORS[name]
     p = Path(name)
     return p, p.stem
+
+
+def require(path: str | Path) -> Path:
+    """``path`` if the weights file is there; otherwise a FileNotFoundError that says where they come from, instead
+    of the traceback torch.load gives for a missing file."""
+    path = Path(path)
+    if not path.is_file():
+        raise FileNotFoundError(
+            f"weights not found: {path}\n"
+            f"They are not in the repository. From its root: "
+            f"hf download kobimusic/copista-28m --include \"*.pt\" --local-dir models   (copista-2m: kobimusic/copista-2m); "
+            f"see models/README.md.")
+    return path
